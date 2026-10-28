@@ -20,8 +20,8 @@ beforeEach(() => Object.assign(content, JSON.parse(JSON.stringify(shipped))));
 afterEach(() => jest.clearAllMocks());
 
 // Obviously fake test values, never realistic numbers.
-const VERIFIED = 'TEST-VERIFIED';
-const UNVERIFIED = 'TEST-UNVERIFIED';
+const VERIFIED = 'TESTVERIFIED';
+const UNVERIFIED = 'TESTUNVERIFIED';
 
 function useMixedContacts() {
   const base = shipped.talkToSomeone.contacts[0];
@@ -64,6 +64,33 @@ describe('S8 Talk to someone', () => {
 
     await fireEvent.press(screen.getByRole('button', { name: 'Call Unverified Person' }));
     expect(Linking.openURL).not.toHaveBeenCalled();
+  });
+});
+
+describe('S8 with imperfect content from a hand-edited content.json', () => {
+  test('no contacts shows a plain empty message, not the "still checking" line', async () => {
+    content.talkToSomeone.contacts = [];
+    await render(<TalkToSomeone />);
+    expect(screen.getByText(shipped.talkToSomeone.noContacts)).toBeOnTheScreen();
+    expect(screen.queryByText(shipped.talkToSomeone.pendingWhatNow)).toBeNull();
+  });
+
+  test('verified written as the text "true" stays disabled', async () => {
+    const base = shipped.talkToSomeone.contacts[0];
+    content.talkToSomeone.contacts = [{ ...base, phone: VERIFIED, verified: 'true' as never }];
+    await render(<TalkToSomeone />);
+    expect(screen.getByRole('button', { name: `Call ${base.name}` })).toBeDisabled();
+  });
+
+  test('missing or unknown fields never leave broken text', async () => {
+    const base = shipped.talkToSomeone.contacts[0];
+    content.talkToSomeone.contacts = [
+      { ...base, role: 'youth leader' as never, church: '', cannotHelpWith: '', phone: 501234567 as never },
+    ];
+    await render(<TalkToSomeone />);
+    expect(screen.getByText('youth leader')).toBeOnTheScreen();
+    expect(screen.queryByText(/undefined/)).toBeNull();
+    expect(screen.queryByText(new RegExp(`${shipped.talkToSomeone.cannotHelpWith}:`))).toBeNull();
   });
 });
 
