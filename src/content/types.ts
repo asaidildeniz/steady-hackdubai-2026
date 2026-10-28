@@ -19,20 +19,38 @@ export type HelpNumber = { label: string; number: string; verified: boolean };
 
 export type Content = {
   reviewStatus: string;
-  home: { title: string };
+  home: { title: string; checkIn: string; calm: string; talk: string };
   needHelpButton: { label: string; hint: string };
   welcome: { title: string; body: string; notEmergency: string };
   adultsOnly: { message: string; whereToGetHelp: string };
   checkIn: { prompt: string; moods: Mood[] };
-  results: Record<'kind' | 'gentle', { message: string }>;
+  results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
   breathing: { phases: { label: string; seconds: number }[]; cycles: number };
   finished: { prompt: string; options: string[] };
-  talkToSomeone: { note: string; contacts: Contact[] };
-  needHelp: {
+  talkToSomeone: {
+    title: string;
+    note: string;
+    roles: Record<Contact['role'], string>;
+    canHelpWith: string;
+    cannotHelpWith: string;
+    call: string;
     message: string;
+    pending: string;
+    openFailed: string;
+    needHelpNow: string;
+    contacts: Contact[];
+  };
+  needHelp: {
+    title: string;
+    message: string;
+    emergencyHeading: string;
+    helplinesHeading: string;
+    peopleHeading: string;
     emergencyNumbers: HelpNumber[];
     helplines: HelpNumber[];
     pendingMessage: string;
+    talk: string;
+    back: string;
   };
 };
 

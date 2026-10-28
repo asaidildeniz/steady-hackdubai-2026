@@ -1,7 +1,10 @@
 {
   "reviewStatus": "DRAFT: not yet approved by the reviewer",
   "home": {
-    "title": "Steady"
+    "title": "Steady",
+    "checkIn": "Daily check-in",
+    "calm": "Calm moment",
+    "talk": "Talk to someone"
   },
   "needHelpButton": {
     "label": "Need help now",
@@ -19,29 +22,88 @@
   "checkIn": {
     "prompt": "How are you today?",
     "moods": [
-      { "id": "good", "label": "Good", "group": "kind" },
-      { "id": "okay", "label": "Okay", "group": "kind" },
-      { "id": "stressed", "label": "Stressed", "group": "gentle" },
-      { "id": "lonely", "label": "Lonely", "group": "gentle" },
-      { "id": "low", "label": "Low", "group": "gentle" },
-      { "id": "struggling", "label": "Struggling", "group": "urgent" }
+      {
+        "id": "good",
+        "label": "Good",
+        "group": "kind"
+      },
+      {
+        "id": "okay",
+        "label": "Okay",
+        "group": "kind"
+      },
+      {
+        "id": "stressed",
+        "label": "Stressed",
+        "group": "gentle"
+      },
+      {
+        "id": "lonely",
+        "label": "Lonely",
+        "group": "gentle"
+      },
+      {
+        "id": "low",
+        "label": "Low",
+        "group": "gentle"
+      },
+      {
+        "id": "struggling",
+        "label": "Struggling",
+        "group": "urgent"
+      }
     ]
   },
   "results": {
-    "kind": { "message": "Draft: glad you checked in." },
-    "gentle": { "message": "Draft: that sounds heavy. Would you like to breathe, or talk to someone?" }
+    "kind": {
+      "message": "Draft: glad you checked in.",
+      "primary": "Done",
+      "secondary": "Calm moment"
+    },
+    "gentle": {
+      "message": "Draft: that sounds heavy. Would you like to breathe, or talk to someone?",
+      "primary": "Breathe",
+      "secondary": "Talk to someone"
+    }
   },
   "breathing": {
     "phases": [
-      { "label": "Breathe in", "seconds": 4 },
-      { "label": "Hold", "seconds": 4 },
-      { "label": "Breathe out", "seconds": 6 }
+      {
+        "label": "Breathe in",
+        "seconds": 4
+      },
+      {
+        "label": "Hold",
+        "seconds": 4
+      },
+      {
+        "label": "Breathe out",
+        "seconds": 6
+      }
     ],
     "cycles": 4
   },
-  "finished": { "prompt": "How do you feel now?", "options": ["Better", "Still hard"] },
+  "finished": {
+    "prompt": "How do you feel now?",
+    "options": [
+      "Better",
+      "Still hard"
+    ]
+  },
   "talkToSomeone": {
+    "title": "Talk to someone",
     "note": "Draft: these people can listen and pray with you. They are not emergency services.",
+    "roles": {
+      "pastor": "Pastor",
+      "counsellor": "Counsellor"
+    },
+    "canHelpWith": "Can help with",
+    "cannotHelpWith": "Cannot help with",
+    "call": "Call",
+    "message": "Message",
+    "pending": "Number pending verification",
+    "openFailed": "Could not open your phone app. The number is",
+    "needHelpNow": "I need help now",
     "contacts": [
       {
         "id": "c1",
@@ -56,9 +118,27 @@
     ]
   },
   "needHelp": {
+    "title": "Need help now",
     "message": "Draft: you are not alone. Here is who to reach right now.",
-    "emergencyNumbers": [{ "label": "Emergency services", "number": "", "verified": false }],
-    "helplines": [{ "label": "Helpline name", "number": "", "verified": false }],
-    "pendingMessage": "Verified numbers will appear here once our reviewer has checked them."
+    "emergencyHeading": "Emergency numbers",
+    "helplinesHeading": "Helplines",
+    "peopleHeading": "People you can talk to",
+    "emergencyNumbers": [
+      {
+        "label": "Emergency services",
+        "number": "",
+        "verified": false
+      }
+    ],
+    "helplines": [
+      {
+        "label": "Helpline name",
+        "number": "",
+        "verified": false
+      }
+    ],
+    "pendingMessage": "Verified numbers will appear here once our reviewer has checked them.",
+    "talk": "Talk to someone",
+    "back": "Back"
   }
 }

@@ -3,18 +3,19 @@ import { colors, space, type } from '@/theme';
 
 type Props = {
   label: string;
+  a11yLabel?: string; // when the visible label alone is ambiguous, e.g. "Call <name>"
   onPress: () => void;
   hint?: string;
   disabled?: boolean;
 };
 
-export function BigButton({ label, onPress, hint, disabled }: Props) {
+export function BigButton({ label, a11yLabel, onPress, hint, disabled }: Props) {
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={a11yLabel ?? label}
       accessibilityHint={hint}
       accessibilityState={{ disabled }}
       style={({ pressed }) => [styles.button, disabled && styles.disabled, pressed && styles.pressed]}
