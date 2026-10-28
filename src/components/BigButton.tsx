@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.accent,
   },
-  secondary: { backgroundColor: 'transparent', borderWidth: 2, borderColor: colors.text },
+  secondary: { backgroundColor: 'transparent', borderWidth: 1.5, borderColor: colors.text },
   pressed: { opacity: 0.8 },
   disabled: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.muted },
   label: { fontSize: type.button, fontWeight: '700', color: colors.text, textAlign: 'center' },

@@ -17,7 +17,7 @@ export const type = {
 
 export const text = {
   heading: { fontSize: type.heading, fontWeight: '700', color: colors.text },
-  title: { fontSize: type.title, fontWeight: '700', color: colors.text },
+  title: { fontSize: type.title, fontWeight: '600', color: colors.text }, // lighter than the page heading
   body: { fontSize: type.body, color: colors.text },
   note: { fontSize: type.body, color: colors.muted },
 } as const;
