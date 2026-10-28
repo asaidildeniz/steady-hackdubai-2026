@@ -13,7 +13,10 @@
     "DRAFT for reviewer: talkToSomeone.noContacts is new. It shows only if the contacts list is empty.",
     "For whoever edits contacts: write \"verified\": true with no quotes, and the phone number in quotes, e.g. \"phone\": \"<number as given by the person>\". Anything else keeps the number pending.",
     "Note for reviewer: the top note already says these people are not emergency services, so a contact's cannotHelpWith can name something more specific than \"Emergencies\".",
-    "DRAFT for reviewer: welcome.ageQuestion is new; the guide gives the two button labels but not the question."
+    "DRAFT for reviewer: welcome.ageQuestion is new; the guide gives the two button labels but not the question.",
+    "DRAFT for reviewer: welcome.title was \"Welcome to Steady\" and welcome.body was \"Support for adult students. No account. Everything stays on your phone.\" The promise now leads. To go back, restore both.",
+    "DRAFT for reviewer: welcome.inDanger is new, matching talkToSomeone.pendingWhatNow (no number). Please confirm this guidance.",
+    "DRAFT for reviewer: welcome.answerStays is new. Only the 18+ answer leaves a trace (one flag), and it never leaves the phone, so avoid saying \"we do not save your answer\"."
   ],
   "home": {
     "title": "Steady",
@@ -26,13 +29,15 @@
     "hint": "Opens the Need help now screen"
   },
   "welcome": {
-    "title": "Welcome to Steady",
-    "body": "Support for adult students. No account. Everything stays on your phone.",
+    "title": "Gentle support that stays on your phone",
+    "body": "Steady is for adult students. No account needed.",
     "notEmergency": "Steady is not emergency care.",
     "continue": "Continue",
     "ageQuestion": "Steady is for adults. Are you 18 or older?",
     "adult": "I am 18 or older",
-    "underAge": "I am under 18"
+    "underAge": "I am under 18",
+    "inDanger": "Draft: if you are in danger, contact local emergency services.",
+    "answerStays": "Draft: your answer stays on this phone."
   },
   "adultsOnly": {
     "message": "Steady is for people aged 18 and over.",
