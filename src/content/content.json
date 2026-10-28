@@ -1,5 +1,9 @@
 {
   "reviewStatus": "DRAFT: not yet approved by the reviewer",
+  "reviewNotes": [
+    "DRAFT for reviewer: needHelp.home was \"Back\". It always returns to Home, so \"Home\" is the honest label.",
+    "DRAFT for reviewer: needHelp.call and needHelp.callHint are new spoken labels for screen readers on number buttons."
+  ],
   "home": {
     "title": "Steady",
     "checkIn": "Daily check-in",
@@ -139,6 +143,8 @@
     ],
     "pendingMessage": "Verified numbers will appear here once our reviewer has checked them.",
     "talk": "Talk to someone",
-    "back": "Back"
+    "home": "Home",
+    "call": "Call",
+    "callHint": "Opens your phone app to call this number"
   }
 }

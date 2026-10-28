@@ -19,6 +19,7 @@ export type HelpNumber = { label: string; number: string; verified: boolean };
 
 export type Content = {
   reviewStatus: string;
+  reviewNotes: string[];
   home: { title: string; checkIn: string; calm: string; talk: string };
   needHelpButton: { label: string; hint: string };
   welcome: { title: string; body: string; notEmergency: string };
@@ -49,8 +50,10 @@ export type Content = {
     emergencyNumbers: HelpNumber[];
     helplines: HelpNumber[];
     pendingMessage: string;
+    call: string;
+    callHint: string;
     talk: string;
-    back: string;
+    home: string;
   };
 };
 

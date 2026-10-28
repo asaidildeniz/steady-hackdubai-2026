@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { Linking } from 'react-native';
+import { AccessibilityInfo, Linking } from 'react-native';
 import TalkToSomeone from '../../app/talk-to-someone';
 import NeedHelp from '../../app/need-help';
 import { type Content, content } from '@/content/types';
@@ -64,17 +64,29 @@ describe('S9 Need help now', () => {
     await render(<NeedHelp />);
     expect(screen.getByText(shipped.needHelp.pendingMessage)).toBeOnTheScreen();
     const labels = screen.getAllByRole('button').map((b) => b.props.accessibilityLabel);
-    expect(labels.sort()).toEqual([shipped.needHelp.back, shipped.needHelp.talk].sort());
+    expect(labels.sort()).toEqual([shipped.needHelp.home, shipped.needHelp.talk].sort());
   });
 
   test('only verified numbers appear, and unverified ones never show at all', async () => {
     useMixedContacts();
     await render(<NeedHelp />);
-    await fireEvent.press(screen.getByRole('button', { name: `Verified line: ${VERIFIED}` }));
+    await fireEvent.press(screen.getByRole('button', { name: /^Call Verified line, / }));
     expect(Linking.openURL).toHaveBeenCalledWith(`tel:${VERIFIED}`);
-    expect(screen.getByRole('button', { name: `Verified Person: ${VERIFIED}` })).toBeEnabled();
+    expect(screen.getByRole('button', { name: /^Call Verified Person, / })).toBeEnabled();
+    expect(screen.getByText(`Verified line: ${VERIFIED}`)).toBeOnTheScreen();
     expect(screen.queryByText(new RegExp(UNVERIFIED))).toBeNull();
     expect(screen.queryByText(/Unverified|Empty Person/)).toBeNull();
     expect(screen.queryByText(shipped.needHelp.pendingMessage)).toBeNull();
+  });
+
+  test('a failed call shows the number and tells the screen reader', async () => {
+    useMixedContacts();
+    jest.mocked(Linking.openURL).mockRejectedValueOnce(new Error('no dialler'));
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await render(<NeedHelp />);
+    await fireEvent.press(screen.getByRole('button', { name: /^Call Verified line, / }));
+    const message = `${shipped.talkToSomeone.openFailed} ${VERIFIED}`;
+    expect(await screen.findByText(message)).toBeOnTheScreen();
+    expect(announce).toHaveBeenCalledWith(message);
   });
 });

@@ -17,7 +17,7 @@ export default function CheckInResult() {
       <Text style={text.body}>{c.message}</Text>
       <BigButton
         label={c.primary}
-        onPress={() => (kind ? router.replace('/home') : router.push('/breathing'))}
+        onPress={() => (kind ? router.dismissTo('/home') : router.push('/breathing'))}
       />
       <BigButton
         label={c.secondary}
