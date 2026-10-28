@@ -20,7 +20,8 @@ export default function TalkToSomeone() {
         {c.title}
       </Text>
       <Text style={text.body}>{c.note}</Text>
-      {nonePending && <Text style={text.note}>{c.pendingWhatNow}</Text>}
+      {/* Safety guidance reads as body text, not as a muted aside. */}
+      {nonePending && <Text style={text.body}>{c.pendingWhatNow}</Text>}
       {contacts.length === 0 && <Text style={text.note}>{c.noContacts}</Text>}
       <View style={styles.list}>
         {contacts.map((contact, i) => (
