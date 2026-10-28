@@ -5,7 +5,7 @@ import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { type Contact, content } from '@/content/types';
 import { callableNumber, openPhone } from '@/lib/phone';
-import { colors, space, text } from '@/theme';
+import { space, text } from '@/theme';
 
 const numberOf = (p: Contact) => callableNumber({ number: p.phone, verified: p.verified });
 
@@ -57,13 +57,13 @@ function ContactCard({ contact }: { contact: Contact }) {
       {!!about && <Text style={text.note}>{about}</Text>}
       {!!contact.canHelpWith && (
         <Text style={text.body}>
-          <Text style={styles.muted}>{c.canHelpWith}: </Text>
+          <Text style={text.note}>{c.canHelpWith}: </Text>
           {contact.canHelpWith}
         </Text>
       )}
       {!!contact.cannotHelpWith && (
         <Text style={text.body}>
-          <Text style={styles.muted}>{c.cannotHelpWith}: </Text>
+          <Text style={text.note}>{c.cannotHelpWith}: </Text>
           {contact.cannotHelpWith}
         </Text>
       )}
@@ -95,5 +95,4 @@ function ContactCard({ contact }: { contact: Contact }) {
 const styles = StyleSheet.create({
   list: { gap: space.screen * 2, paddingVertical: space.gap },
   card: { gap: space.gap / 2 },
-  muted: { color: colors.muted },
 });
