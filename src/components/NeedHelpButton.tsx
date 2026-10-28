@@ -1,16 +1,13 @@
-import { type Href, router } from 'expo-router';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { content } from '@/content/types';
 import { colors, space, type } from '@/theme';
-
-// shortcut: cast until app/need-help.tsx exists (Phase 2); typed routes reject the href before then.
-const NEED_HELP = '/need-help' as Href;
 
 export function NeedHelpButton() {
   const { label, hint } = content.needHelpButton;
   return (
     <Pressable
-      onPress={() => router.push(NEED_HELP)}
+      onPress={() => router.push('/need-help')}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={hint}

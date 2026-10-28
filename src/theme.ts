@@ -14,6 +14,12 @@ export const type = {
   button: 20,
 };
 
+export const text = {
+  heading: { fontSize: type.heading, fontWeight: '700', color: colors.text },
+  body: { fontSize: type.body, color: colors.text },
+  note: { fontSize: type.body, color: colors.muted },
+} as const;
+
 export const space = {
   screen: 24,
   gap: 16,

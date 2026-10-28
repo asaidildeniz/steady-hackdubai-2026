@@ -1,21 +1,21 @@
-import { StyleSheet, Text } from 'react-native';
+import { router } from 'expo-router';
+import { Text } from 'react-native';
+import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
-import { colors, type } from '@/theme';
+import { text } from '@/theme';
 
-// Blank S3 placeholder. The three Home buttons come in Phase 2.
+// S3. No name, date, streak or greeting that depends on past use.
 export default function Home() {
+  const c = content.home;
   return (
     <Screen>
-      <Text accessibilityRole="header" style={styles.title}>
-        {content.home.title}
+      <Text accessibilityRole="header" style={text.heading}>
+        {c.title}
       </Text>
-      <Text style={styles.note}>{content.reviewStatus}</Text>
+      <BigButton label={c.checkIn} onPress={() => router.push('/check-in')} />
+      <BigButton label={c.calm} onPress={() => router.push('/breathing')} />
+      <BigButton label={c.talk} onPress={() => router.push('/talk-to-someone')} />
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  title: { fontSize: type.heading, fontWeight: '700', color: colors.text },
-  note: { fontSize: type.body, color: colors.muted },
-});
