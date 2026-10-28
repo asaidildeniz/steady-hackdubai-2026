@@ -1,10 +1,10 @@
 import type { BreathPhase } from '@/content/types';
 
 // content.json is hand-edited: keep only phases with a positive number of seconds.
-const valid = (phases: BreathPhase[]) =>
+export const valid = (phases: BreathPhase[]) =>
   (phases ?? []).filter((p) => typeof p.seconds === 'number' && p.seconds > 0);
 
-const cycleCount = (cycles: number) => (Number.isFinite(cycles) ? Math.max(0, Math.floor(cycles)) : 0);
+export const cycleCount = (cycles: number) => (Number.isFinite(cycles) ? Math.max(0, Math.floor(cycles)) : 0);
 
 export function totalSeconds(phases: BreathPhase[], cycles: number): number {
   return valid(phases).reduce((sum, p) => sum + p.seconds, 0) * cycleCount(cycles);

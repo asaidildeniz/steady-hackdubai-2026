@@ -41,7 +41,14 @@ export type Content = {
   adultsOnly: { message: string; whereToGetHelp: string };
   checkIn: { prompt: string; moods: Mood[] };
   results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
-  breathing: { title: string; stop: string; phases: BreathPhase[]; cycles: number };
+  breathing: {
+    title: string;
+    stop: string;
+    intro: string;
+    progress: string;
+    phases: BreathPhase[];
+    cycles: number;
+  };
   finished: { prompt: string; options: FinishedOption[] };
   talkToSomeone: {
     title: string;

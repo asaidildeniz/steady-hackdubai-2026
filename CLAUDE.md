@@ -9,6 +9,7 @@ Need help now button on every screen after Home except S9. Breathing must work o
 No streaks, points, badges, push notifications or pop-ups. Tone: honest, gentle, never preachy.
 Do not add dependencies beyond the guide without asking.
 Exception: test devDependencies jest, jest-expo, @types/jest, @testing-library/react-native.
+Approved by the developer (2026-10-29): expo-keep-awake, used only on the Breathing screen.
 No real student stories or personal data in any file (PRODUCT.md, specs and plans included).
 
 ## Tools (the guide and hard rules always win; flag any plugin conflict, then follow the guide)

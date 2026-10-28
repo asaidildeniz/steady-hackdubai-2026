@@ -78,7 +78,7 @@ The tone is warm, quiet, honest and gentle. The only loud element is the dark "N
 One warm neutral page, one ink, one accent. No other colours.
 
 ### Primary
-- **Soft Yellow** (#EFE56F): button fills only, always with Ink text on top.
+- **Soft Yellow** (#EFE56F): button fills, always with Ink text on top, and the breathing circle.
 
 ### Neutral
 - **Warm Off-White** (#F5F2ED): the background of every screen, and the text colour on the Need help pill.
@@ -86,7 +86,7 @@ One warm neutral page, one ink, one accent. No other colours.
 - **Quiet Grey** (#6B6B6B): small notes and disabled states.
 
 ### Named Rules
-**The One Accent Rule.** Soft Yellow is the only accent, and it is used as a button fill only. Do not add more colours, tints or gradients. Each screen or card has at most one yellow button; other actions use the secondary style.
+**The One Accent Rule.** Soft Yellow is the only accent, and it is used as a button fill only. The one deliberate exception is the breathing circle on S6, which is the main thing on that screen; Stop there is outlined so the circle stays the only yellow. Do not add more colours, tints or gradients. Each screen or card has at most one yellow button; other actions use the secondary style.
 
 **The No Yellow Text Rule.** Never put Soft Yellow text on Warm Off-White; the contrast is too low.
 
@@ -113,7 +113,8 @@ One warm neutral page, one ink, one accent. No other colours.
 - `Screen` wraps every page: safe-area insets, off-white background, and a scrolling content area so very large text never clips.
 - The Need help pill sits in its own row at the top right, outside the scrolling area. It reserves its own space, so it never covers content and stays in the same place on every screen after Home. It is off on Welcome, Adults only and Need help now.
 - Buttons are full width and stack vertically.
-- On screens with one short message and a decision (Welcome, and later Breathing and Finished), buttons go in `Screen`'s `actions` slot: they sit at the bottom in thumb reach when there is room, and scroll with the text when large type fills the screen.
+- On screens with one short message and a decision (Welcome, Check-in result, Finished), buttons go in `Screen`'s `actions` slot: they sit at the bottom in thumb reach when there is room, and scroll with the text when large type fills the screen.
+- Breathing uses `pinActions`: Stop sits outside the scrolling area so it is always visible, as the guide requires. The title there is centred at Title size so the countdown is the only large figure. The screen stays awake while it is open (expo-keep-awake, approved for this screen only).
 
 ## Elevation & Depth
 
@@ -129,7 +130,7 @@ Buttons have 16-point rounded corners. The Need help pill is fully rounded. Seco
 - **Contact card (S8):** name as a Title header, role and church as a note, can-help and cannot-help in one block, then Call (primary) and Message (secondary). Cards are separated by space (48), not dividers.
 - **NeedHelpButton:** Ink pill with Warm Off-White label, at least 56 high, goes to `/need-help`. Label and hint come from `content.json`.
 - **Screen:** the page wrapper described under Layout, with a `showNeedHelp` prop.
-- **BreathingCircle (S6):** one flat Soft Yellow circle, 220 across, scaling between 55% and 100% with React Native `Animated` (native driver). Grows on `grow`, rests on `hold`, shrinks on `shrink`, timed by the phase seconds in content.json. Decorative and hidden from screen readers; the phase label and countdown carry the meaning. Not rendered at all when reduce motion is on.
+- **BreathingCircle (S6):** one flat Soft Yellow circle, up to 220 across (55% of the screen width at most, 70% of that at large text), scaling between 55% and 100% with React Native `Animated` (native driver). Grows on `grow`, rests on `hold`, shrinks on `shrink`, timed by the phase seconds in content.json. Decorative and hidden from screen readers; the phase label and countdown carry the meaning. Not rendered at all when reduce motion is on.
 - **Text back link (Welcome step 2 only):** underlined body text, at least 56 high, top left. Used where a full button would add a third choice to a decision; it only goes one step back and never past a gate.
 
 All wording comes from `src/content/content.json`. Components never hard-code text.
