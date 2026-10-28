@@ -13,16 +13,23 @@ export default function CheckInResult() {
   const c = content.results[group];
   const kind = group === 'kind';
   return (
-    <Screen>
+    <Screen
+      actions={
+        <>
+          <BigButton
+            label={c.primary}
+            onPress={() => (kind ? router.dismissTo('/home') : router.push('/breathing'))}
+          />
+          {/* One yellow action per screen; the other choice is outlined. */}
+          <BigButton
+            secondary
+            label={c.secondary}
+            onPress={() => router.push(kind ? '/breathing' : '/talk-to-someone')}
+          />
+        </>
+      }
+    >
       <Text style={text.body}>{c.message}</Text>
-      <BigButton
-        label={c.primary}
-        onPress={() => (kind ? router.dismissTo('/home') : router.push('/breathing'))}
-      />
-      <BigButton
-        label={c.secondary}
-        onPress={() => router.push(kind ? '/breathing' : '/talk-to-someone')}
-      />
     </Screen>
   );
 }
