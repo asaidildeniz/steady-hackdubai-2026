@@ -16,7 +16,9 @@
     "DRAFT for reviewer: welcome.ageQuestion is new; the guide gives the two button labels but not the question.",
     "DRAFT for reviewer: welcome.title was \"Welcome to Steady\" and welcome.body was \"Support for adult students. No account. Everything stays on your phone.\" The promise now leads. To go back, restore both.",
     "DRAFT for reviewer: welcome.inDanger is new, matching talkToSomeone.pendingWhatNow (no number). Please confirm this guidance.",
-    "DRAFT for reviewer: welcome.answerStays is new. Only the 18+ answer leaves a trace (one flag), and it never leaves the phone, so avoid saying \"we do not save your answer\"."
+    "DRAFT for reviewer: welcome.answerStays is new. Only the 18+ answer leaves a trace (one flag), and it never leaves the phone, so avoid saying \"we do not save your answer\".",
+    "Placeholder for reviewer: breathing timings (4 in, 4 hold, 6 out, 4 cycles) are the guide placeholder until the calming-tool sample arrives. Each phase has a motion (grow, hold or shrink) that drives the circle; edit label and seconds freely.",
+    "For whoever edits finished.options: next must be \"home\" or \"talkToSomeone\". The order of options does not matter."
   ],
   "home": {
     "title": "Steady",
@@ -92,18 +94,23 @@
     }
   },
   "breathing": {
+    "title": "Calm moment",
+    "stop": "Stop",
     "phases": [
       {
         "label": "Breathe in",
-        "seconds": 4
+        "seconds": 4,
+        "motion": "grow"
       },
       {
         "label": "Hold",
-        "seconds": 4
+        "seconds": 4,
+        "motion": "hold"
       },
       {
         "label": "Breathe out",
-        "seconds": 6
+        "seconds": 6,
+        "motion": "shrink"
       }
     ],
     "cycles": 4
@@ -111,8 +118,14 @@
   "finished": {
     "prompt": "How do you feel now?",
     "options": [
-      "Better",
-      "Still hard"
+      {
+        "label": "Better",
+        "next": "home"
+      },
+      {
+        "label": "Still hard",
+        "next": "talkToSomeone"
+      }
     ]
   },
   "talkToSomeone": {

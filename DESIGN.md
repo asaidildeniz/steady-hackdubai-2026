@@ -129,6 +129,7 @@ Buttons have 16-point rounded corners. The Need help pill is fully rounded. Seco
 - **Contact card (S8):** name as a Title header, role and church as a note, can-help and cannot-help in one block, then Call (primary) and Message (secondary). Cards are separated by space (48), not dividers.
 - **NeedHelpButton:** Ink pill with Warm Off-White label, at least 56 high, goes to `/need-help`. Label and hint come from `content.json`.
 - **Screen:** the page wrapper described under Layout, with a `showNeedHelp` prop.
+- **BreathingCircle (S6):** one flat Soft Yellow circle, 220 across, scaling between 55% and 100% with React Native `Animated` (native driver). Grows on `grow`, rests on `hold`, shrinks on `shrink`, timed by the phase seconds in content.json. Decorative and hidden from screen readers; the phase label and countdown carry the meaning. Not rendered at all when reduce motion is on.
 - **Text back link (Welcome step 2 only):** underlined body text, at least 56 high, top left. Used where a full button would add a third choice to a decision; it only goes one step back and never past a gate.
 
 All wording comes from `src/content/content.json`. Components never hard-code text.

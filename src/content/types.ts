@@ -15,6 +15,10 @@ export type Contact = {
   verified: boolean;
 };
 
+export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'hold' | 'shrink' };
+
+export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone' };
+
 export type HelpNumber = { label: string; number: string; verified: boolean };
 
 export type Content = {
@@ -37,8 +41,8 @@ export type Content = {
   adultsOnly: { message: string; whereToGetHelp: string };
   checkIn: { prompt: string; moods: Mood[] };
   results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
-  breathing: { phases: { label: string; seconds: number }[]; cycles: number };
-  finished: { prompt: string; options: string[] };
+  breathing: { title: string; stop: string; phases: BreathPhase[]; cycles: number };
+  finished: { prompt: string; options: FinishedOption[] };
   talkToSomeone: {
     title: string;
     note: string;

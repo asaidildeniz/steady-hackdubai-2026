@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import Breathing from '../../app/breathing';
 import CheckInResult from '../../app/check-in-result';
 import NeedHelp from '../../app/need-help';
 import { content } from '@/content/types';
@@ -38,9 +37,4 @@ test('S5a Done returns to the existing Home', async () => {
   await fireEvent.press(screen.getByRole('button', { name: content.results.kind.primary }));
   expect(router.dismissTo).toHaveBeenCalledWith('/home');
   expect(router.replace).not.toHaveBeenCalled();
-});
-
-test('the breathing placeholder returns to the existing Home', async () => {
-  await render(<Breathing />);
-  expect(router.dismissTo).toHaveBeenCalledWith('/home');
 });
