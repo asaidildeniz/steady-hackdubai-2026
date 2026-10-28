@@ -6,12 +6,13 @@
     "DRAFT for reviewer: talkToSomeone.needHelpNow was \"I need help now\". It now matches the Need help now pill.",
     "Question for reviewer: should Message be the main action instead of Call? Typing may feel safer for a lonely student.",
     "DRAFT for reviewer: talkToSomeone.pending was \"Number pending verification\". Plainer, and it is also what screen readers say on each disabled button.",
-    "DRAFT for reviewer: talkToSomeone.pendingWhatNow is new and only shows while no contact number is checked. It adds \"If you are in danger, contact local emergency services\" (no number). Please confirm this guidance.",
+    "DRAFT for reviewer: talkToSomeone.pendingWhatNow is new and only shows while no contact number is checked. Each card already says the number is being checked, so this line only says what to do in danger (no number). Please confirm this guidance.",
     "DRAFT for reviewer: talkToSomeone.openFailed is one full sentence with {number} in it (used on S8 and S9). Keep {number} when editing.",
     "DRAFT for reviewer: needHelpButton.hint was \"Opens a screen with who to reach right now\", which is not true while numbers are pending.",
     "Note for reviewer: Need help now still says \"once our reviewer has checked them\"; consider the same \"we are still checking\" wording there.",
     "DRAFT for reviewer: talkToSomeone.noContacts is new. It shows only if the contacts list is empty.",
-    "For whoever edits contacts: write \"verified\": true with no quotes, and the phone number in quotes, e.g. \"phone\": \"<number as given by the person>\". Anything else keeps the number pending."
+    "For whoever edits contacts: write \"verified\": true with no quotes, and the phone number in quotes, e.g. \"phone\": \"<number as given by the person>\". Anything else keeps the number pending.",
+    "Note for reviewer: the top note already says these people are not emergency services, so a contact's cannotHelpWith can name something more specific than \"Emergencies\"."
   ],
   "home": {
     "title": "Steady",
@@ -117,7 +118,7 @@
     "pending": "We are still checking this number",
     "openFailed": "Your phone app did not open. You can dial {number} yourself.",
     "needHelpNow": "Need help now",
-    "pendingWhatNow": "Draft: we are still checking these numbers, so calling and messaging are off for now. If you are in danger, contact local emergency services.",
+    "pendingWhatNow": "Draft: if you are in danger, contact local emergency services.",
     "noContacts": "Draft: no one has been added here yet.",
     "contacts": [
       {
