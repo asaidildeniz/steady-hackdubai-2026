@@ -18,7 +18,9 @@
     "DRAFT for reviewer: welcome.inDanger is new, matching talkToSomeone.pendingWhatNow (no number). Please confirm this guidance.",
     "DRAFT for reviewer: welcome.answerStays is new. Only the 18+ answer leaves a trace (one flag), and it never leaves the phone, so avoid saying \"we do not save your answer\".",
     "Placeholder for reviewer: breathing timings (4 in, 4 hold, 6 out, 4 cycles) are the guide placeholder until the calming-tool sample arrives. Each phase has a motion (grow, hold or shrink) that drives the circle; edit label and seconds freely.",
-    "For whoever edits finished.options: next must be \"home\" or \"talkToSomeone\". The order of options does not matter."
+    "For whoever edits finished.options: next must be \"home\" or \"talkToSomeone\". The order of options does not matter.",
+    "DRAFT for reviewer: breathing.intro is new and shows under the Breathing title.",
+    "For whoever edits breathing.progress: keep {current} and {total}; it shows which round of breathing someone is on, e.g. \"2 of 4\"."
   ],
   "home": {
     "title": "Steady",
@@ -96,6 +98,8 @@
   "breathing": {
     "title": "Calm moment",
     "stop": "Stop",
+    "intro": "Draft: about one minute. Stop any time.",
+    "progress": "{current} of {total}",
     "phases": [
       {
         "label": "Breathe in",

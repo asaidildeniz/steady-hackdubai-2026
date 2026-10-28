@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { router } from 'expo-router';
-import { AccessibilityInfo } from 'react-native';
+import { AccessibilityInfo, AppState } from 'react-native';
+import { useKeepAwake } from 'expo-keep-awake';
 import Breathing from '../../app/breathing';
 import Finished from '../../app/finished';
 import { type Content, content } from '@/content/types';
@@ -12,6 +13,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), dismissTo: jest.fn() },
 }));
+jest.mock('expo-keep-awake', () => ({ useKeepAwake: jest.fn() }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = require('react-native');
   return { SafeAreaView: View };
@@ -80,6 +82,42 @@ describe('S6 Breathing', () => {
     await render(<Breathing />);
     await seconds(0);
     expect(screen.getByTestId('breathing-circle', { includeHiddenElements: true })).toBeOnTheScreen();
+  });
+
+  test('locking the phone pauses the exercise; coming back restarts the current phase', async () => {
+    const listen = jest.spyOn(AppState, 'addEventListener');
+    await render(<Breathing />);
+    const onChange = listen.mock.calls.find(([event]) => event === 'change')?.[1] as (s: string) => void;
+    expect(onChange).toBeDefined();
+    await seconds(2); // Breathe in, 2 seconds left
+    await act(async () => onChange('background'));
+    await seconds(120);
+    expect(router.replace).not.toHaveBeenCalled(); // nothing ran while away
+    await act(async () => onChange('active'));
+    expect(screen.getByText(shipped.breathing.phases[0].label)).toBeOnTheScreen();
+    expect(screen.getByText('4')).toBeOnTheScreen(); // the phase starts again from the top
+  });
+
+  test('Stop is pinned outside the scrolling area, so it is always visible', async () => {
+    await render(<Breathing />);
+    let node = screen.getByRole('button', { name: shipped.breathing.stop }).parent;
+    while (node) {
+      expect(String(node.type)).not.toMatch(/ScrollView/);
+      node = node.parent;
+    }
+  });
+
+  test('keeps the screen awake while open', async () => {
+    await render(<Breathing />);
+    expect(useKeepAwake).toHaveBeenCalled();
+  });
+
+  test('says how long it lasts and which round it is on', async () => {
+    await render(<Breathing />);
+    expect(screen.getByText(shipped.breathing.intro)).toBeOnTheScreen();
+    expect(screen.getByText('1 of 4')).toBeOnTheScreen();
+    await seconds(14);
+    expect(screen.getByText('2 of 4')).toBeOnTheScreen();
   });
 
   test('timings with nothing valid go straight to Finished instead of hanging', async () => {

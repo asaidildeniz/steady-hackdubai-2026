@@ -4,16 +4,18 @@ import type { BreathPhase } from '@/content/types';
 import { colors } from '@/theme';
 
 const SMALL = 0.55;
-const SIZE = 220;
 
-type Props = { motion: BreathPhase['motion']; seconds: number; step: number };
+type Props = { motion: BreathPhase['motion']; seconds: number; step: string; size: number };
 
 // Grows on "in", rests on "hold", shrinks on "out". Decorative: the label and countdown carry the meaning.
-export function BreathingCircle({ motion, seconds, step }: Props) {
+// `step` changes on every new phase and on every restart after the phone was locked.
+export function BreathingCircle({ motion, seconds, step, size }: Props) {
   const scale = useRef(new Animated.Value(SMALL)).current;
 
   useEffect(() => {
     if (motion === 'hold') return;
+    // Start each phase from where it should begin, so a restart never jumps mid-way.
+    scale.setValue(motion === 'grow' ? SMALL : 1);
     const anim = Animated.timing(scale, {
       toValue: motion === 'grow' ? 1 : SMALL,
       duration: seconds * 1000,
@@ -28,17 +30,11 @@ export function BreathingCircle({ motion, seconds, step }: Props) {
       testID="breathing-circle"
       accessible={false}
       importantForAccessibility="no-hide-descendants"
-      style={[styles.circle, { transform: [{ scale }] }]}
+      style={[styles.circle, { width: size, height: size, borderRadius: size / 2, transform: [{ scale }] }]}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  circle: {
-    width: SIZE,
-    height: SIZE,
-    borderRadius: SIZE / 2,
-    backgroundColor: colors.accent,
-    alignSelf: 'center',
-  },
+  circle: { backgroundColor: colors.accent, alignSelf: 'center' },
 });
