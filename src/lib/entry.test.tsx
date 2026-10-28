@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { router } from 'expo-router';
-import { AccessibilityInfo } from 'react-native';
+import { AccessibilityInfo, BackHandler } from 'react-native';
 import AdultsOnly from '../../app/adults-only';
 import Index from '../../app/index';
 import Welcome from '../../app/welcome';
@@ -59,6 +59,21 @@ describe('S1 age gate', () => {
     await waitFor(() =>
       expect(focus.mock.calls.length + announce.mock.calls.filter(([m]) => m === w.ageQuestion).length).toBe(1),
     );
+  });
+
+  test('Android back on the age question returns to the intro, stores nothing and never passes the gate', async () => {
+    const listen = jest.spyOn(BackHandler, 'addEventListener');
+    await reachAgeQuestion();
+    const onBack = listen.mock.calls.findLast(([event]) => event === 'hardwareBackPress')?.[1];
+    expect(onBack).toBeDefined();
+    let handled: boolean | null | undefined;
+    await act(async () => {
+      handled = (onBack as () => boolean)();
+    });
+    expect(handled).toBe(true);
+    expect(screen.getByRole('button', { name: w.continue })).toBeOnTheScreen();
+    expect(router.replace).not.toHaveBeenCalled();
+    expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
 
   test('under 18 stores nothing at all and replaces to Adults only', async () => {
