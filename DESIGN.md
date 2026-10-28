@@ -14,7 +14,7 @@ typography:
   title:
     fontFamily: "System (SF Pro on iOS, Roboto on Android)"
     fontSize: "24"
-    fontWeight: 600
+    fontWeight: 700
   body:
     fontFamily: "System (SF Pro on iOS, Roboto on Android)"
     fontSize: "20"
@@ -100,7 +100,7 @@ One warm neutral page, one ink, one accent. No other colours.
 
 ### Hierarchy
 - **Headline** (700, 32): one per screen, marked `accessibilityRole="header"`.
-- **Title** (600, 24): the heading of a card, such as a contact's name, also marked as a header. One step lighter than the Headline so a list of cards never outweighs the page title.
+- **Title** (700, 24): the heading of a card, such as a contact's name, also marked as a header.
 - **Body** (400, 20): messages and prompts.
 - **Label** (700, 20): button text.
 
@@ -120,7 +120,7 @@ Flat. No shadows, blurs or layered cards. Hierarchy comes from size, weight and 
 
 ## Shapes
 
-Buttons have 16-point rounded corners. The Need help pill is fully rounded. Secondary buttons drop the fill and show a 1.5-point Ink outline. Disabled buttons drop the fill and show a thin Quiet Grey outline.
+Buttons have 16-point rounded corners. The Need help pill is fully rounded. Secondary buttons drop the fill and show a 2-point Ink outline. Disabled buttons drop the fill and show a thin Quiet Grey outline.
 
 ## Components
 
