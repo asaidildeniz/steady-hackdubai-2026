@@ -10,12 +10,14 @@ export const colors = {
 
 export const type = {
   body: 20,
+  title: 24, // a card's heading, e.g. a contact's name
   heading: 32,
   button: 20,
 };
 
 export const text = {
   heading: { fontSize: type.heading, fontWeight: '700', color: colors.text },
+  title: { fontSize: type.title, fontWeight: '700', color: colors.text },
   body: { fontSize: type.body, color: colors.text },
   note: { fontSize: type.body, color: colors.muted },
 } as const;

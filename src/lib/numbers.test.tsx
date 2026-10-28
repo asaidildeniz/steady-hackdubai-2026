@@ -43,6 +43,14 @@ describe('S8 Talk to someone', () => {
     expect(screen.getAllByText(shipped.talkToSomeone.pending).length).toBe(shipped.talkToSomeone.contacts.length);
   });
 
+  test('a screen reader hears why a button is disabled, and each name is a heading', async () => {
+    useMixedContacts();
+    await render(<TalkToSomeone />);
+    const call = screen.getByRole('button', { name: 'Call Unverified Person' });
+    expect(call.props.accessibilityHint).toBe(shipped.talkToSomeone.pending);
+    expect(screen.getByRole('header', { name: 'Verified Person' })).toBeOnTheScreen();
+  });
+
   test('only a verified, non-empty contact is tappable', async () => {
     useMixedContacts();
     await render(<TalkToSomeone />);
