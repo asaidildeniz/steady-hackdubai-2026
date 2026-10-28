@@ -37,7 +37,8 @@
     "adult": "I am 18 or older",
     "underAge": "I am under 18",
     "inDanger": "Draft: if you are in danger, contact local emergency services.",
-    "answerStays": "Draft: your answer stays on this phone."
+    "answerStays": "Draft: your answer stays on this phone.",
+    "back": "Back"
   },
   "adultsOnly": {
     "message": "Steady is for people aged 18 and over.",

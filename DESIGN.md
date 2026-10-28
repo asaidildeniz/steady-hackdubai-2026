@@ -129,6 +129,7 @@ Buttons have 16-point rounded corners. The Need help pill is fully rounded. Seco
 - **Contact card (S8):** name as a Title header, role and church as a note, can-help and cannot-help in one block, then Call (primary) and Message (secondary). Cards are separated by space (48), not dividers.
 - **NeedHelpButton:** Ink pill with Warm Off-White label, at least 56 high, goes to `/need-help`. Label and hint come from `content.json`.
 - **Screen:** the page wrapper described under Layout, with a `showNeedHelp` prop.
+- **Text back link (Welcome step 2 only):** underlined body text, at least 56 high, top left. Used where a full button would add a third choice to a decision; it only goes one step back and never past a gate.
 
 All wording comes from `src/content/content.json`. Components never hard-code text.
 
