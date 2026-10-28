@@ -30,6 +30,8 @@ export type Content = {
     ageQuestion: string;
     adult: string;
     underAge: string;
+    inDanger: string;
+    answerStays: string;
   };
   adultsOnly: { message: string; whereToGetHelp: string };
   checkIn: { prompt: string; moods: Mood[] };

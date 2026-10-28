@@ -113,6 +113,7 @@ One warm neutral page, one ink, one accent. No other colours.
 - `Screen` wraps every page: safe-area insets, off-white background, and a scrolling content area so very large text never clips.
 - The Need help pill sits in its own row at the top right, outside the scrolling area. It reserves its own space, so it never covers content and stays in the same place on every screen after Home. It is off on Welcome, Adults only and Need help now.
 - Buttons are full width and stack vertically.
+- On screens with one short message and a decision (Welcome, and later Breathing and Finished), buttons go in `Screen`'s `actions` slot: they sit at the bottom in thumb reach when there is room, and scroll with the text when large type fills the screen.
 
 ## Elevation & Depth
 

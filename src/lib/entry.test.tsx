@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { router } from 'expo-router';
+import { AccessibilityInfo } from 'react-native';
 import AdultsOnly from '../../app/adults-only';
 import Index from '../../app/index';
 import Welcome from '../../app/welcome';
@@ -44,6 +45,21 @@ describe('S1 age gate', () => {
     await fireEvent.press(screen.getByRole('button', { name: w.continue }));
     expect(screen.getByText(w.ageQuestion)).toBeOnTheScreen();
   }
+
+  test('step 1 says where to turn in danger', async () => {
+    await render(<Welcome />);
+    expect(screen.getByText(w.inDanger)).toBeOnTheScreen();
+  });
+
+  test('the age question takes screen-reader focus and says the answer stays on the phone', async () => {
+    const focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus');
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await reachAgeQuestion();
+    expect(screen.getByText(w.answerStays)).toBeOnTheScreen();
+    await waitFor(() =>
+      expect(focus.mock.calls.length + announce.mock.calls.filter(([m]) => m === w.ageQuestion).length).toBe(1),
+    );
+  });
 
   test('under 18 stores nothing at all and replaces to Adults only', async () => {
     await reachAgeQuestion();
