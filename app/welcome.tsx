@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { type ComponentRef, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, BackHandler, findNodeHandle, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, BackHandler, findNodeHandle, Pressable, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
@@ -13,6 +13,7 @@ export default function Welcome() {
   const [askAge, setAskAge] = useState(false);
   const heading = useRef<ComponentRef<typeof Text>>(null);
   const stepChanged = useRef(false);
+  const answered = useRef(false); // the first answer wins; a fast second tap does nothing
 
   // The whole screen changes between steps, so move screen-reader focus to the new heading.
   useEffect(() => {
@@ -36,6 +37,8 @@ export default function Welcome() {
   }, [askAge]);
 
   const adult = async () => {
+    if (answered.current) return;
+    answered.current = true;
     try {
       await setWelcomeSeen(); // the only value Steady ever saves
     } catch {
@@ -44,17 +47,23 @@ export default function Welcome() {
     router.replace('/home');
   };
 
+  const underAge = () => {
+    if (answered.current) return;
+    answered.current = true; // and nothing is written
+    router.replace('/adults-only');
+  };
+
   if (!askAge) {
     return (
       <Screen showNeedHelp={false} actions={<BigButton label={c.continue} onPress={() => setAskAge(true)} />}>
         <Text ref={heading} accessibilityRole="header" style={text.heading}>
           {c.title}
         </Text>
-        <Text style={text.body}>{c.body}</Text>
+        {!!c.body && <Text style={text.body}>{c.body}</Text>}
         {/* The safety pair is one thought, so it reads as one block, set apart. */}
         <View style={styles.safety}>
-          <Text style={text.body}>{c.notEmergency}</Text>
-          <Text style={text.body}>{c.inDanger}</Text>
+          {!!c.notEmergency && <Text style={text.body}>{c.notEmergency}</Text>}
+          {!!c.inDanger && <Text style={text.body}>{c.inDanger}</Text>}
         </View>
       </Screen>
     );
@@ -67,18 +76,29 @@ export default function Welcome() {
       actions={
         <>
           <BigButton secondary label={c.adult} onPress={adult} />
-          <BigButton secondary label={c.underAge} onPress={() => router.replace('/adults-only')} />
+          <BigButton secondary label={c.underAge} onPress={underAge} />
         </>
       }
     >
+      {/* iPhone has no back button and the swipe is off on the gate, so step 2 offers a quiet Back. */}
+      <Pressable
+        onPress={() => setAskAge(false)}
+        accessibilityRole="button"
+        accessibilityLabel={c.back}
+        style={({ pressed }) => [styles.back, pressed && { opacity: 0.6 }]}
+      >
+        <Text style={[text.body, styles.backLabel]}>{c.back}</Text>
+      </Pressable>
       <Text ref={heading} accessibilityRole="header" style={text.heading}>
         {c.ageQuestion}
       </Text>
-      <Text style={text.note}>{c.answerStays}</Text>
+      {!!c.answerStays && <Text style={text.note}>{c.answerStays}</Text>}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   safety: { gap: space.gap / 2, marginTop: space.gap },
+  back: { alignSelf: 'flex-start', minHeight: space.tap, justifyContent: 'center' },
+  backLabel: { textDecorationLine: 'underline' },
 });

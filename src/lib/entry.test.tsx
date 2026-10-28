@@ -76,6 +76,37 @@ describe('S1 age gate', () => {
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
 
+  test('the visible Back on the age question returns to the intro and stores nothing', async () => {
+    await reachAgeQuestion();
+    await fireEvent.press(screen.getByRole('button', { name: w.back }));
+    expect(screen.getByRole('button', { name: w.continue })).toBeOnTheScreen();
+    expect(router.replace).not.toHaveBeenCalled();
+    expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('a fast second tap is ignored: under 18 first still stores nothing', async () => {
+    await reachAgeQuestion();
+    await act(async () => {
+      fireEvent.press(screen.getByRole('button', { name: w.underAge }));
+      fireEvent.press(screen.getByRole('button', { name: w.adult }));
+    });
+    await waitFor(() => expect(router.replace).toHaveBeenCalled());
+    expect(router.replace).toHaveBeenCalledTimes(1);
+    expect(router.replace).toHaveBeenCalledWith('/adults-only');
+    expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('a fast second tap is ignored: 18 or older first goes Home once', async () => {
+    await reachAgeQuestion();
+    await act(async () => {
+      fireEvent.press(screen.getByRole('button', { name: w.adult }));
+      fireEvent.press(screen.getByRole('button', { name: w.underAge }));
+    });
+    await waitFor(() => expect(router.replace).toHaveBeenCalled());
+    expect(router.replace).toHaveBeenCalledTimes(1);
+    expect(router.replace).toHaveBeenCalledWith('/home');
+  });
+
   test('under 18 stores nothing at all and replaces to Adults only', async () => {
     await reachAgeQuestion();
     await fireEvent.press(screen.getByRole('button', { name: w.underAge }));
