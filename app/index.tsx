@@ -1,6 +1,15 @@
-import { Redirect } from 'expo-router';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
+import { View } from 'react-native';
+import { getWelcomeSeen } from '@/lib/storage';
+import { colors } from '@/theme';
 
-// shortcut: the real S0 launch gate (welcomeSeen check) lands in Phase 3.
+// S0 launch gate. Shows only the background while reading, so nothing flashes.
 export default function Index() {
-  return <Redirect href="/home" />;
+  useEffect(() => {
+    getWelcomeSeen()
+      .catch(() => false) // if storage cannot be read, ask the age question again
+      .then((seen) => router.replace(seen ? '/home' : '/welcome'));
+  }, []);
+  return <View style={{ flex: 1, backgroundColor: colors.background }} />;
 }

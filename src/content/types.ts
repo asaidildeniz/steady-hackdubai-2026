@@ -22,7 +22,15 @@ export type Content = {
   reviewNotes: string[];
   home: { title: string; checkIn: string; calm: string; talk: string };
   needHelpButton: { label: string; hint: string };
-  welcome: { title: string; body: string; notEmergency: string };
+  welcome: {
+    title: string;
+    body: string;
+    notEmergency: string;
+    continue: string;
+    ageQuestion: string;
+    adult: string;
+    underAge: string;
+  };
   adultsOnly: { message: string; whereToGetHelp: string };
   checkIn: { prompt: string; moods: Mood[] };
   results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
