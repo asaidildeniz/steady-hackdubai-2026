@@ -38,7 +38,7 @@ function ContactCard({ contact }: { contact: Contact }) {
   const open = async (kind: 'tel' | 'sms') => {
     if (!number) return;
     if (await openPhone(kind, number)) return setFailed(null);
-    const message = `${c.openFailed} ${number}`;
+    const message = c.openFailed.replace('{number}', number);
     setFailed(message);
     AccessibilityInfo.announceForAccessibility(message);
   };

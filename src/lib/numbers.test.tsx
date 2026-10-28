@@ -93,7 +93,8 @@ describe('S9 Need help now', () => {
     const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
     await render(<NeedHelp />);
     await fireEvent.press(screen.getByRole('button', { name: /^Call Verified line, / }));
-    const message = `${shipped.talkToSomeone.openFailed} ${VERIFIED}`;
+    const message = shipped.talkToSomeone.openFailed.replace('{number}', VERIFIED);
+    expect(message).toContain(VERIFIED); // the template must keep {number}
     expect(await screen.findByText(message)).toBeOnTheScreen();
     expect(announce).toHaveBeenCalledWith(message);
   });

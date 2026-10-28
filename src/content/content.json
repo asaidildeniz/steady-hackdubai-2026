@@ -4,8 +4,12 @@
     "DRAFT for reviewer: needHelp.home was \"Back\". It always returns to Home, so \"Home\" is the honest label.",
     "DRAFT for reviewer: needHelp.call and needHelp.callHint are new spoken labels for screen readers on number buttons.",
     "DRAFT for reviewer: talkToSomeone.needHelpNow was \"I need help now\". It now matches the Need help now pill.",
-    "DRAFT for reviewer: talkToSomeone.pendingWhatNow is new. It shows only while no contact number is verified.",
-    "Question for reviewer: should Message be the main action instead of Call? Typing may feel safer for a lonely student."
+    "Question for reviewer: should Message be the main action instead of Call? Typing may feel safer for a lonely student.",
+    "DRAFT for reviewer: talkToSomeone.pending was \"Number pending verification\". Plainer, and it is also what screen readers say on each disabled button.",
+    "DRAFT for reviewer: talkToSomeone.pendingWhatNow is new and only shows while no contact number is checked. It adds \"If you are in danger, contact local emergency services\" (no number). Please confirm this guidance.",
+    "DRAFT for reviewer: talkToSomeone.openFailed is one full sentence with {number} in it (used on S8 and S9). Keep {number} when editing.",
+    "DRAFT for reviewer: needHelpButton.hint was \"Opens a screen with who to reach right now\", which is not true while numbers are pending.",
+    "Note for reviewer: Need help now still says \"once our reviewer has checked them\"; consider the same \"we are still checking\" wording there."
   ],
   "home": {
     "title": "Steady",
@@ -15,7 +19,7 @@
   },
   "needHelpButton": {
     "label": "Need help now",
-    "hint": "Opens a screen with who to reach right now"
+    "hint": "Opens the Need help now screen"
   },
   "welcome": {
     "title": "Welcome to Steady",
@@ -108,10 +112,10 @@
     "cannotHelpWith": "Cannot help with",
     "call": "Call",
     "message": "Message",
-    "pending": "Number pending verification",
-    "openFailed": "Could not open your phone app. The number is",
+    "pending": "We are still checking this number",
+    "openFailed": "Your phone app did not open. You can dial {number} yourself.",
     "needHelpNow": "Need help now",
-    "pendingWhatNow": "Draft: until a reviewer has checked these numbers, Need help now shows where to turn.",
+    "pendingWhatNow": "Draft: we are still checking these numbers, so calling and messaging are off for now. If you are in danger, contact local emergency services.",
     "contacts": [
       {
         "id": "c1",
