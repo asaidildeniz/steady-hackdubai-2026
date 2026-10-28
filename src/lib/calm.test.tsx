@@ -98,6 +98,19 @@ describe('S6 Breathing', () => {
     expect(screen.getByText('4')).toBeOnTheScreen(); // the phase starts again from the top
   });
 
+  test('coming back after a lock announces the restarted phase to screen readers', async () => {
+    const listen = jest.spyOn(AppState, 'addEventListener');
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await render(<Breathing />);
+    const onChange = listen.mock.calls.find(([event]) => event === 'change')?.[1] as (s: string) => void;
+    await seconds(2);
+    const label = shipped.breathing.phases[0].label;
+    const before = announce.mock.calls.filter(([m]) => m === label).length;
+    await act(async () => onChange('background'));
+    await act(async () => onChange('active'));
+    expect(announce.mock.calls.filter(([m]) => m === label).length).toBe(before + 1);
+  });
+
   test('Stop is pinned outside the scrolling area, so it is always visible', async () => {
     await render(<Breathing />);
     let node = screen.getByRole('button', { name: shipped.breathing.stop }).parent;
