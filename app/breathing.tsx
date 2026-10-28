@@ -62,11 +62,11 @@ export default function Breathing() {
     if (done) router.replace('/finished');
   }, [done]);
 
-  // Announce each new phase, not every second.
+  // Announce each new phase, not every second, and again when a phase restarts after unlocking.
   const label = step?.phase.label;
   useEffect(() => {
     if (label) AccessibilityInfo.announceForAccessibility(label);
-  }, [step?.index, label]);
+  }, [step?.index, label, restarts]);
 
   // Smaller on narrow phones and at large text, so the words still fit above Stop.
   const size = Math.min(220, width * 0.55) * (fontScale > 1.3 ? 0.7 : 1);
@@ -94,8 +94,8 @@ export default function Breathing() {
             />
           )}
           <Text style={text.title}>{step.phase.label}</Text>
-          <Text style={text.heading}>{String(step.secondsLeft)}</Text>
-          <Text style={text.note}>{progress}</Text>
+          <Text style={[text.heading, styles.digits]}>{String(step.secondsLeft)}</Text>
+          <Text style={[text.note, styles.digits]}>{progress}</Text>
         </View>
       )}
     </Screen>
@@ -104,5 +104,6 @@ export default function Breathing() {
 
 const styles = StyleSheet.create({
   centred: { textAlign: 'center' },
+  digits: { fontVariant: ['tabular-nums'] }, // equal-width digits, so the number does not shift as it counts
   exercise: { alignItems: 'center', gap: space.gap, paddingVertical: space.screen },
 });
