@@ -36,7 +36,7 @@ export default function NeedHelp() {
 
   const call = async (number: string) => {
     if (await openPhone('tel', number)) return setFailed(null);
-    const message = `${content.talkToSomeone.openFailed} ${number}`;
+    const message = content.talkToSomeone.openFailed.replace('{number}', number);
     setFailed(message);
     AccessibilityInfo.announceForAccessibility(message);
   };
