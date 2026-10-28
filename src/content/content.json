@@ -1,0 +1,64 @@
+{
+  "reviewStatus": "DRAFT: not yet approved by the reviewer",
+  "home": {
+    "title": "Steady"
+  },
+  "needHelpButton": {
+    "label": "Need help now",
+    "hint": "Opens a screen with who to reach right now"
+  },
+  "welcome": {
+    "title": "Welcome to Steady",
+    "body": "Support for adult students. No account. Everything stays on your phone.",
+    "notEmergency": "Steady is not emergency care."
+  },
+  "adultsOnly": {
+    "message": "Steady is for people aged 18 and over.",
+    "whereToGetHelp": "If you need support, please talk to a trusted adult."
+  },
+  "checkIn": {
+    "prompt": "How are you today?",
+    "moods": [
+      { "id": "good", "label": "Good", "group": "kind" },
+      { "id": "okay", "label": "Okay", "group": "kind" },
+      { "id": "stressed", "label": "Stressed", "group": "gentle" },
+      { "id": "lonely", "label": "Lonely", "group": "gentle" },
+      { "id": "low", "label": "Low", "group": "gentle" },
+      { "id": "struggling", "label": "Struggling", "group": "urgent" }
+    ]
+  },
+  "results": {
+    "kind": { "message": "Draft: glad you checked in." },
+    "gentle": { "message": "Draft: that sounds heavy. Would you like to breathe, or talk to someone?" }
+  },
+  "breathing": {
+    "phases": [
+      { "label": "Breathe in", "seconds": 4 },
+      { "label": "Hold", "seconds": 4 },
+      { "label": "Breathe out", "seconds": 6 }
+    ],
+    "cycles": 4
+  },
+  "finished": { "prompt": "How do you feel now?", "options": ["Better", "Still hard"] },
+  "talkToSomeone": {
+    "note": "Draft: these people can listen and pray with you. They are not emergency services.",
+    "contacts": [
+      {
+        "id": "c1",
+        "name": "Contact name (placeholder)",
+        "role": "pastor",
+        "church": "Church name",
+        "canHelpWith": "Listening, encouragement",
+        "cannotHelpWith": "Emergencies",
+        "phone": "",
+        "verified": false
+      }
+    ]
+  },
+  "needHelp": {
+    "message": "Draft: you are not alone. Here is who to reach right now.",
+    "emergencyNumbers": [{ "label": "Emergency services", "number": "", "verified": false }],
+    "helplines": [{ "label": "Helpline name", "number": "", "verified": false }],
+    "pendingMessage": "Verified numbers will appear here once our reviewer has checked them."
+  }
+}
