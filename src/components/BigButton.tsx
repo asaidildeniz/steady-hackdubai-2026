@@ -7,9 +7,10 @@ type Props = {
   onPress: () => void;
   hint?: string;
   disabled?: boolean;
+  secondary?: boolean; // quiet outlined button, so a screen keeps one yellow main action
 };
 
-export function BigButton({ label, a11yLabel, onPress, hint, disabled }: Props) {
+export function BigButton({ label, a11yLabel, onPress, hint, disabled, secondary }: Props) {
   return (
     <Pressable
       onPress={onPress}
@@ -18,7 +19,12 @@ export function BigButton({ label, a11yLabel, onPress, hint, disabled }: Props) 
       accessibilityLabel={a11yLabel ?? label}
       accessibilityHint={hint}
       accessibilityState={{ disabled }}
-      style={({ pressed }) => [styles.button, disabled && styles.disabled, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        secondary && styles.secondary,
+        disabled && styles.disabled,
+        pressed && styles.pressed,
+      ]}
     >
       <Text style={[styles.label, disabled && styles.disabledLabel]}>{label}</Text>
     </Pressable>
@@ -34,6 +40,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.accent,
   },
+  secondary: { backgroundColor: 'transparent', borderWidth: 2, borderColor: colors.text },
   pressed: { opacity: 0.8 },
   disabled: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.muted },
   label: { fontSize: type.button, fontWeight: '700', color: colors.text, textAlign: 'center' },

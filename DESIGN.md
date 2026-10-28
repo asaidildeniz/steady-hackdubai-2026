@@ -11,6 +11,10 @@ typography:
     fontFamily: "System (SF Pro on iOS, Roboto on Android)"
     fontSize: "32"
     fontWeight: 700
+  title:
+    fontFamily: "System (SF Pro on iOS, Roboto on Android)"
+    fontSize: "24"
+    fontWeight: 700
   body:
     fontFamily: "System (SF Pro on iOS, Roboto on Android)"
     fontSize: "20"
@@ -28,6 +32,12 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.soft-yellow}"
+    textColor: "{colors.ink}"
+    typography: "{typography.label}"
+    rounded: "{rounded.button}"
+    height: "56"
+  button-secondary:
+    backgroundColor: "{colors.warm-off-white}"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
     rounded: "{rounded.button}"
@@ -76,7 +86,7 @@ One warm neutral page, one ink, one accent. No other colours.
 - **Quiet Grey** (#6B6B6B): small notes and disabled states.
 
 ### Named Rules
-**The One Accent Rule.** Soft Yellow is the only accent, and it is used as a button fill only. Do not add more colours, tints or gradients.
+**The One Accent Rule.** Soft Yellow is the only accent, and it is used as a button fill only. Do not add more colours, tints or gradients. Each screen or card has at most one yellow button; other actions use the secondary style.
 
 **The No Yellow Text Rule.** Never put Soft Yellow text on Warm Off-White; the contrast is too low.
 
@@ -90,6 +100,7 @@ One warm neutral page, one ink, one accent. No other colours.
 
 ### Hierarchy
 - **Headline** (700, 32): one per screen, marked `accessibilityRole="header"`.
+- **Title** (700, 24): the heading of a card, such as a contact's name, also marked as a header.
 - **Body** (400, 20): messages and prompts.
 - **Label** (700, 20): button text.
 
@@ -109,11 +120,12 @@ Flat. No shadows, blurs or layered cards. Hierarchy comes from size, weight and 
 
 ## Shapes
 
-Buttons have 16-point rounded corners. The Need help pill is fully rounded. Disabled buttons drop the fill and show a thin Quiet Grey outline.
+Buttons have 16-point rounded corners. The Need help pill is fully rounded. Secondary buttons drop the fill and show a 2-point Ink outline. Disabled buttons drop the fill and show a thin Quiet Grey outline.
 
 ## Components
 
-- **BigButton:** Soft Yellow fill, Ink label, at least 56 high, full width. Pressed state is a slight opacity change only. Disabled is outlined with Quiet Grey text. Every instance has `accessibilityRole="button"` and an `accessibilityLabel`.
+- **BigButton:** Soft Yellow fill, Ink label, at least 56 high, full width. Pressed state is a slight opacity change only. `secondary` is outlined in Ink with no fill. Disabled is outlined with Quiet Grey text and carries an `accessibilityHint` saying why. Every instance has `accessibilityRole="button"` and an `accessibilityLabel`.
+- **Contact card (S8):** name as a Title header, role and church as a note, can-help and cannot-help in one block, then Call (primary) and Message (secondary). Cards are separated by space (48), not dividers.
 - **NeedHelpButton:** Ink pill with Warm Off-White label, at least 56 high, goes to `/need-help`. Label and hint come from `content.json`.
 - **Screen:** the page wrapper described under Layout, with a `showNeedHelp` prop.
 

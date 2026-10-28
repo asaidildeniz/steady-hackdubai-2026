@@ -2,7 +2,10 @@
   "reviewStatus": "DRAFT: not yet approved by the reviewer",
   "reviewNotes": [
     "DRAFT for reviewer: needHelp.home was \"Back\". It always returns to Home, so \"Home\" is the honest label.",
-    "DRAFT for reviewer: needHelp.call and needHelp.callHint are new spoken labels for screen readers on number buttons."
+    "DRAFT for reviewer: needHelp.call and needHelp.callHint are new spoken labels for screen readers on number buttons.",
+    "DRAFT for reviewer: talkToSomeone.needHelpNow was \"I need help now\". It now matches the Need help now pill.",
+    "DRAFT for reviewer: talkToSomeone.pendingWhatNow is new. It shows only while no contact number is verified.",
+    "Question for reviewer: should Message be the main action instead of Call? Typing may feel safer for a lonely student."
   ],
   "home": {
     "title": "Steady",
@@ -107,7 +110,8 @@
     "message": "Message",
     "pending": "Number pending verification",
     "openFailed": "Could not open your phone app. The number is",
-    "needHelpNow": "I need help now",
+    "needHelpNow": "Need help now",
+    "pendingWhatNow": "Draft: until a reviewer has checked these numbers, Need help now shows where to turn.",
     "contacts": [
       {
         "id": "c1",

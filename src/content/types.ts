@@ -37,6 +37,7 @@ export type Content = {
     call: string;
     message: string;
     pending: string;
+    pendingWhatNow: string;
     openFailed: string;
     needHelpNow: string;
     contacts: Contact[];
