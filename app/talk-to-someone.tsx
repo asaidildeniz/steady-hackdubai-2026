@@ -12,7 +12,8 @@ const numberOf = (p: Contact) => callableNumber({ number: p.phone, verified: p.v
 // S8
 export default function TalkToSomeone() {
   const c = content.talkToSomeone;
-  const nonePending = c.contacts.every((p) => !numberOf(p));
+  const contacts = c.contacts ?? [];
+  const nonePending = contacts.length > 0 && contacts.every((p) => !numberOf(p));
   return (
     <Screen>
       <Text accessibilityRole="header" style={text.heading}>
@@ -20,9 +21,10 @@ export default function TalkToSomeone() {
       </Text>
       <Text style={text.body}>{c.note}</Text>
       {nonePending && <Text style={text.note}>{c.pendingWhatNow}</Text>}
+      {contacts.length === 0 && <Text style={text.note}>{c.noContacts}</Text>}
       <View style={styles.list}>
-        {c.contacts.map((contact) => (
-          <ContactCard key={contact.id} contact={contact} />
+        {contacts.map((contact, i) => (
+          <ContactCard key={`${contact.id}-${i}`} contact={contact} />
         ))}
       </View>
       {/* Quiet on purpose: the next calm step stays the main action, the crisis route stays in reach. */}
@@ -44,22 +46,27 @@ function ContactCard({ contact }: { contact: Contact }) {
   };
   // A disabled button says why, so a screen reader hears the reason before the dimmed control.
   const hint = number ? undefined : c.pending;
+  // An unknown role is shown as written; empty parts are skipped so no stray comma appears.
+  const about = [c.roles[contact.role] ?? contact.role, contact.church].filter(Boolean).join(', ');
 
   return (
     <View style={styles.card}>
       <Text accessibilityRole="header" style={text.title}>
         {contact.name}
       </Text>
-      <Text style={text.note}>
-        {c.roles[contact.role]}, {contact.church}
-      </Text>
-      <Text style={text.body}>
-        <Text style={styles.muted}>{c.canHelpWith}: </Text>
-        {contact.canHelpWith}
-        {'\n'}
-        <Text style={styles.muted}>{c.cannotHelpWith}: </Text>
-        {contact.cannotHelpWith}
-      </Text>
+      {!!about && <Text style={text.note}>{about}</Text>}
+      {!!contact.canHelpWith && (
+        <Text style={text.body}>
+          <Text style={styles.muted}>{c.canHelpWith}: </Text>
+          {contact.canHelpWith}
+        </Text>
+      )}
+      {!!contact.cannotHelpWith && (
+        <Text style={text.body}>
+          <Text style={styles.muted}>{c.cannotHelpWith}: </Text>
+          {contact.cannotHelpWith}
+        </Text>
+      )}
       {!number && <Text style={text.note}>{c.pending}</Text>}
       <BigButton
         label={c.call}
