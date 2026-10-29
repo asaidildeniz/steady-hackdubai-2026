@@ -30,7 +30,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "test": "jest"
+    "test": "jest",
+    "demo": "EXPO_PUBLIC_DEMO=1 expo start --clear"
   },
   "private": true,
   "jest": {
