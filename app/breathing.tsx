@@ -7,18 +7,20 @@ import { BreathingCircle } from '@/components/BreathingCircle';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { cycleCount, stepAt, valid } from '@/lib/breathing';
+import { breathingTiming } from '@/lib/demo';
 import { space, text } from '@/theme';
 
 // S6. Fully offline: a one-second timer and React Native's Animated, nothing else.
 export default function Breathing() {
   useKeepAwake(); // only while this screen is open
   const c = content.breathing;
+  const { phases, cycles } = breathingTiming(); // shortened only in demo mode
   const [elapsed, setElapsed] = useState(0);
   const [paused, setPaused] = useState(false);
   const [restarts, setRestarts] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
   const { width, fontScale } = useWindowDimensions();
-  const step = stepAt(c.phases, c.cycles, elapsed);
+  const step = stepAt(phases, cycles, elapsed);
   const done = step === null;
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function Breathing() {
     const sub = AppState.addEventListener('change', (state) => {
       if (state === 'active') {
         setElapsed((e) => {
-          const at = stepAt(c.phases, c.cycles, e);
+          const at = stepAt(phases, cycles, e);
           return at ? e - (at.phase.seconds - at.secondsLeft) : e;
         });
         setRestarts((r) => r + 1);
@@ -48,7 +50,7 @@ export default function Breathing() {
       }
     });
     return () => sub.remove();
-  }, [c.phases, c.cycles]);
+  }, [phases, cycles]);
 
   // Cleared on pause and on unmount, so leaving early can never navigate later.
   useEffect(() => {
@@ -70,11 +72,11 @@ export default function Breathing() {
 
   // Smaller on narrow phones and at large text, so the words still fit above Stop.
   const size = Math.min(220, width * 0.55) * (fontScale > 1.3 ? 0.7 : 1);
-  const perRound = valid(c.phases).length || 1;
+  const perRound = valid(phases).length || 1;
   const progress = step
     ? c.progress
         .replace('{current}', String(Math.floor(step.index / perRound) + 1))
-        .replace('{total}', String(cycleCount(c.cycles)))
+        .replace('{total}', String(cycleCount(cycles)))
     : '';
 
   return (

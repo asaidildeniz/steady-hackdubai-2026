@@ -23,7 +23,8 @@
     "For whoever edits breathing.progress: keep {current} and {total}; it shows which round of breathing someone is on, e.g. \"2 of 4\".",
     "DRAFT for reviewer: finished.message is new and shows above \"How do you feel now?\". Leave it empty to show only the question.",
     "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads.",
-    "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified."
+    "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified.",
+    "The demo section is only used when the app is started with npm run demo. It never appears in a normal start, and its contact never dials."
   ],
   "home": {
     "title": "Steady",
@@ -193,5 +194,54 @@
     "home": "Home",
     "call": "Call",
     "callHint": "Opens your phone app to call this number"
+  },
+  "demo": {
+    "title": "Demo",
+    "note": "For presenting only. Breathing is shortened and calls do not dial. Start the app normally to leave demo mode.",
+    "firstTime": "Start as a first-time visitor",
+    "startHome": "Start at Home",
+    "jumpHeading": "Jump to a screen",
+    "screens": [
+      {
+        "label": "Check-in",
+        "route": "/check-in"
+      },
+      {
+        "label": "Calm moment",
+        "route": "/breathing"
+      },
+      {
+        "label": "How do you feel now?",
+        "route": "/finished"
+      },
+      {
+        "label": "Talk to someone",
+        "route": "/talk-to-someone"
+      },
+      {
+        "label": "Need help now",
+        "route": "/need-help"
+      },
+      {
+        "label": "Under 18 screen",
+        "route": "/adults-only"
+      }
+    ],
+    "breathingSeconds": [
+      2,
+      1,
+      3
+    ],
+    "callNote": "Demo: in the real app, this opens your phone's call or message app.",
+    "contact": {
+      "id": "demo",
+      "name": "Demo contact",
+      "role": "pastor",
+      "church": "Demo church",
+      "canHelpWith": "Listening, encouragement",
+      "cannotHelpWith": "Emergencies",
+      "phone": "",
+      "verified": false
+    }
   }
 }

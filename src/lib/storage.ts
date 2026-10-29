@@ -10,3 +10,8 @@ export async function getWelcomeSeen(): Promise<boolean> {
 export async function setWelcomeSeen(): Promise<void> {
   await AsyncStorage.setItem(KEY, 'true');
 }
+
+// Demo mode only: lets a presenter show the age question again. Removes the one key and nothing else.
+export async function clearWelcomeSeen(): Promise<void> {
+  await AsyncStorage.removeItem(KEY);
+}

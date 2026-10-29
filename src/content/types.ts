@@ -21,6 +21,8 @@ export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hi
 
 export type HelpNumber = { label: string; number: string; verified: boolean };
 
+export type DemoRoute = '/check-in' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
+
 export type Content = {
   reviewStatus: string;
   reviewNotes: string[];
@@ -64,6 +66,17 @@ export type Content = {
     openFailed: string;
     needHelpNow: string;
     contacts: Contact[];
+  };
+  demo: {
+    title: string;
+    note: string;
+    firstTime: string;
+    startHome: string;
+    jumpHeading: string;
+    screens: { label: string; route: DemoRoute }[];
+    breathingSeconds: number[];
+    callNote: string;
+    contact: Contact;
   };
   needHelp: {
     title: string;

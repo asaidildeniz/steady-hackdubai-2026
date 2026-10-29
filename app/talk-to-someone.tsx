@@ -4,6 +4,7 @@ import { AccessibilityInfo, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { type Contact, content } from '@/content/types';
+import { demo } from '@/lib/demo';
 import { callableNumber, openPhone } from '@/lib/phone';
 import { space, text } from '@/theme';
 
@@ -24,6 +25,7 @@ export default function TalkToSomeone() {
       {nonePending && <Text style={text.body}>{c.pendingWhatNow}</Text>}
       {contacts.length === 0 && <Text style={text.note}>{c.noContacts}</Text>}
       <View style={styles.list}>
+        {demo.on && <ContactCard contact={content.demo.contact} demoOnly />}
         {contacts.map((contact, i) => (
           <ContactCard key={`${contact.id}-${i}`} contact={contact} />
         ))}
@@ -34,11 +36,17 @@ export default function TalkToSomeone() {
   );
 }
 
-function ContactCard({ contact }: { contact: Contact }) {
+// demoOnly: tappable, but shows a note instead of dialling. Never has a number.
+function ContactCard({ contact, demoOnly }: { contact: Contact; demoOnly?: boolean }) {
   const c = content.talkToSomeone;
-  const number = numberOf(contact);
+  const number = demoOnly ? null : numberOf(contact);
+  const live = demoOnly || !!number;
   const [failed, setFailed] = useState<string | null>(null);
   const open = async (kind: 'tel' | 'sms') => {
+    if (demoOnly) {
+      setFailed(content.demo.callNote);
+      return AccessibilityInfo.announceForAccessibility(content.demo.callNote);
+    }
     if (!number) return;
     if (await openPhone(kind, number)) return setFailed(null);
     const message = c.openFailed.replace('{number}', number);
@@ -46,7 +54,7 @@ function ContactCard({ contact }: { contact: Contact }) {
     AccessibilityInfo.announceForAccessibility(message);
   };
   // A disabled button says why, so a screen reader hears the reason before the dimmed control.
-  const hint = number ? undefined : c.pending;
+  const hint = live ? undefined : c.pending;
   // An unknown role is shown as written; empty parts are skipped so no stray comma appears.
   const about = [c.roles[contact.role] ?? contact.role, contact.church].filter(Boolean).join(', ');
 
@@ -68,12 +76,12 @@ function ContactCard({ contact }: { contact: Contact }) {
           {contact.cannotHelpWith}
         </Text>
       )}
-      {!number && <Text style={text.note}>{c.pending}</Text>}
+      {!live && <Text style={text.note}>{c.pending}</Text>}
       <BigButton
         label={c.call}
         a11yLabel={`${c.call} ${contact.name}`}
         hint={hint}
-        disabled={!number}
+        disabled={!live}
         onPress={() => open('tel')}
       />
       <BigButton
@@ -81,7 +89,7 @@ function ContactCard({ contact }: { contact: Contact }) {
         label={c.message}
         a11yLabel={`${c.message} ${contact.name}`}
         hint={hint}
-        disabled={!number}
+        disabled={!live}
         onPress={() => open('sms')}
       />
       {failed && (

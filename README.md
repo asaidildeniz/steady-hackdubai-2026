@@ -20,6 +20,24 @@ The phone and the computer must be on the same Wi-Fi. If that is not possible, u
 
 To see the first-launch age question again, clear Expo Go's storage (Android: Settings → Apps → Expo Go → Storage → Clear storage) or reinstall Expo Go (iPhone).
 
+## Demo mode (for presenting)
+
+```bash
+npm run demo
+```
+
+This opens a **Demo** screen first, with:
+
+- **Start as a first-time visitor:** shows the age question again in one tap (it removes only `steady.welcomeSeen`).
+- **Start at Home:** skips the age question.
+- **Jump to a screen:** straight to Check-in, Calm moment, Finished, Talk to someone, Need help now or the under-18 screen.
+
+In demo mode, breathing is one short round (about 6 seconds), and Talk to someone shows a **Demo contact** whose Call and Message buttons show a note instead of dialling. Real contacts stay exactly as they are. Nothing else is saved.
+
+On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
+
+To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` makes sure the demo switch is forgotten). The demo story to follow is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md).
+
 ## Change wording, contacts or helplines
 
 Everything people read lives in one file: [`src/content/content.json`](src/content/content.json). Screens never contain wording, so editing this file is enough. Save it and the app reloads.
