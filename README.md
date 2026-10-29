@@ -32,7 +32,7 @@ This opens a **Demo** screen first, with:
 - **Start at Home:** skips the age question.
 - **Jump to a screen:** straight to Check-in, Calm moment, Finished, Talk to someone, Need help now or the under-18 screen.
 
-In demo mode, breathing is one short round (about 6 seconds), and Talk to someone shows a **Demo contact** whose Call and Message buttons show a note instead of dialling. Real contacts stay exactly as they are. Nothing else is saved.
+In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Talk to someone shows a **Demo contact** whose Call and Message buttons show a note instead of dialling. Real contacts stay exactly as they are. Nothing else is saved.
 
 On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 

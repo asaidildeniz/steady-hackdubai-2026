@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import '@/lib/demo'; // runs first, so demo mode is set up before any screen reads content
 import { colors } from '@/theme';
 
 export default function RootLayout() {

@@ -7,7 +7,7 @@ import Demo from '../../app/demo';
 import Index from '../../app/index';
 import TalkToSomeone from '../../app/talk-to-someone';
 import { content } from '@/content/types';
-import { demo } from '@/lib/demo';
+import { demo, dropDraftLabels } from '@/lib/demo';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -103,5 +103,23 @@ describe('demo mode', () => {
     for (const contact of content.talkToSomeone.contacts) {
       expect(screen.getByRole('button', { name: `${content.talkToSomeone.call} ${contact.name}` })).toBeDisabled();
     }
+  });
+});
+
+describe('Draft labels', () => {
+  const strings = (value: unknown): string[] =>
+    typeof value === 'string' ? [value] : value && typeof value === 'object' ? Object.values(value).flatMap(strings) : [];
+
+  test('a normal start keeps every Draft: label for the reviewer', () => {
+    expect(strings(content).filter((s) => s.startsWith('Draft:')).length).toBeGreaterThan(5);
+  });
+
+  test('demo mode shows the wording without Draft:, starting with a capital', () => {
+    const copy = JSON.parse(JSON.stringify(content));
+    dropDraftLabels(copy);
+    const { reviewStatus, reviewNotes, ...shown } = copy; // reviewer-only fields, never on screen
+    expect(strings(shown).filter((s) => /^draft:/i.test(s))).toEqual([]);
+    expect(copy.finished.message).toBe('The minute is over. Take your time.');
+    expect(copy.breathing.phases).toEqual(content.breathing.phases); // nothing else changes
   });
 });

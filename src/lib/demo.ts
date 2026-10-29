@@ -11,3 +11,18 @@ export function breathingTiming() {
   const seconds = content.demo.breathingSeconds;
   return { phases: phases.map((p, i) => ({ ...p, seconds: seconds[i] ?? p.seconds })), cycles: 1 };
 }
+
+// Demo mode shows the wording as meant, without the "Draft:" label the reviewer still needs.
+// content.json and a normal start keep every label.
+export function dropDraftLabels(node: Record<string, unknown> | unknown[]) {
+  for (const [key, value] of Object.entries(node)) {
+    if (typeof value === 'string' && value.startsWith('Draft:')) {
+      const rest = value.slice('Draft:'.length).trimStart();
+      (node as Record<string, unknown>)[key] = rest.charAt(0).toUpperCase() + rest.slice(1);
+    } else if (value && typeof value === 'object') {
+      dropDraftLabels(value as Record<string, unknown>);
+    }
+  }
+}
+
+if (demo.on) dropDraftLabels(content as unknown as Record<string, unknown>);
