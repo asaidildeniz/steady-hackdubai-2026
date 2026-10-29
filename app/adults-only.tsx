@@ -14,6 +14,7 @@ export default function AdultsOnly() {
         {c.message}
       </Text>
       <Text style={text.body}>{c.whereToGetHelp}</Text>
+      {!!c.inDanger?.trim() && <Text style={text.body}>{c.inDanger}</Text>}
     </Screen>
   );
 }

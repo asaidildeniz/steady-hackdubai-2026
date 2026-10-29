@@ -29,7 +29,10 @@ export default function CheckInResult() {
         </>
       }
     >
-      <Text style={text.body}>{c.message}</Text>
+      {/* The only text here, so screen readers can jump to it as the heading. */}
+      <Text accessibilityRole="header" style={text.body}>
+        {c.message}
+      </Text>
     </Screen>
   );
 }

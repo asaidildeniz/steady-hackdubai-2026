@@ -38,7 +38,7 @@ export type Content = {
     answerStays: string;
     back: string;
   };
-  adultsOnly: { message: string; whereToGetHelp: string };
+  adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
   checkIn: { prompt: string; moods: Mood[] };
   results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
   breathing: {

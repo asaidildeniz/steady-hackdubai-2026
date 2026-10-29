@@ -22,7 +22,8 @@
     "DRAFT for reviewer: breathing.intro is new and shows under the Breathing title.",
     "For whoever edits breathing.progress: keep {current} and {total}; it shows which round of breathing someone is on, e.g. \"2 of 4\".",
     "DRAFT for reviewer: finished.message is new and shows above \"How do you feel now?\". Leave it empty to show only the question.",
-    "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads."
+    "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads.",
+    "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified."
   ],
   "home": {
     "title": "Steady",
@@ -48,7 +49,8 @@
   },
   "adultsOnly": {
     "message": "Steady is for people aged 18 and over.",
-    "whereToGetHelp": "If you need support, please talk to a trusted adult."
+    "whereToGetHelp": "If you need support, please talk to a trusted adult.",
+    "inDanger": "Draft: if you are in danger, contact local emergency services."
   },
   "checkIn": {
     "prompt": "How are you today?",
