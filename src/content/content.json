@@ -20,7 +20,9 @@
     "Placeholder for reviewer: breathing timings (4 in, 4 hold, 6 out, 4 cycles) are the guide placeholder until the calming-tool sample arrives. Each phase has a motion (grow, hold or shrink) that drives the circle; edit label and seconds freely.",
     "For whoever edits finished.options: next must be \"home\" or \"talkToSomeone\". The order of options does not matter.",
     "DRAFT for reviewer: breathing.intro is new and shows under the Breathing title.",
-    "For whoever edits breathing.progress: keep {current} and {total}; it shows which round of breathing someone is on, e.g. \"2 of 4\"."
+    "For whoever edits breathing.progress: keep {current} and {total}; it shows which round of breathing someone is on, e.g. \"2 of 4\".",
+    "DRAFT for reviewer: finished.message is new and shows above \"How do you feel now?\". Leave it empty to show only the question.",
+    "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads."
   ],
   "home": {
     "title": "Steady",
@@ -120,15 +122,18 @@
     "cycles": 4
   },
   "finished": {
+    "message": "Draft: the minute is over. Take your time.",
     "prompt": "How do you feel now?",
     "options": [
       {
         "label": "Better",
-        "next": "home"
+        "next": "home",
+        "hint": "Draft: goes back to Home"
       },
       {
         "label": "Still hard",
-        "next": "talkToSomeone"
+        "next": "talkToSomeone",
+        "hint": "Draft: shows people you can talk to"
       }
     ]
   },
