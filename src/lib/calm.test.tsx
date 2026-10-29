@@ -10,8 +10,13 @@ import { type Content, content } from '@/content/types';
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+// Finished resets its answer guard on focus; tests call mockOnFocus to act out "coming back".
+let mockOnFocus: (() => void) | undefined;
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), dismissTo: jest.fn() },
+  useFocusEffect: (cb: () => void) => {
+    mockOnFocus = cb;
+  },
 }));
 jest.mock('expo-keep-awake', () => ({ useKeepAwake: jest.fn() }));
 jest.mock('react-native-safe-area-context', () => {
@@ -142,13 +147,26 @@ describe('S6 Breathing', () => {
 });
 
 describe('S7 Finished', () => {
-  test('Better returns Home and Still hard opens Talk to someone; nothing is saved', async () => {
+  test('Better returns Home and nothing is saved', async () => {
     await render(<Finished />);
     await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
     expect(router.dismissTo).toHaveBeenCalledWith('/home');
+    expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('Still hard opens Talk to someone and nothing is saved', async () => {
+    await render(<Finished />);
     await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
     expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('coming back from Talk to someone, the answers work again', async () => {
+    await render(<Finished />);
+    await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
+    await act(async () => mockOnFocus?.());
+    await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
+    expect(router.dismissTo).toHaveBeenCalledWith('/home');
   });
 
   test('routing follows each option\'s next, not its position', async () => {
@@ -157,5 +175,40 @@ describe('S7 Finished', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
     expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
     expect(router.dismissTo).not.toHaveBeenCalled();
+  });
+
+  test('a fast second tap does nothing: Talk to someone opens once', async () => {
+    await render(<Finished />);
+    const stillHard = screen.getByRole('button', { name: 'Still hard' });
+    await fireEvent.press(stillHard);
+    await fireEvent.press(stillHard);
+    await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
+    expect(router.push).toHaveBeenCalledTimes(1);
+    expect(router.dismissTo).not.toHaveBeenCalled();
+  });
+
+  test('screen-reader focus moves to the question when the screen opens', async () => {
+    jest.useFakeTimers();
+    const focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus');
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await render(<Finished />);
+    await seconds(1);
+    expect(
+      focus.mock.calls.length + announce.mock.calls.filter(([m]) => m === content.finished.prompt).length,
+    ).toBe(1);
+  });
+
+  test('options with a blank label are skipped', async () => {
+    content.finished.options = [{ label: '  ', next: 'home' }, ...shipped.finished.options];
+    await render(<Finished />);
+    expect(screen.getAllByRole('button').map((b) => b.props.accessibilityLabel)).not.toContain('  ');
+    expect(screen.getByRole('button', { name: 'Better' })).toBeOnTheScreen();
+  });
+
+  test('the shipped content has at least one answer with a label and a known destination', () => {
+    const ok = shipped.finished.options.filter(
+      (o) => o.label?.trim() && (o.next === 'home' || o.next === 'talkToSomeone'),
+    );
+    expect(ok.length).toBeGreaterThan(0);
   });
 });

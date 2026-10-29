@@ -17,7 +17,7 @@ export type Contact = {
 
 export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'hold' | 'shrink' };
 
-export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone' };
+export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hint?: string };
 
 export type HelpNumber = { label: string; number: string; verified: boolean };
 
@@ -49,7 +49,7 @@ export type Content = {
     phases: BreathPhase[];
     cycles: number;
   };
-  finished: { prompt: string; options: FinishedOption[] };
+  finished: { message?: string; prompt: string; options: FinishedOption[] };
   talkToSomeone: {
     title: string;
     note: string;
