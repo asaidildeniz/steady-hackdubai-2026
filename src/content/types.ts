@@ -76,7 +76,7 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
-    contact: Contact;
+    contacts: (Contact & { tappable?: boolean })[]; // tappable: shows a note instead of dialling
   };
   needHelp: {
     title: string;

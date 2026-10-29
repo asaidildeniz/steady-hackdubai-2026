@@ -5,7 +5,7 @@ The student in this story is made up. Do not use a real student's story or name.
 ## Two ways to run it
 
 - **Normal app** (`npx expo start`): follow "Before you go on" below. Breathing takes the full minute.
-- **Demo mode** (`npm run demo`): no storage clearing needed. On the Demo screen tap **Start as a first-time visitor** to begin at Welcome. Breathing is one short round, so at step 5 say the talking points quickly or say them on Finished. At step 7 a **Demo contact** appears: tap its **Call** to show what a verified contact does (it shows a note, it does not dial), then point at the real ones that stay off until verified. To run the story again, go back to the Demo screen (shake the phone and tap Reload in Expo Go) and tap **Start as a first-time visitor**.
+- **Demo mode** (`npm run demo`): no storage clearing needed. On the Demo screen tap **Start as a first-time visitor** to begin at Welcome. Breathing is one short round, so at step 5 say the talking points quickly or say them on Finished. At step 7 two example contacts appear: tap **Call** on **Example pastor** to show what a verified contact does (it shows a note, it does not dial), then point at **Example counsellor**, whose buttons stay off until verified. To run the story again, go back to the Demo screen (shake the phone and tap Reload in Expo Go) and tap **Start as a first-time visitor**.
 
 ## Before you go on
 

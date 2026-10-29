@@ -24,7 +24,7 @@
     "DRAFT for reviewer: finished.message is new and shows above \"How do you feel now?\". Leave it empty to show only the question.",
     "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads.",
     "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified.",
-    "The demo section is only used when the app is started with npm run demo. It never appears in a normal start, and its contact never dials."
+    "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling."
   ],
   "home": {
     "title": "Steady",
@@ -233,15 +233,28 @@
       3
     ],
     "callNote": "Demo: in the real app, this opens your phone's call or message app.",
-    "contact": {
-      "id": "demo",
-      "name": "Demo contact",
-      "role": "pastor",
-      "church": "Demo church",
-      "canHelpWith": "Listening, encouragement",
-      "cannotHelpWith": "Emergencies",
-      "phone": "",
-      "verified": false
-    }
+    "contacts": [
+      {
+        "id": "demo-pastor",
+        "name": "Example pastor",
+        "role": "pastor",
+        "church": "A local partner church",
+        "canHelpWith": "Listening, prayer, encouragement",
+        "cannotHelpWith": "Emergencies, medical advice",
+        "phone": "",
+        "verified": false,
+        "tappable": true
+      },
+      {
+        "id": "demo-counsellor",
+        "name": "Example counsellor",
+        "role": "counsellor",
+        "church": "A local partner church",
+        "canHelpWith": "Talking through stress and loneliness",
+        "cannotHelpWith": "Emergencies",
+        "phone": "",
+        "verified": false
+      }
+    ]
   }
 }

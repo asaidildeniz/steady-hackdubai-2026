@@ -45,8 +45,8 @@ Tap **Breathe**.
 Tap **Still hard**.
 
 **Talk to someone.** *"Steady points to real people, not a chatbot: pastors and counsellors from local churches, with what each can and can't help with."*
-Tap **Call** on the **Demo contact**. *"In the real app this opens the phone's own call screen. For today it just shows a note."*
-Point at the other contacts: *"These buttons are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, and only then does it switch on."*
+Tap **Call** on **Example pastor**. *"In the real app this opens the phone's own call screen. For today it just shows a note."*
+Point at **Example counsellor**: *"These buttons are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, and only then does it switch on."*
 Tap **Need help now** (at the bottom).
 
 **Need help now.** *"If it's urgent, this is the screen: who to reach right now. Emergency numbers and helplines appear here once they're verified."*

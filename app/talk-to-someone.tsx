@@ -13,7 +13,8 @@ const numberOf = (p: Contact) => callableNumber({ number: p.phone, verified: p.v
 // S8
 export default function TalkToSomeone() {
   const c = content.talkToSomeone;
-  const contacts = c.contacts ?? [];
+  // Demo mode swaps the placeholders for example contacts; a normal start shows content.json as written.
+  const contacts = demo.on ? content.demo.contacts : (c.contacts ?? []);
   const nonePending = contacts.length > 0 && contacts.every((p) => !numberOf(p));
   return (
     <Screen>
@@ -25,9 +26,12 @@ export default function TalkToSomeone() {
       {nonePending && <Text style={text.body}>{c.pendingWhatNow}</Text>}
       {contacts.length === 0 && <Text style={text.note}>{c.noContacts}</Text>}
       <View style={styles.list}>
-        {demo.on && <ContactCard contact={content.demo.contact} demoOnly />}
         {contacts.map((contact, i) => (
-          <ContactCard key={`${contact.id}-${i}`} contact={contact} />
+          <ContactCard
+            key={`${contact.id}-${i}`}
+            contact={contact}
+            demoOnly={demo.on && 'tappable' in contact && contact.tappable === true}
+          />
         ))}
       </View>
       {/* Quiet on purpose: the next calm step stays the main action, the crisis route stays in reach. */}
