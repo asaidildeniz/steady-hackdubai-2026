@@ -86,10 +86,8 @@ describe('S1 age gate', () => {
 
   test('a fast second tap is ignored: under 18 first still stores nothing', async () => {
     await reachAgeQuestion();
-    await act(async () => {
-      fireEvent.press(screen.getByRole('button', { name: w.underAge }));
-      fireEvent.press(screen.getByRole('button', { name: w.adult }));
-    });
+    await fireEvent.press(screen.getByRole('button', { name: w.underAge }));
+    await fireEvent.press(screen.getByRole('button', { name: w.adult }));
     await waitFor(() => expect(router.replace).toHaveBeenCalled());
     expect(router.replace).toHaveBeenCalledTimes(1);
     expect(router.replace).toHaveBeenCalledWith('/adults-only');
@@ -98,10 +96,8 @@ describe('S1 age gate', () => {
 
   test('a fast second tap is ignored: 18 or older first goes Home once', async () => {
     await reachAgeQuestion();
-    await act(async () => {
-      fireEvent.press(screen.getByRole('button', { name: w.adult }));
-      fireEvent.press(screen.getByRole('button', { name: w.underAge }));
-    });
+    await fireEvent.press(screen.getByRole('button', { name: w.adult }));
+    await fireEvent.press(screen.getByRole('button', { name: w.underAge }));
     await waitFor(() => expect(router.replace).toHaveBeenCalled());
     expect(router.replace).toHaveBeenCalledTimes(1);
     expect(router.replace).toHaveBeenCalledWith('/home');
@@ -131,5 +127,11 @@ describe('S2 adults only', () => {
     expect(screen.getByText(content.adultsOnly.whereToGetHelp)).toBeOnTheScreen();
     expect(screen.queryAllByRole('button')).toHaveLength(0);
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('says where to turn in danger, even with the Need help pill hidden', async () => {
+    await render(<AdultsOnly />);
+    expect(content.adultsOnly.inDanger?.trim()).toBeTruthy();
+    expect(screen.getByText(content.adultsOnly.inDanger!)).toBeOnTheScreen();
   });
 });
