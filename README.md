@@ -30,9 +30,17 @@ This opens a **Demo** screen first, with:
 
 - **Start as a first-time visitor:** shows the age question again in one tap (it removes only `steady.welcomeSeen`).
 - **Start at Home:** skips the age question.
-- **Jump to a screen:** straight to Check-in, Calm moment, Finished, Talk to someone, Need help now or the under-18 screen.
+- **Jump to a screen:** straight to Check-in, Calm moment, Finished, Arrange a time to talk, Need help now or the under-18 screen.
 
-In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Talk to someone shows a **Demo contact** whose Call and Message buttons show a note instead of dialling. Real contacts stay exactly as they are. Nothing else is saved.
+In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Arrange a time to talk shows two example contacts instead of the placeholders: **Example pastor**, whose Call and Message buttons show a note instead of dialling, and **Example counsellor**, still waiting for verification. Neither has a phone number. A normal start shows content.json exactly as it is. Nothing else is saved.
+
+**To make Example pastor's Call open the real dialer**, put a number whose owner has agreed (for example your own) in a file called `.env.local` in this folder, then restart with `npm run demo`:
+
+```
+EXPO_PUBLIC_DEMO_PHONE=your number, with country code
+```
+
+Git ignores `.env.local`, so the number never reaches GitHub. Only demo mode uses it; a normal start never does. An APK built in demo mode with this file present contains the number, so share such an APK only with people who may see it. An iPad cannot make calls, so present the dialer from a phone.
 
 On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 

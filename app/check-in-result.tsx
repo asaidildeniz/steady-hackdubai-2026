@@ -26,6 +26,7 @@ export default function CheckInResult() {
             label={c.secondary}
             onPress={() => router.push(kind ? '/breathing' : '/talk-to-someone')}
           />
+          {!kind && <BigButton secondary label={content.results.gentle.topics} onPress={() => router.push('/topics')} />}
         </>
       }
     >

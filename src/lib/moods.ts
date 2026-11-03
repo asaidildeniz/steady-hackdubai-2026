@@ -1,8 +1,11 @@
 import type { Href } from 'expo-router';
-import type { MoodGroup } from '@/content/types';
+import { content, type Mood } from '@/content/types';
 
-// Routing lives in each mood's `group` in content.json, so the reviewer can rename or reorder moods.
-export function moodHref(group: MoodGroup): Href {
+// Routing lives in each mood's `group` and `topic` in content.json, so the reviewer can rename, reorder or rematch moods.
+export function moodHref({ group, topic }: Mood): Href {
+  if (group === 'gentle' && content.topics.list.some((t) => t.id === topic)) {
+    return { pathname: '/topic', params: { id: topic! } };
+  }
   if (group === 'kind' || group === 'gentle') {
     return { pathname: '/check-in-result', params: { group } };
   }

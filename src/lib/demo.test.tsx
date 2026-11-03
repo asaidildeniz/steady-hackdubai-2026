@@ -53,9 +53,9 @@ describe('a normal start', () => {
     expect(screen.queryByRole('button', { name: d.firstTime })).toBeNull();
   });
 
-  test('Talk to someone shows no demo contact', async () => {
+  test('Talk to someone shows no example contacts', async () => {
     await render(<TalkToSomeone />);
-    expect(screen.queryByText(d.contact.name)).toBeNull();
+    for (const example of d.contacts) expect(screen.queryByText(example.name)).toBeNull();
   });
 });
 
@@ -92,17 +92,66 @@ describe('demo mode', () => {
     expect(router.replace).toHaveBeenCalledWith('/finished');
   });
 
-  test('the demo contact can be tapped but never dials, and real contacts stay disabled', async () => {
+  test('example contacts replace the placeholders; the tappable one never dials', async () => {
     const open = jest.spyOn(Linking, 'openURL');
     await render(<TalkToSomeone />);
-    const call = screen.getByRole('button', { name: `${content.talkToSomeone.call} ${d.contact.name}` });
-    expect(call).toBeEnabled();
-    await fireEvent.press(call);
+    for (const placeholder of content.talkToSomeone.contacts) {
+      expect(screen.queryByText(placeholder.name)).toBeNull();
+    }
+    const callOf = (name: string) => screen.getByRole('button', { name: `${content.talkToSomeone.call} ${name}` });
+    const [tappable, pending] = d.contacts;
+    expect(tappable.tappable).toBe(true);
+    expect(pending.tappable).toBeFalsy();
+    expect(callOf(pending.name)).toBeDisabled();
+    expect(callOf(tappable.name)).toBeEnabled();
+    await fireEvent.press(callOf(tappable.name));
     expect(open).not.toHaveBeenCalled();
     expect(screen.getByText(d.callNote)).toBeOnTheScreen();
-    for (const contact of content.talkToSomeone.contacts) {
-      expect(screen.getByRole('button', { name: `${content.talkToSomeone.call} ${contact.name}` })).toBeDisabled();
+  });
+
+  test('example contacts never carry a phone number', () => {
+    for (const example of d.contacts) expect(example.phone).toBe('');
+  });
+});
+
+describe('a private demo number (EXPO_PUBLIC_DEMO_PHONE in .env.local)', () => {
+  const callOf = (name: string) => screen.getByRole('button', { name: `${content.talkToSomeone.call} ${name}` });
+  const [tappable, pending] = d.contacts;
+  beforeEach(() => {
+    process.env.EXPO_PUBLIC_DEMO_PHONE = ' +000 111 ';
+    jest.spyOn(Linking, 'openURL').mockResolvedValue(undefined);
+  });
+  afterEach(() => delete process.env.EXPO_PUBLIC_DEMO_PHONE);
+
+  test('in demo mode, Call on the tappable example opens the dialer with it', async () => {
+    demo.on = true;
+    await render(<TalkToSomeone />);
+    await fireEvent.press(callOf(tappable.name));
+    expect(Linking.openURL).toHaveBeenCalledWith('tel:+000111');
+    expect(screen.queryByText(d.callNote)).toBeNull();
+  });
+
+  test('the example still waiting for verification stays off', async () => {
+    demo.on = true;
+    await render(<TalkToSomeone />);
+    expect(callOf(pending.name)).toBeDisabled();
+  });
+
+  test('a normal start ignores it', async () => {
+    await render(<TalkToSomeone />);
+    for (const button of screen.queryAllByRole('button', { name: new RegExp(`^${content.talkToSomeone.call} `) })) {
+      expect(button).toBeDisabled();
     }
+    expect(Linking.openURL).not.toHaveBeenCalled();
+  });
+
+  test('an empty number keeps the note instead of dialling', async () => {
+    demo.on = true;
+    process.env.EXPO_PUBLIC_DEMO_PHONE = '  ';
+    await render(<TalkToSomeone />);
+    await fireEvent.press(callOf(tappable.name));
+    expect(Linking.openURL).not.toHaveBeenCalled();
+    expect(screen.getByText(d.callNote)).toBeOnTheScreen();
   });
 });
 

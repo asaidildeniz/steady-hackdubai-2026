@@ -4,7 +4,7 @@ import { AccessibilityInfo, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { type Contact, content } from '@/content/types';
-import { demo } from '@/lib/demo';
+import { demo, demoContacts } from '@/lib/demo';
 import { callableNumber, openPhone } from '@/lib/phone';
 import { space, text } from '@/theme';
 
@@ -13,7 +13,8 @@ const numberOf = (p: Contact) => callableNumber({ number: p.phone, verified: p.v
 // S8
 export default function TalkToSomeone() {
   const c = content.talkToSomeone;
-  const contacts = c.contacts ?? [];
+  // Demo mode swaps the placeholders for example contacts; a normal start shows content.json as written.
+  const contacts = demo.on ? demoContacts() : (c.contacts ?? []);
   const nonePending = contacts.length > 0 && contacts.every((p) => !numberOf(p));
   return (
     <Screen>
@@ -25,9 +26,12 @@ export default function TalkToSomeone() {
       {nonePending && <Text style={text.body}>{c.pendingWhatNow}</Text>}
       {contacts.length === 0 && <Text style={text.note}>{c.noContacts}</Text>}
       <View style={styles.list}>
-        {demo.on && <ContactCard contact={content.demo.contact} demoOnly />}
         {contacts.map((contact, i) => (
-          <ContactCard key={`${contact.id}-${i}`} contact={contact} />
+          <ContactCard
+            key={`${contact.id}-${i}`}
+            contact={contact}
+            demoOnly={demo.on && 'tappable' in contact && contact.tappable === true}
+          />
         ))}
       </View>
       {/* Quiet on purpose: the next calm step stays the main action, the crisis route stays in reach. */}

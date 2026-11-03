@@ -2,7 +2,7 @@ import data from './content.json';
 
 export type MoodGroup = 'kind' | 'gentle' | 'urgent';
 
-export type Mood = { id: string; label: string; group: MoodGroup };
+export type Mood = { id: string; label: string; group: MoodGroup; topic?: string }; // topic: a topics.list id
 
 export type Contact = {
   id: string;
@@ -19,9 +19,11 @@ export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'ho
 
 export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hint?: string };
 
-export type HelpNumber = { label: string; number: string; verified: boolean };
+export type Topic = { id: string; label: string; opening: string; tips: string[]; faith: string };
 
-export type DemoRoute = '/check-in' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
+export type HelpNumber ={ label: string; number: string; verified: boolean };
+
+export type DemoRoute = '/check-in' | '/topics' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
 
 export type Content = {
   reviewStatus: string;
@@ -31,6 +33,7 @@ export type Content = {
   welcome: {
     title: string;
     body: string;
+    basis?: string;
     notEmergency: string;
     continue: string;
     ageQuestion: string;
@@ -42,7 +45,25 @@ export type Content = {
   };
   adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
   checkIn: { prompt: string; moods: Mood[] };
-  results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
+  results: {
+    kind: { message: string; primary: string; secondary: string };
+    gentle: { message: string; primary: string; secondary: string; topics: string };
+  };
+  topics: {
+    prompt: string;
+    intro: string;
+    tryThis: string;
+    faithShow: string;
+    faithHint: string;
+    breathe: string;
+    talk: string;
+    other: string;
+    otherHint: string;
+    reachOut: string;
+    urgent: string;
+    disclaimer: string;
+    list: Topic[];
+  };
   breathing: {
     title: string;
     stop: string;
@@ -76,7 +97,7 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
-    contact: Contact;
+    contacts: (Contact & { tappable?: boolean })[]; // tappable: shows a note instead of dialling
   };
   needHelp: {
     title: string;

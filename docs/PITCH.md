@@ -32,11 +32,11 @@ Tap **I am 18 or older**.
 **Home.** *"Three choices, nothing else. No streaks, no points, no notifications nagging you to come back. And top right, on every screen, there's Need help now. It's one tap from anywhere."*
 Tap **Daily check-in**.
 
-**Check-in.** *"How are you today? Our student is stressed."*
-Tap **Stressed**.
+**Check-in.** *"How are you today? These five feelings come straight from our student survey. Our student is stressed."*
+Tap **Stressed or overwhelmed**.
 
-**Reply.** Read it aloud: *"That sounds heavy. Would you like to breathe, or talk to someone?"* Then: *"No advice, no lecture. Just two gentle next steps."*
-Tap **Breathe**.
+**Help for that feeling.** *"The feeling they tap decides what comes next. Here: a few practical things to try, which our counsellor reviewer will approve."* Scroll, then tap **If Christian faith is part of your life**. *"The Christian encouragement is there, but only if they want it. Nothing about that choice is saved."*
+Tap **Breathe for a minute**.
 
 **Calm moment.** *"A short breathing exercise: in, hold, out. In the real app it's about a minute; we've shortened it for today."* While it runs: *"It works with no internet at all. And the mood they just tapped? It was never saved. Close the app and it's gone."*
 (It moves on by itself.)
@@ -44,9 +44,9 @@ Tap **Breathe**.
 **How do you feel now?** *"At the end we ask how they feel. Notice both answers look exactly the same. 'Still hard' should never feel like the wrong answer."*
 Tap **Still hard**.
 
-**Talk to someone.** *"Steady points to real people, not a chatbot: pastors and counsellors from local churches, with what each can and can't help with."*
-Tap **Call** on the **Demo contact**. *"In the real app this opens the phone's own call screen. For today it just shows a note."*
-Point at the other contacts: *"These buttons are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, and only then does it switch on."*
+**Arrange a time to talk.** *"Steady points to real people, not a chatbot: pastors and counsellors from local churches, with what each can and can't help with. They're volunteers, so the app is honest that they may not reply straight away: you arrange a time with them."*
+Tap **Call** on **Example pastor**. *"In the real app this opens the phone's own call screen. For today it just shows a note."*
+Point at **Example counsellor**: *"These buttons are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, and only then does it switch on."*
 Tap **Need help now** (at the bottom).
 
 **Need help now.** *"If it's urgent, this is the screen: who to reach right now. Emergency numbers and helplines appear here once they're verified."*
@@ -79,4 +79,4 @@ Tap **Home**.
 
 - **The app opens on Home:** start the demo at Home and say the age question appears on first launch.
 - **The app freezes or reloads:** shake the phone, tap **Reload**, then **Start as a first-time visitor**, and skip ahead to where you were.
-- **Short on time:** skip the breathing (go Home → **Talk to someone**) and the "How we built it" part.
+- **Short on time:** skip the breathing (go Home → **Arrange a time to talk**) and the "How we built it" part.

@@ -10,6 +10,8 @@ import Home from '../../app/home';
 import Index from '../../app/index';
 import NeedHelp from '../../app/need-help';
 import TalkToSomeone from '../../app/talk-to-someone';
+import Topic from '../../app/topic';
+import Topics from '../../app/topics';
 import Welcome from '../../app/welcome';
 import { content } from '@/content/types';
 
@@ -63,6 +65,11 @@ test('a whole session leaves only steady.welcomeSeen in storage', async () => {
   for (const group of ['kind', 'gentle']) {
     jest.mocked(useLocalSearchParams).mockReturnValue({ group });
     await tapEverything(<CheckInResult />);
+  }
+  await tapEverything(<Topics />);
+  for (const { id } of content.topics.list) {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ id });
+    await tapEverything(<Topic />);
   }
 
   jest.useFakeTimers();
