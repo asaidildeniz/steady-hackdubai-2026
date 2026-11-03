@@ -1,4 +1,4 @@
-import { content } from '@/content/types';
+import { type Contact, content } from '@/content/types';
 
 // On only when started with `npm run demo` (EXPO_PUBLIC_DEMO=1). A normal start never sees any of it.
 // An object, so tests can switch it on.
@@ -10,6 +10,13 @@ export function breathingTiming() {
   if (!demo.on) return { phases, cycles };
   const seconds = content.demo.breathingSeconds;
   return { phases: phases.map((p, i) => ({ ...p, seconds: seconds[i] ?? p.seconds })), cycles: 1 };
+}
+
+// The example contacts. A private number in .env.local (EXPO_PUBLIC_DEMO_PHONE, never committed, from someone
+// who agreed) lets the tappable example open the real dialer; without it, Call shows a note instead.
+export function demoContacts(): (Contact & { tappable?: boolean })[] {
+  const phone = process.env.EXPO_PUBLIC_DEMO_PHONE?.trim();
+  return content.demo.contacts.map((c) => (c.tappable && phone ? { ...c, phone, verified: true, tappable: false } : c));
 }
 
 // Demo mode shows the wording as meant, without the "Draft:" label the reviewer still needs.

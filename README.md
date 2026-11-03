@@ -34,6 +34,14 @@ This opens a **Demo** screen first, with:
 
 In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Arrange a time to talk shows two example contacts instead of the placeholders: **Example pastor**, whose Call and Message buttons show a note instead of dialling, and **Example counsellor**, still waiting for verification. Neither has a phone number. A normal start shows content.json exactly as it is. Nothing else is saved.
 
+**To make Example pastor's Call open the real dialer**, put a number whose owner has agreed (for example your own) in a file called `.env.local` in this folder, then restart with `npm run demo`:
+
+```
+EXPO_PUBLIC_DEMO_PHONE=your number, with country code
+```
+
+Git ignores `.env.local`, so the number never reaches GitHub. Only demo mode uses it; a normal start never does. An APK built in demo mode with this file present contains the number, so share such an APK only with people who may see it. An iPad cannot make calls, so present the dialer from a phone.
+
 On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 
 To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` makes sure the demo switch is forgotten). The demo story to follow is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md).

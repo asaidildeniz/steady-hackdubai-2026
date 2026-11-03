@@ -4,7 +4,7 @@ import { AccessibilityInfo, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { type Contact, content } from '@/content/types';
-import { demo } from '@/lib/demo';
+import { demo, demoContacts } from '@/lib/demo';
 import { callableNumber, openPhone } from '@/lib/phone';
 import { space, text } from '@/theme';
 
@@ -14,7 +14,7 @@ const numberOf = (p: Contact) => callableNumber({ number: p.phone, verified: p.v
 export default function TalkToSomeone() {
   const c = content.talkToSomeone;
   // Demo mode swaps the placeholders for example contacts; a normal start shows content.json as written.
-  const contacts = demo.on ? content.demo.contacts : (c.contacts ?? []);
+  const contacts = demo.on ? demoContacts() : (c.contacts ?? []);
   const nonePending = contacts.length > 0 && contacts.every((p) => !numberOf(p));
   return (
     <Screen>

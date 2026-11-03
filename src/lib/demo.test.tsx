@@ -114,6 +114,47 @@ describe('demo mode', () => {
   });
 });
 
+describe('a private demo number (EXPO_PUBLIC_DEMO_PHONE in .env.local)', () => {
+  const callOf = (name: string) => screen.getByRole('button', { name: `${content.talkToSomeone.call} ${name}` });
+  const [tappable, pending] = d.contacts;
+  beforeEach(() => {
+    process.env.EXPO_PUBLIC_DEMO_PHONE = ' +000 111 ';
+    jest.spyOn(Linking, 'openURL').mockResolvedValue(undefined);
+  });
+  afterEach(() => delete process.env.EXPO_PUBLIC_DEMO_PHONE);
+
+  test('in demo mode, Call on the tappable example opens the dialer with it', async () => {
+    demo.on = true;
+    await render(<TalkToSomeone />);
+    await fireEvent.press(callOf(tappable.name));
+    expect(Linking.openURL).toHaveBeenCalledWith('tel:+000111');
+    expect(screen.queryByText(d.callNote)).toBeNull();
+  });
+
+  test('the example still waiting for verification stays off', async () => {
+    demo.on = true;
+    await render(<TalkToSomeone />);
+    expect(callOf(pending.name)).toBeDisabled();
+  });
+
+  test('a normal start ignores it', async () => {
+    await render(<TalkToSomeone />);
+    for (const button of screen.queryAllByRole('button', { name: new RegExp(`^${content.talkToSomeone.call} `) })) {
+      expect(button).toBeDisabled();
+    }
+    expect(Linking.openURL).not.toHaveBeenCalled();
+  });
+
+  test('an empty number keeps the note instead of dialling', async () => {
+    demo.on = true;
+    process.env.EXPO_PUBLIC_DEMO_PHONE = '  ';
+    await render(<TalkToSomeone />);
+    await fireEvent.press(callOf(tappable.name));
+    expect(Linking.openURL).not.toHaveBeenCalled();
+    expect(screen.getByText(d.callNote)).toBeOnTheScreen();
+  });
+});
+
 describe('Draft labels', () => {
   const strings = (value: unknown): string[] =>
     typeof value === 'string' ? [value] : value && typeof value === 'object' ? Object.values(value).flatMap(strings) : [];
