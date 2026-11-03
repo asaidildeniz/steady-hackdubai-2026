@@ -1,6 +1,10 @@
 # Tests — Steady demo
 
 ## ⏳ To Test
+- [User] **Background white noise.** On your phone (with the iPhone silent switch off), start Breathe.
+  - Expected: soft, rain-like noise fades in, rises a little on each breath in, and is quiet enough to talk over.
+  - "Noise off" stops it, and finishing fades it out.
+  - Is the volume right?
 - [User] **Live link on your phone.** Open https://steady-self-care.netlify.app on your phone, go through each tool once, and send the link to one friend to confirm it opens for them.
 - [User] **Swiss restyle look and feel.** Open the menu on laptop and phone. Does it read as calm rather than stark? Are the neon-yellow Untangle accents too loud for someone who's stressed?
 - [User] **Feel check on a real phone.** Open the site on your phone and go through each tool once. Does the pacing of Breathe feel calm (not rushed or too slow)? Does the wording in Untangle and Reach Out feel warm and not preachy?
@@ -8,6 +12,14 @@
 - [User] **Chime and vibrate.** In Breathe, turn on Soft chime (and Vibrate on Android). Expected: a soft tone or buzz at each phase change, nothing harsh.
 
 ## ✅ Tested & Working
+- [Claude] 2026-11-03 **Breathe background noise** (localhost, with the WebAudio nodes instrumented):
+  - On by default, and it starts on Begin.
+  - Volume rises during the breath in (0.078 → 0.102), and the filter opens to about 1340 Hz.
+  - Pause drops it to 0.036, and Resume restores it.
+  - "Noise off" sets it to 0, and "Noise on" restarts it.
+  - Finish early fades it to 0. Leaving mid-session fades it to 0 and stops the source.
+  - With the checkbox unchecked, no noise source is created.
+  - The button row fits at 375px. No console errors.
 - [Claude] 2026-10-27 **Live deploy check (https://steady-self-care.netlify.app).**
   - All three tools load, Breathe cycles cues, and Space Grotesk loads.
   - No console errors from the site.

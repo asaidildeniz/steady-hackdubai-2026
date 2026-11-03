@@ -18,6 +18,7 @@ _None open._
 - Self-host the fonts so it doesn't depend on Google Fonts.
 
 ## ✅ Completed
+- 2026-11-03: Added soft background white noise to Breathe. It is generated in the browser with no audio file, swells with each breath in, is on by default, and has a mid-session "Noise off" button.
 - 2026-10-27: Deployed to Netlify at https://steady-self-care.netlify.app with security headers (strict CSP, no outbound connections). Only the public files ship; the docs stay private. Added BRIEF.md, a one-page explainer of each tool and its research basis.
 - 2026-10-27: Restyled to a Swiss grid layout using the brand reference: Space Grotesk, blue/cream, sky/neon/orange accents per tool, numbered index menu, and hand-drawn SVG doodles.
 - 2026-10-27: Fixed the focus outline showing on headings that receive programmatic focus. Fixed the menu time column wrapping under the number on mobile.

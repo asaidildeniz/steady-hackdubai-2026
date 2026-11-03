@@ -7,7 +7,7 @@ A separate, self-contained web demo of three short self-care tools for students.
 
 | Tool | For | What it does |
 |---|---|---|
-| 01 Breathe | Stress and anxiety | Guided breathing with an animated circle: Gentle, Calming sigh or Box rhythm, 1–3 minutes |
+| 01 Breathe | Stress and anxiety | Guided breathing with an animated circle and soft background white noise: Gentle, Calming sigh or Box rhythm, 1–3 minutes |
 | 02 Untangle | Overthinking | Six steps: step back from the thought, sort facts from guesses, see a friend's view, write a balanced thought, then pick one next step |
 | 03 Reach Out | Loneliness | A 30-second self-compassion moment, then a ready-written message to someone that you can edit, copy or share |
 
