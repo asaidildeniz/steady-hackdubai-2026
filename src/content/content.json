@@ -27,7 +27,9 @@
     "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling.",
     "DRAFT for reviewer: topics is new. Its wording is copied from the team’s “Finding Support” guide. It needs approval from the counsellor reviewer, and a pastor should check the faith text and Bible references.",
     "DRAFT for reviewer: topics are reached from the gentle check-in result (results.gentle.topics). The faith text on each topic is hidden until the student taps faithShow, and that choice is never saved.",
-    "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme."
+    "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme.",
+    "DRAFT for reviewer: the check-in moods now follow the survey’s top five. Each mood’s topic sends the student straight to that support topic; a mood without a topic, or with one that does not exist, shows the gentle message instead. Lonely and Low were replaced by these five. Struggling still always opens Need help now.",
+    "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone."
   ],
   "home": {
     "title": "Steady",
@@ -42,6 +44,7 @@
   "welcome": {
     "title": "Gentle support that stays on your phone",
     "body": "Steady is for adult students. No account needed.",
+    "basis": "Draft: Steady’s encouragement comes from Christian values, and it is for everyone.",
     "notEmergency": "Steady is not emergency care.",
     "continue": "Continue",
     "ageQuestion": "Steady is for adults. Are you 18 or older?",
@@ -71,18 +74,33 @@
       },
       {
         "id": "stressed",
-        "label": "Stressed",
-        "group": "gentle"
+        "label": "Stressed or overwhelmed",
+        "group": "gentle",
+        "topic": "stress"
       },
       {
-        "id": "lonely",
-        "label": "Lonely",
-        "group": "gentle"
+        "id": "anxious",
+        "label": "Anxious or worried",
+        "group": "gentle",
+        "topic": "anxiety"
       },
       {
-        "id": "low",
-        "label": "Low",
-        "group": "gentle"
+        "id": "exams",
+        "label": "Exam or study pressure",
+        "group": "gentle",
+        "topic": "exams"
+      },
+      {
+        "id": "faith",
+        "label": "Questions about faith",
+        "group": "gentle",
+        "topic": "faith"
+      },
+      {
+        "id": "down",
+        "label": "Feeling down",
+        "group": "gentle",
+        "topic": "down"
       },
       {
         "id": "struggling",

@@ -23,7 +23,7 @@ Show the Welcome screen: *"No account, nothing to sign up for. And it says up fr
 
 **3. Home.** *"Three things, nothing else: check in, a calm moment, or a real person. No streaks, no points, no notifications. And on every screen there's a Need help now button."* Tap **Daily check-in**.
 
-**4. Check-in.** *"How are you today? Our student taps Stressed."* Tap **Stressed**. Read the reply out: *"That sounds heavy. Would you like to breathe, or talk to someone?"* Tap **Breathe**.
+**4. Check-in.** *"How are you today? These five come from our student survey. Our student taps Stressed."* Tap **Stressed or overwhelmed**. It opens straight onto help for that feeling: *"A few practical things to try, and, only if they want it, a Christian encouragement."* Tap **If Christian faith is part of your life** to show it, then **Breathe for a minute**.
 
 **5. Calm moment (let it run, about one minute).** While the circle breathes, say:
 - *"Everything you're seeing runs on the phone. It's in airplane mode right now."* (Show the airplane icon.)

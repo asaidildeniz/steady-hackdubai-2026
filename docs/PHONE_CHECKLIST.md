@@ -18,9 +18,9 @@ To open as a fresh install, clear Expo Go's storage (Android: Settings → Apps 
 - [ ] "I am 18 or older" opens Home.
 - [ ] Force-quit and reopen: Home opens directly.
 - [ ] Home: Daily check-in opens S4.
-- [ ] S4: Good or Okay opens S5a; Stressed, Lonely or Low opens S5b; Struggling opens Need help now.
+- [ ] S4: Good or Okay opens S5a; each of the five struggles opens its own topic; Struggling opens Need help now.
 - [ ] S5a: Done returns to Home; Calm moment opens Breathing.
-- [ ] S5b: Breathe opens Breathing; Talk to someone opens S8.
+- [ ] Topic: "If Christian faith is part of your life" opens the faith text; Breathe for a minute opens Breathing; Talk to someone opens S8.
 - [ ] Breathing: Stop returns to Home at any point.
 - [ ] Breathing: finishing all rounds opens Finished.
 - [ ] Finished: Better returns to Home; Still hard opens Talk to someone.
@@ -43,7 +43,7 @@ To open as a fresh install, clear Expo Go's storage (Android: Settings → Apps 
 Use the phone's own recorder (iOS: Control Centre → Screen Recording; Android: Quick Settings → Screen record). Start from a fresh install, keep it under two minutes, and use no real names or messages.
 
 1. Welcome → Continue → "I am 18 or older".
-2. Home → Daily check-in → Stressed → Breathe.
+2. Home → Daily check-in → Stressed or overwhelmed → scroll the topic → Breathe for a minute.
 3. Let one round of breathing run, then wait for Finished (or record the whole minute).
 4. Finished → Still hard → Talk to someone (show the disabled buttons and the "still checking" line).
 5. Need help now → S9 → Home.

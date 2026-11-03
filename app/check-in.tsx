@@ -14,7 +14,7 @@ export default function CheckIn() {
         {content.checkIn.prompt}
       </Text>
       {content.checkIn.moods.map((mood) => (
-        <BigButton key={mood.id} label={mood.label} onPress={() => router.push(moodHref(mood.group))} />
+        <BigButton key={mood.id} label={mood.label} onPress={() => router.push(moodHref(mood))} />
       ))}
     </Screen>
   );

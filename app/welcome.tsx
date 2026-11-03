@@ -60,6 +60,7 @@ export default function Welcome() {
           {c.title}
         </Text>
         {!!c.body && <Text style={text.body}>{c.body}</Text>}
+        {!!c.basis && <Text style={text.body}>{c.basis}</Text>}
         {/* The safety pair is one thought, so it reads as one block, set apart. */}
         <View style={styles.safety}>
           {!!c.notEmergency && <Text style={text.body}>{c.notEmergency}</Text>}

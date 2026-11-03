@@ -2,7 +2,7 @@ import data from './content.json';
 
 export type MoodGroup = 'kind' | 'gentle' | 'urgent';
 
-export type Mood = { id: string; label: string; group: MoodGroup };
+export type Mood = { id: string; label: string; group: MoodGroup; topic?: string }; // topic: a topics.list id
 
 export type Contact = {
   id: string;
@@ -33,6 +33,7 @@ export type Content = {
   welcome: {
     title: string;
     body: string;
+    basis?: string;
     notEmergency: string;
     continue: string;
     ageQuestion: string;
