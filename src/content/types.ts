@@ -19,9 +19,11 @@ export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'ho
 
 export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hint?: string };
 
-export type HelpNumber = { label: string; number: string; verified: boolean };
+export type Topic = { id: string; label: string; opening: string; tips: string[]; faith: string };
 
-export type DemoRoute = '/check-in' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
+export type HelpNumber ={ label: string; number: string; verified: boolean };
+
+export type DemoRoute = '/check-in' | '/topics' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
 
 export type Content = {
   reviewStatus: string;
@@ -42,7 +44,25 @@ export type Content = {
   };
   adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
   checkIn: { prompt: string; moods: Mood[] };
-  results: Record<'kind' | 'gentle', { message: string; primary: string; secondary: string }>;
+  results: {
+    kind: { message: string; primary: string; secondary: string };
+    gentle: { message: string; primary: string; secondary: string; topics: string };
+  };
+  topics: {
+    prompt: string;
+    intro: string;
+    tryThis: string;
+    faithShow: string;
+    faithHint: string;
+    breathe: string;
+    talk: string;
+    other: string;
+    otherHint: string;
+    reachOut: string;
+    urgent: string;
+    disclaimer: string;
+    list: Topic[];
+  };
   breathing: {
     title: string;
     stop: string;

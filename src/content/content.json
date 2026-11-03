@@ -24,7 +24,10 @@
     "DRAFT for reviewer: finished.message is new and shows above \"How do you feel now?\". Leave it empty to show only the question.",
     "DRAFT for reviewer: each finished option can have a hint, read out by screen readers only, saying where the answer leads.",
     "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified.",
-    "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling."
+    "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling.",
+    "DRAFT for reviewer: topics is new. Its wording is copied from the team’s “Finding Support” guide. It needs approval from the counsellor reviewer, and a pastor should check the faith text and Bible references.",
+    "DRAFT for reviewer: topics are reached from the gentle check-in result (results.gentle.topics). The faith text on each topic is hidden until the student taps faithShow, and that choice is never saved.",
+    "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme."
   ],
   "home": {
     "title": "Steady",
@@ -97,8 +100,86 @@
     "gentle": {
       "message": "Draft: that sounds heavy. Would you like to breathe, or talk to someone?",
       "primary": "Breathe",
-      "secondary": "Talk to someone"
+      "secondary": "Talk to someone",
+      "topics": "Find ideas that may help"
     }
+  },
+  "topics": {
+    "prompt": "Draft: what's weighing on you?",
+    "intro": "Draft: you do not have to manage everything alone. Choose what fits best and take what is helpful.",
+    "tryThis": "Try this",
+    "faithShow": "If Christian faith is part of your life",
+    "faithHint": "Shows optional Christian encouragement on this screen",
+    "breathe": "Breathe for a minute",
+    "talk": "Talk to someone",
+    "other": "Something else",
+    "otherHint": "Shows people you can talk to",
+    "reachOut": "Draft: consider speaking with a university counsellor, licensed mental health professional, or healthcare provider if distress is persistent, worsening, or interfering with your studies, relationships, sleep, or daily activities. You can seek help even if you are unsure what is wrong.",
+    "urgent": "Draft: if you feel at risk of harming yourself or someone else, or you cannot keep yourself safe, tell someone nearby and contact local emergency services immediately. Don't wait to manage an urgent safety concern on your own.",
+    "disclaimer": "Draft: this offers general information and spiritual encouragement. It is not a diagnosis or a substitute for individual psychological, medical, or pastoral care.",
+    "list": [
+      {
+        "id": "stress",
+        "label": "Stress or feeling overwhelmed",
+        "opening": "Draft: when demands build up, it can be hard to know where to begin. Feeling overwhelmed does not mean you have failed; it may be a sign that you need support, rest, or a more manageable plan.",
+        "tips": [
+          "Pause and take a few slow breaths. Notice what is happening around you and what you need in this moment.",
+          "Write down what is on your mind. Choose one small, useful next step rather than trying to solve everything at once.",
+          "Break larger tasks into shorter sessions, and include meals, sleep, and breaks in your plan.",
+          "Talk with someone you trust, an academic adviser, or a university counsellor."
+        ],
+        "faith": "Draft: you may find comfort in prayer, Scripture, or speaking with a trusted pastor or spiritual adviser. You could reflect on Jesus’ invitation to those who are weary in Matthew 11:28–30, or the encouragement to “carry each other’s burdens” in Galatians 6:2. Asking for help and taking time to rest can be part of caring for yourself."
+      },
+      {
+        "id": "anxiety",
+        "label": "Anxiety or constant worry",
+        "opening": "Draft: anxiety can make future problems feel immediate and certain. You do not need to dismiss your worries or face them alone.",
+        "tips": [
+          "Name what you are worried about. Ask yourself: “Is there one part of this I can act on today?”",
+          "Use a grounding exercise: notice five things you can see, four you can feel, and three you can hear.",
+          "Set aside a specific time to think through practical concerns, then return to the activity in front of you.",
+          "Speak with a counsellor or healthcare professional if anxiety continues, becomes hard to manage, or affects your sleep, studies, relationships, or daily life."
+        ],
+        "faith": "Draft: you can bring your worries honestly into prayer, even if you do not feel calm straight away. Some people find Philippians 4:6–7 reassuring. Prayer may support you, and it can sit alongside counselling, healthcare, and other practical help."
+      },
+      {
+        "id": "exams",
+        "label": "Exam or study pressure",
+        "opening": "Draft: exams matter, but they do not define your worth or determine your whole future. A steady, realistic approach is often more helpful than trying to study without rest.",
+        "tips": [
+          "List the topics you need to cover and choose a clear, achievable goal for each study session.",
+          "Work in focused blocks and take short breaks. Review what you have learned rather than only rereading notes.",
+          "Protect your sleep, eat regularly, and give yourself time to reset.",
+          "Contact your lecturer, academic adviser, or student support service if you are falling behind or unsure how to prepare."
+        ],
+        "faith": "Draft: you might pray for wisdom, focus, and courage as you prepare. Remember that your value is not measured by a grade. Faith can encourage you to do what you can while treating yourself with patience and care."
+      },
+      {
+        "id": "faith",
+        "label": "Questions about faith or doubt",
+        "opening": "Draft: questions, uncertainty, or changes in belief can feel unsettling. You deserve space to explore them without being shamed or rushed into an answer.",
+        "tips": [
+          "Give yourself permission to ask questions and notice what has prompted them.",
+          "Write down what you are wondering about, and what you need from a conversation.",
+          "Speak with someone thoughtful and trustworthy who will listen respectfully, whether that is a faith leader, counsellor, or another person you trust.",
+          "If your questions are connected to a painful experience, grief, or pressure from others, consider seeking support for that experience as well.",
+          "Join ALPHA. 😊"
+        ],
+        "faith": "Draft: you can bring uncertainty and difficult feelings into prayer. The Bible includes prayers of anguish and questioning, such as Psalm 13. Doubt does not make you undeserving of care, and you do not have to reach a conclusion before asking for support."
+      },
+      {
+        "id": "down",
+        "label": "Feeling down",
+        "opening": "Draft: everyone has difficult days, but persistent low mood can make everyday tasks feel heavy. You deserve support, whether or not you can identify a clear reason for feeling this way.",
+        "tips": [
+          "Tell someone you trust how you have been feeling, and ask them to check in with you.",
+          "Choose one small act of care, such as eating something, taking a short walk, or replying to a supportive person.",
+          "Keep some gentle structure in your day, while allowing yourself time to rest.",
+          "If low mood lasts, worsens, or affects your daily life, contact a university counsellor or licensed mental health professional."
+        ],
+        "faith": "Draft: you may find comfort in prayer, Scripture, or the presence of a trusted faith community. You do not need to hide how you feel or force yourself to appear positive. Spiritual support can accompany professional mental health care."
+      }
+    ]
   },
   "breathing": {
     "title": "Calm moment",
@@ -205,6 +286,10 @@
       {
         "label": "Check-in",
         "route": "/check-in"
+      },
+      {
+        "label": "What is weighing on you",
+        "route": "/topics"
       },
       {
         "label": "Calm moment",
