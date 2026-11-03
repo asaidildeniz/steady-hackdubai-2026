@@ -28,14 +28,63 @@
     worse: "Thank you for being honest. If focusing on your breath feels uncomfortable, that's common. Try something else, like Untangle or Reach Out, and if things feel like too much, talk to someone you trust."
   };
 
-  let state, root, timers = [], audioCtx = null;
+  let state, root, timers = [], audioCtx = null, noise = null;
+
+  // Background noise volume at the top of a breath in (it settles lower on the way out).
+  const NOISE_LEVEL = .12;
 
   function clearTimers() { timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = []; }
+
+  function ctx() {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+
+  function ramp(param, value, secs) {
+    const t = audioCtx.currentTime;
+    param.cancelScheduledValues(t);
+    param.setValueAtTime(param.value, t);
+    param.linearRampToValueAtTime(value, t + secs);
+  }
+
+  // Soft white noise, generated in the browser (no audio file, nothing downloaded).
+  // A low-pass filter takes the hiss off so it sounds more like distant rain than static.
+  function noiseStart() {
+    if (!state.noise || noise) return;
+    try {
+      const ac = ctx();
+      const buf = ac.createBuffer(1, ac.sampleRate * 3, ac.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+      const filter = ac.createBiquadFilter(); filter.type = "lowpass"; filter.frequency.value = 900;
+      const gain = ac.createGain(); gain.gain.value = 0;
+      src.connect(filter).connect(gain).connect(ac.destination);
+      src.start();
+      noise = { src, filter, gain };
+      ramp(gain.gain, NOISE_LEVEL * .6, 2);
+    } catch (_) { noise = null; /* audio unavailable */ }
+  }
+
+  // Swell the noise a little with each breath in and let it settle on the way out, like a wave.
+  function noiseBreath(scale, secs) {
+    if (!noise) return;
+    ramp(noise.filter.frequency, 500 + 900 * scale, secs);
+    ramp(noise.gain.gain, NOISE_LEVEL * (.6 + .4 * scale), secs);
+  }
+
+  function noiseStop(secs) {
+    if (!noise) return;
+    const n = noise; noise = null;
+    ramp(n.gain.gain, 0, secs);
+    try { n.src.stop(audioCtx.currentTime + secs + .05); } catch (_) { /* already stopped */ }
+  }
 
   function chime(freq) {
     if (!state.sound) return;
     try {
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      ctx();
       const o = audioCtx.createOscillator(), g = audioCtx.createGain();
       o.type = "sine"; o.frequency.value = freq;
       g.gain.setValueAtTime(0, audioCtx.currentTime);
@@ -70,6 +119,7 @@
         </div>
 
         <div class="settings-row">
+          <label class="check"><input type="checkbox" id="opt-noise" ${state.noise ? "checked" : ""}> Background white noise</label>
           <label class="check"><input type="checkbox" id="opt-sound" ${state.sound ? "checked" : ""}> Soft chime</label>
           ${navigator.vibrate ? `<label class="check"><input type="checkbox" id="opt-vib" ${state.vibrate ? "checked" : ""}> Vibrate</label>` : ""}
         </div>
@@ -89,6 +139,7 @@
       state.minutes = +b.dataset.min;
       root.querySelectorAll("[data-min]").forEach(x => x.setAttribute("aria-pressed", x === b));
     });
+    root.querySelector("#opt-noise").onchange = e => { state.noise = e.target.checked; };
     root.querySelector("#opt-sound").onchange = e => { state.sound = e.target.checked; if (state.sound) chime(528); };
     const vib = root.querySelector("#opt-vib");
     if (vib) vib.onchange = e => { state.vibrate = e.target.checked; buzz(); };
@@ -117,12 +168,14 @@
         </div>
         <div class="btn-row" style="justify-content:center">
           <button class="btn btn-ghost" id="pause">Pause</button>
+          <button class="btn btn-ghost" id="noise-btn" aria-pressed="${state.noise}">${state.noise ? "Noise off" : "Noise on"}</button>
           <button class="btn btn-link" id="stop">Finish early</button>
         </div>
       </section>`;
 
     const orb = root.querySelector("#orb"), cue = root.querySelector("#cue"), count = root.querySelector("#count"),
-      pbar = root.querySelector("#pbar"), remainingEl = root.querySelector("#remaining"), pauseBtn = root.querySelector("#pause");
+      pbar = root.querySelector("#pbar"), remainingEl = root.querySelector("#remaining"), pauseBtn = root.querySelector("#pause"),
+      noiseBtn = root.querySelector("#noise-btn");
 
     const total = state.minutes * 60;
     let elapsed = 0, phaseIdx = -1, phaseLeft = 0, paused = false, finishing = false;
@@ -142,6 +195,7 @@
       pbar.style.transition = "none"; pbar.style.width = "0";
       void pbar.offsetWidth;
       pbar.style.transition = `width ${ph.secs}s linear`; pbar.style.width = "100%";
+      noiseBreath(ph.scale, ph.secs);
       chime(ph.cue.startsWith("Breathe in") ? 528 : ph.cue === "Hold" ? 440 : 396);
       buzz();
     }
@@ -155,6 +209,8 @@
     }
 
     remainingEl.textContent = fmt(total) + " left";
+    // Begin was just tapped, so the browser allows audio to start here.
+    noiseStart();
     // Short lead-in so people can settle before the first breath.
     count.textContent = "3";
     let lead = 3;
@@ -178,20 +234,34 @@
         const w = getComputedStyle(pbar).width;
         pbar.style.transition = "none"; pbar.style.width = w;
         cue.textContent = "Paused";
+        if (noise) ramp(noise.gain.gain, NOISE_LEVEL * .3, .8);
       } else {
         const ph = p.phases[Math.max(phaseIdx, 0)];
         if (phaseIdx >= 0) {
           cue.textContent = ph.cue;
           orb.style.transitionDuration = phaseLeft + "s"; orb.style.transform = `scale(${ph.scale})`;
           pbar.style.transition = `width ${phaseLeft}s linear`; pbar.style.width = "100%";
-        } else cue.textContent = "Get ready";
+          noiseBreath(ph.scale, phaseLeft);
+        } else {
+          cue.textContent = "Get ready";
+          if (noise) ramp(noise.gain.gain, NOISE_LEVEL * .6, .8);
+        }
       }
+    };
+    noiseBtn.onclick = () => {
+      state.noise = !state.noise;
+      noiseBtn.textContent = state.noise ? "Noise off" : "Noise on";
+      noiseBtn.setAttribute("aria-pressed", state.noise);
+      if (!state.noise) return noiseStop(.6);
+      noiseStart();
+      if (phaseIdx >= 0 && !paused) noiseBreath(p.phases[phaseIdx].scale, phaseLeft);
     };
     root.querySelector("#stop").onclick = () => { finishing = true; renderDone(); };
   }
 
   function renderDone() {
     clearTimers();
+    noiseStop(2.5);
     root.innerHTML = `
       <section class="view panel">
         <span class="tag">Well done</span>
@@ -224,9 +294,9 @@
     theme: "breathe",
     mount(el) {
       root = el;
-      state = { pattern: "gentle", minutes: 1, sound: false, vibrate: false };
+      state = { pattern: "gentle", minutes: 1, noise: true, sound: false, vibrate: false };
       renderSetup();
     },
-    unmount() { clearTimers(); }
+    unmount() { clearTimers(); noiseStop(.4); }
   });
 })();

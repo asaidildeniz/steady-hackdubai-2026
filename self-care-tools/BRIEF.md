@@ -18,7 +18,7 @@ Steady is three short self-care tools for students, each for a different moment:
   - **Calming sigh** (a breath in, a short extra sip of air, then a long, slow breath out)
   - **Box** (4-4-4-4)
 - Choose 1, 2 or 3 minutes.
-- Breathe along with the circle. A soft chime or vibration is optional.
+- Breathe along with the circle, with soft white noise in the background that rises gently with each breath in. It can be switched off at any time. A soft chime or vibration is optional.
 - Sessions always finish at the end of a full breath, never mid-breath.
 - Afterwards, a quick check of how you feel gets a reply that matches your answer, then one prompt: "What's one thing you can focus on next?"
 

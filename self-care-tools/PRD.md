@@ -23,6 +23,7 @@ good enough to show the team and others on a phone or laptop. It proves the idea
 - R6. Three patterns: Gentle (NHS-style, in 4 / out 5), Calming sigh (inhale, top-up, long exhale), Box (4-4-4-4).
 - R7. Duration choice: 1, 2, or 3 minutes. Pause, resume, and stop.
 - R8. An animated circle synced to the phases, with a text cue and remaining time. Optional soft chime and vibration (off by default).
+- R8a (added 2026-11-03, Abel's request). Soft background white noise during the session, on by default. It is generated in the browser, swells gently with each breath in, can be switched off on the setup screen or mid-session, and fades out at the end.
 - R9. Reduced-motion users get the text and a progress cue instead of the scaling animation.
 - R10. A finish screen with a "How do you feel now?" check (better / same / worse) and a closing message for each answer.
 
