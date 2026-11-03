@@ -30,9 +30,9 @@ This opens a **Demo** screen first, with:
 
 - **Start as a first-time visitor:** shows the age question again in one tap (it removes only `steady.welcomeSeen`).
 - **Start at Home:** skips the age question.
-- **Jump to a screen:** straight to Check-in, Calm moment, Finished, Talk to someone, Need help now or the under-18 screen.
+- **Jump to a screen:** straight to Check-in, Calm moment, Finished, Arrange a time to talk, Need help now or the under-18 screen.
 
-In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Talk to someone shows two example contacts instead of the placeholders: **Example pastor**, whose Call and Message buttons show a note instead of dialling, and **Example counsellor**, still waiting for verification. Neither has a phone number. A normal start shows content.json exactly as it is. Nothing else is saved.
+In demo mode, wording shows without its `Draft:` label (content.json and a normal start keep the labels), breathing is one short round (about 6 seconds), and Arrange a time to talk shows two example contacts instead of the placeholders: **Example pastor**, whose Call and Message buttons show a note instead of dialling, and **Example counsellor**, still waiting for verification. Neither has a phone number. A normal start shows content.json exactly as it is. Nothing else is saved.
 
 On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 

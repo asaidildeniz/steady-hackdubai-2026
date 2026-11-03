@@ -29,13 +29,14 @@
     "DRAFT for reviewer: topics are reached from the gentle check-in result (results.gentle.topics). The faith text on each topic is hidden until the student taps faithShow, and that choice is never saved.",
     "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme.",
     "DRAFT for reviewer: the check-in moods now follow the survey’s top five. Each mood’s topic sends the student straight to that support topic; a mood without a topic, or with one that does not exist, shows the gentle message instead. Lonely and Low were replaced by these five. Struggling still always opens Need help now.",
-    "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone."
+    "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone.",
+    "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar."
   ],
   "home": {
     "title": "Steady",
     "checkIn": "Daily check-in",
     "calm": "Calm moment",
-    "talk": "Talk to someone"
+    "talk": "Arrange a time to talk"
   },
   "needHelpButton": {
     "label": "Need help now",
@@ -116,9 +117,9 @@
       "secondary": "Calm moment"
     },
     "gentle": {
-      "message": "Draft: that sounds heavy. Would you like to breathe, or talk to someone?",
+      "message": "Draft: that sounds heavy. Would you like to breathe, or arrange a time to talk with someone?",
       "primary": "Breathe",
-      "secondary": "Talk to someone",
+      "secondary": "Arrange a time to talk",
       "topics": "Find ideas that may help"
     }
   },
@@ -129,9 +130,9 @@
     "faithShow": "If Christian faith is part of your life",
     "faithHint": "Shows optional Christian encouragement on this screen",
     "breathe": "Breathe for a minute",
-    "talk": "Talk to someone",
+    "talk": "Arrange a time to talk",
     "other": "Something else",
-    "otherHint": "Shows people you can talk to",
+    "otherHint": "Shows people you can arrange a time with",
     "reachOut": "Draft: consider speaking with a university counsellor, licensed mental health professional, or healthcare provider if distress is persistent, worsening, or interfering with your studies, relationships, sleep, or daily activities. You can seek help even if you are unsure what is wrong.",
     "urgent": "Draft: if you feel at risk of harming yourself or someone else, or you cannot keep yourself safe, tell someone nearby and contact local emergency services immediately. Don't wait to manage an urgent safety concern on your own.",
     "disclaimer": "Draft: this offers general information and spiritual encouragement. It is not a diagnosis or a substitute for individual psychological, medical, or pastoral care.",
@@ -235,13 +236,13 @@
       {
         "label": "Still hard",
         "next": "talkToSomeone",
-        "hint": "Draft: shows people you can talk to"
+        "hint": "Draft: shows people you can arrange a time with"
       }
     ]
   },
   "talkToSomeone": {
-    "title": "Talk to someone",
-    "note": "Draft: these people can listen and pray with you. They are not emergency services.",
+    "title": "Arrange a time to talk",
+    "note": "Draft: these people can listen and pray with you. They are volunteers and may not reply straight away. Send a message to arrange a time. If you are in danger, use Need help now.",
     "roles": {
       "pastor": "Pastor",
       "counsellor": "Counsellor"
@@ -270,7 +271,7 @@
   },
   "needHelp": {
     "title": "Need help now",
-    "message": "Draft: you are not alone. Here is who to reach right now.",
+    "message": "Draft: you are not alone. If you are in danger or cannot keep yourself safe, contact emergency services now. They answer any time, unlike our volunteers.",
     "emergencyHeading": "Emergency numbers",
     "helplinesHeading": "Helplines",
     "peopleHeading": "People you can talk to",
@@ -289,7 +290,7 @@
       }
     ],
     "pendingMessage": "Verified numbers will appear here once our reviewer has checked them.",
-    "talk": "Talk to someone",
+    "talk": "Arrange a time to talk",
     "home": "Home",
     "call": "Call",
     "callHint": "Opens your phone app to call this number"
@@ -318,7 +319,7 @@
         "route": "/finished"
       },
       {
-        "label": "Talk to someone",
+        "label": "Arrange a time to talk",
         "route": "/talk-to-someone"
       },
       {

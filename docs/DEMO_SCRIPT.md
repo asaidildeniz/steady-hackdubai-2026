@@ -33,7 +33,7 @@ Show the Welcome screen: *"No account, nothing to sign up for. And it says up fr
 
 **6. Finished.** *"How do you feel now? Both answers look the same on purpose, because 'Still hard' should never feel like the wrong answer."* Tap **Still hard**.
 
-**7. Talk to someone.** *"Steady points to real people, pastors and counsellors from local churches, not a bot."* Point at the disabled Call buttons: *"These are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, then it lights up."* Tap **Need help now**.
+**7. Arrange a time to talk.** *"Steady points to real people, pastors and counsellors from local churches, not a bot. They're volunteers, so you arrange a time with them; for anything urgent there's Need help now."* Point at the disabled Call buttons: *"These are switched off on purpose. Steady never lets anyone tap a number nobody has checked. Our reviewer verifies each one, then it lights up."* Tap **Need help now**.
 
 **8. Need help now.** *"If it's an emergency, this screen is one tap from anywhere. Verified emergency numbers and helplines appear here once checked."* Tap **Home**.
 
@@ -42,5 +42,5 @@ Show the Welcome screen: *"No account, nothing to sign up for. And it says up fr
 ## If something goes wrong
 
 - **The app opens on Home, not Welcome:** start the story at step 3 and say the age question appears on first launch.
-- **You need to save time:** at step 5, tap **Stop** after one breath. You land on Home. Go to step 7 with **Talk to someone** from Home and skip Finished.
+- **You need to save time:** at step 5, tap **Stop** after one breath. You land on Home. Go to step 7 with **Arrange a time to talk** from Home and skip Finished.
 - **Someone asks for a real call:** numbers stay off until verified, by design. That's the safety rule.
