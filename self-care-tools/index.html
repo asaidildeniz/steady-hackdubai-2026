@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Steady — Self-care tools</title>
+  <meta name="description" content="Three short self-care tools: Breathe, Untangle, and Reach Out. A Steady demo.">
+  <meta name="theme-color" content="#f7f3e8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#2a211c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%231c19a8'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-tool="menu">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="#/"><span class="brand-dot" aria-hidden="true"></span>Steady</a>
+      <div class="top-meta">
+        <span class="label">Self-care tools — Demo</span>
+        <a class="btn btn-link" id="exit-link" href="#/" hidden>Index</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1" aria-live="polite"></main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>Demo. Self-help tools only, not a substitute for professional care.</span>
+      <span class="muted">Nothing you type is saved or sent anywhere.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/breathe.js"></script>
+  <script src="js/untangle.js"></script>
+  <script src="js/reachout.js"></script>
+  <script src="js/start.js"></script>
+</body>
+</html>
