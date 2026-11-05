@@ -88,6 +88,14 @@ export type Content = {
   };
   taxonomy: Taxonomy;
   library: LibraryItem[];
+  safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch
+  matching: {
+    calmFirst: string[]; // feeling ids that put the quick tool before any reading
+    headingFeeling: string;
+    headingFeelingTheme: string;
+    headingTheme: string;
+    headingNone: string;
+  };
   breathing: {
     title: string;
     stop: string;

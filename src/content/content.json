@@ -32,7 +32,9 @@
     "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone.",
     "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar.",
     "DRAFT for reviewer: taxonomy and library are new and follow Abel's feelings-to-content plan. Every definition and forWhom line is a draft. Example phrases will later match typed feelings on the phone; nothing typed is saved or sent. The screens do not use this data yet.",
-    "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built."
+    "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built.",
+    "DRAFT for reviewer: safety.crisisPhrases is new and must be reviewed by a qualified professional before launch. If typed text contains any of these phrases (ignoring capitals, punctuation and apostrophes), Steady skips the search and opens Need help now. Please add any phrases students really use.",
+    "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading."
   ],
   "home": {
     "title": "Steady",
@@ -890,6 +892,43 @@
       "durationMinutes": 3
     }
   ],
+  "safety": {
+    "crisisPhrases": [
+      "suicide",
+      "suicidal",
+      "kill myself",
+      "killing myself",
+      "end my life",
+      "ending my life",
+      "want to die",
+      "wanna die",
+      "better off dead",
+      "better off without me",
+      "no reason to live",
+      "dont want to be here",
+      "cant go on",
+      "hurt myself",
+      "hurting myself",
+      "harm myself",
+      "self harm",
+      "cutting myself",
+      "overdose",
+      "not safe at home",
+      "being abused",
+      "someone is hurting me"
+    ]
+  },
+  "matching": {
+    "calmFirst": [
+      "anxious",
+      "stressed",
+      "afraid"
+    ],
+    "headingFeeling": "Draft: for when you’re feeling {feeling}",
+    "headingFeelingTheme": "Draft: for when you’re feeling {feeling} about {theme}",
+    "headingTheme": "Draft: for when {theme} feels hard",
+    "headingNone": "Draft: a few things that might help"
+  },
   "demo": {
     "title": "Demo",
     "note": "For presenting only. Breathing is shortened and calls do not dial. Start the app normally to leave demo mode.",
