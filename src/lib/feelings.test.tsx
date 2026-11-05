@@ -119,8 +119,18 @@ describe('results', () => {
     expect(screen.getByText(m.notReplacement)).toBeOnTheScreen();
   });
 
-  test('unknown ids are ignored, and nothing found offers breathing, a person and all topics', async () => {
+  test('nothing recognised asks for the closest feeling, with every feeling as a button', async () => {
     show('made-up', 'also-made-up');
+    await render(<Results />);
+    expect(screen.getByText(m.closest)).toBeOnTheScreen();
+    expect(screen.queryByText(m.noMatch)).toBeNull();
+    await fireEvent.press(button(content.taxonomy.feelings[0].label));
+    expect(router.push).toHaveBeenCalledWith(results(content.taxonomy.feelings[0].id));
+    for (const f of content.taxonomy.feelings) expect(button(f.label)).toBeOnTheScreen();
+  });
+
+  test('a known feeling with no content offers breathing, a person and all topics', async () => {
+    show('angry');
     await render(<Results />);
     expect(screen.getByText(m.noMatch)).toBeOnTheScreen();
     await fireEvent.press(button(m.browse));

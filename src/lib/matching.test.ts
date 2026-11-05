@@ -35,6 +35,30 @@ describe('typed text to tags', () => {
     expect(tagsFromText('I am following the plan').feelings).not.toContain('sad');
   });
 
+  test.each([
+    ['gratefull', 'grateful'],
+    ['gratful', 'grateful'],
+    ['so stresed', 'stressed'],
+    ['feeling anxius', 'anxious'],
+    ['really lonley', 'lonely'],
+    ['overwhelmd', 'stressed'],
+  ])('tolerates a small typo: "%s" means %s', (typed, feeling) => {
+    expect(tagsFromText(typed).feelings).toContain(feeling);
+  });
+
+  test('short words never get typo matching', () => {
+    expect(tagsFromText('I feel lw').feelings).not.toContain('sad');
+    expect(tagsFromText('so mad').feelings).not.toContain('sad');
+  });
+
+  test('a word too far from any phrase is not guessed', () => {
+    expect(tagsFromText('greyfurt')).toEqual(none);
+  });
+
+  test('typo tolerance never reaches the crisis check', () => {
+    expect(isCrisis('suicde')).toBe(false); // exact list only; Renji adds real spellings to the list
+  });
+
   test('nothing recognisable gives no tags', () => {
     expect(tagsFromText('asdf qwerty')).toEqual(none);
   });

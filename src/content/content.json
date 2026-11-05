@@ -896,7 +896,8 @@
       "heading": "Draft: glad to hear it",
       "message": "Draft: hold on to this moment. You can come back any time.",
       "done": "Done"
-    }
+    },
+    "closest": "Draft: we didn’t quite catch that. Which of these is closest to how you feel?"
   },
   "demo": {
     "title": "Demo",

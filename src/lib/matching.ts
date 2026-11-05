@@ -23,6 +23,31 @@ function contains(text: string, phrase: string): boolean {
   return new RegExp(`(^| )${escape(p)}${loose ? '' : '(?= |$)'}`).test(normalise(text));
 }
 
+// Letters to add, remove, change or swap to turn a into b (optimal string alignment distance).
+function distance(a: string, b: string): number {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[a.length][b.length];
+}
+
+// A small typo in a single word of 5+ letters still matches: one letter off, two for 8+ letters.
+// Never used by the crisis check, which stays an exact, reviewable list.
+function nearlyContains(text: string, phrase: string): boolean {
+  const p = normalise(phrase);
+  if (p.includes(' ') || p.length < 5) return false;
+  const allowed = p.length >= 8 ? 2 : 1;
+  return normalise(text)
+    .split(' ')
+    .some((w) => Math.abs(w.length - p.length) <= allowed && distance(w, p) <= allowed);
+}
+
 // Safety first (Abel 1.8): checked before any search, and a match always wins.
 export function isCrisis(text: string): boolean {
   return content.safety.crisisPhrases.some((p) => contains(text, p));
@@ -31,7 +56,9 @@ export function isCrisis(text: string): boolean {
 // Keyword-to-tag dictionary (Abel 1.5): the taxonomy's labels and example phrases.
 export function tagsFromText(text: string): Tags {
   const match = (tags: Tag[]) =>
-    tags.filter((t) => [t.label, ...t.examplePhrases].some((p) => contains(text, p))).map((t) => t.id);
+    tags
+      .filter((t) => [t.label, ...t.examplePhrases].some((p) => contains(text, p) || nearlyContains(text, p)))
+      .map((t) => t.id);
   const { feelings, themes, needs } = content.taxonomy;
   return { feelings: match(feelings), themes: match(themes), needs: match(needs) };
 }

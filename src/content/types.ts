@@ -101,6 +101,7 @@ export type Content = {
     more: string;
     notReplacement: string;
     noMatch: string;
+    closest: string; // nothing recognised at all: ask for the closest feeling
     breathe: string;
     talk: string;
     browse: string;

@@ -24,6 +24,25 @@ export default function Results() {
   const good =
     tags.feelings.length > 0 && tags.feelings.every((id) => m.goodFeelings.includes(id)) && !tags.themes.length;
 
+  // Nothing recognised (or a typo too far to guess): one more tap instead of a dead end.
+  if (!tags.feelings.length && !tags.themes.length && !tags.needs.length) {
+    return (
+      <Screen>
+        <Text accessibilityRole="header" style={text.heading}>
+          {m.closest}
+        </Text>
+        {feelings.map((f) => (
+          <BigButton
+            key={f.id}
+            secondary
+            label={f.label}
+            onPress={() => router.push({ pathname: '/results', params: { f: f.id, t: '', n: '' } })}
+          />
+        ))}
+      </Screen>
+    );
+  }
+
   if (good) {
     return (
       <Screen actions={<BigButton label={m.good.done} onPress={() => router.dismissTo('/home')} />}>
