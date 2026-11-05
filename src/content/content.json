@@ -26,15 +26,14 @@
     "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified.",
     "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling.",
     "DRAFT for reviewer: topics is new. Its wording is copied from the team’s “Finding Support” guide. It needs approval from the counsellor reviewer, and a pastor should check the faith text and Bible references.",
-    "DRAFT for reviewer: topics are reached from the gentle check-in result (results.gentle.topics). The faith text on each topic is hidden until the student taps faithShow, and that choice is never saved.",
     "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme.",
-    "DRAFT for reviewer: the check-in moods now follow the survey’s top five. Each mood’s topic sends the student straight to that support topic; a mood without a topic, or with one that does not exist, shows the gentle message instead. Lonely and Low were replaced by these five. Struggling still always opens Need help now.",
     "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone.",
     "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar.",
     "DRAFT for reviewer: taxonomy and library are new and follow Abel's feelings-to-content plan. Every definition and forWhom line is a draft. Example phrases will later match typed feelings on the phone; nothing typed is saved or sent. The screens do not use this data yet.",
     "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built.",
     "DRAFT for reviewer: safety.crisisPhrases is new and must be reviewed by a qualified professional before launch. If typed text contains any of these phrases (ignoring capitals, punctuation and apostrophes), Steady skips the search and opens Need help now. Please add any phrases students really use.",
-    "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading."
+    "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading.",
+    "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed."
   ],
   "home": {
     "title": "Steady",
@@ -65,67 +64,14 @@
     "inDanger": "Draft: if you are in danger, contact local emergency services."
   },
   "checkIn": {
-    "prompt": "How are you today?",
-    "moods": [
-      {
-        "id": "good",
-        "label": "Good",
-        "group": "kind"
-      },
-      {
-        "id": "okay",
-        "label": "Okay",
-        "group": "kind"
-      },
-      {
-        "id": "stressed",
-        "label": "Stressed or overwhelmed",
-        "group": "gentle",
-        "topic": "stress"
-      },
-      {
-        "id": "anxious",
-        "label": "Anxious or worried",
-        "group": "gentle",
-        "topic": "anxiety"
-      },
-      {
-        "id": "exams",
-        "label": "Exam or study pressure",
-        "group": "gentle",
-        "topic": "exams"
-      },
-      {
-        "id": "faith",
-        "label": "Questions about faith",
-        "group": "gentle",
-        "topic": "faith"
-      },
-      {
-        "id": "down",
-        "label": "Feeling down",
-        "group": "gentle",
-        "topic": "down"
-      },
-      {
-        "id": "struggling",
-        "label": "Struggling",
-        "group": "urgent"
-      }
-    ]
-  },
-  "results": {
-    "kind": {
-      "message": "Draft: glad you checked in.",
-      "primary": "Done",
-      "secondary": "Calm moment"
-    },
-    "gentle": {
-      "message": "Draft: that sounds heavy. Would you like to breathe, or arrange a time to talk with someone?",
-      "primary": "Breathe",
-      "secondary": "Arrange a time to talk",
-      "topics": "Find ideas that may help"
-    }
+    "prompt": "How are you feeling today?",
+    "feelingsHint": "Tap the one closest to how you feel.",
+    "typeLabel": "Or put it in your own words",
+    "typePlaceholder": "For example: I can’t stop worrying about exams",
+    "typeNote": "Draft: you can also use your keyboard’s microphone to speak. Nothing you type is saved or sent.",
+    "find": "Find what might help",
+    "unsafe": "I don’t feel safe right now",
+    "unsafeHint": "Opens Need help now"
   },
   "topics": {
     "prompt": "Draft: what's weighing on you?",
@@ -927,7 +873,21 @@
     "headingFeeling": "Draft: for when you’re feeling {feeling}",
     "headingFeelingTheme": "Draft: for when you’re feeling {feeling} about {theme}",
     "headingTheme": "Draft: for when {theme} feels hard",
-    "headingNone": "Draft: a few things that might help"
+    "headingNone": "Draft: a few things that might help",
+    "more": "More like this",
+    "notReplacement": "Draft: these are not a replacement for professional help. If you need someone right now, use Need help now.",
+    "noMatch": "Draft: thank you for telling us. We don’t have something written for this yet, but these might still help.",
+    "breathe": "Breathe for a minute",
+    "talk": "Arrange a time to talk",
+    "browse": "See all topics",
+    "types": {
+      "tool": "Tool",
+      "reading": "Reading",
+      "scripture": "Scripture",
+      "video": "Video",
+      "audio": "Audio"
+    },
+    "minutes": "{n} min"
   },
   "demo": {
     "title": "Demo",

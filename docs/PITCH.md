@@ -32,10 +32,11 @@ Tap **I am 18 or older**.
 **Home.** *"Three choices, nothing else. No streaks, no points, no notifications nagging you to come back. And top right, on every screen, there's Need help now. It's one tap from anywhere."*
 Tap **Daily check-in**.
 
-**Check-in.** *"How are you today? These five feelings come straight from our student survey. Our student is stressed."*
-Tap **Stressed or overwhelmed**.
+**Check-in.** *"How are you feeling today? They can tap a feeling, or say it in their own words."* Scroll to the box and type *"I keep panicking about my exams"*. *"They can also speak, with the keyboard's microphone. What they type is never saved or sent; the phone turns it into a few tags and forgets it."*
+Tap **Find what might help**.
 
-**Help for that feeling.** *"The feeling they tap decides what comes next. Here: a few practical things to try, which our counsellor reviewer will approve."* Scroll, then tap **If Christian faith is part of your life**. *"The Christian encouragement is there, but only if they want it. Nothing about that choice is saved."*
+**Help for that feeling.** *"The words decide what comes next: 'panicking' means anxious, 'exams' means study. A quick breathing tool comes first because they sound anxious, then a short reading."* Point at the note at the bottom: *"And it always says this is not a replacement for professional help. If someone types something like 'I can't go on', Steady skips all of this and opens Need help now."*
+Tap **Anxiety or constant worry**, scroll, then tap **If Christian faith is part of your life**. *"The Christian encouragement is there, but only if they want it."*
 Tap **Breathe for a minute**.
 
 **Calm moment.** *"A short breathing exercise: in, hold, out. In the real app it's about a minute; we've shortened it for today."* While it runs: *"It works with no internet at all. And the mood they just tapped? It was never saved. Close the app and it's gone."*

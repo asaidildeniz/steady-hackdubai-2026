@@ -1,9 +1,5 @@
 import data from './content.json';
 
-export type MoodGroup = 'kind' | 'gentle' | 'urgent';
-
-export type Mood = { id: string; label: string; group: MoodGroup; topic?: string }; // topic: a topics.list id
-
 export type Contact = {
   id: string;
   name: string;
@@ -66,10 +62,15 @@ export type Content = {
     back: string;
   };
   adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
-  checkIn: { prompt: string; moods: Mood[] };
-  results: {
-    kind: { message: string; primary: string; secondary: string };
-    gentle: { message: string; primary: string; secondary: string; topics: string };
+  checkIn: {
+    prompt: string;
+    feelingsHint: string;
+    typeLabel: string;
+    typePlaceholder: string;
+    typeNote: string;
+    find: string;
+    unsafe: string;
+    unsafeHint: string;
   };
   topics: {
     prompt: string;
@@ -95,6 +96,14 @@ export type Content = {
     headingFeelingTheme: string;
     headingTheme: string;
     headingNone: string;
+    more: string;
+    notReplacement: string;
+    noMatch: string;
+    breathe: string;
+    talk: string;
+    browse: string;
+    types: Record<LibraryItem['type'], string>;
+    minutes: string;
   };
   breathing: {
     title: string;

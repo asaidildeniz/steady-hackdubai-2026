@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import CheckInResult from '../../app/check-in-result';
 import Topic from '../../app/topic';
 import Topics from '../../app/topics';
 import { content } from '@/content/types';
@@ -27,21 +26,6 @@ const button = (name: string) => screen.getByRole('button', { name });
 
 beforeEach(() => AsyncStorage.clear());
 afterEach(() => jest.clearAllMocks());
-
-describe('reaching the topics', () => {
-  test('a gentle check-in offers the topics', async () => {
-    jest.mocked(useLocalSearchParams).mockReturnValue({ group: 'gentle' });
-    await render(<CheckInResult />);
-    await fireEvent.press(button(content.results.gentle.topics));
-    expect(router.push).toHaveBeenCalledWith('/topics');
-  });
-
-  test('a kind check-in does not', async () => {
-    jest.mocked(useLocalSearchParams).mockReturnValue({ group: 'kind' });
-    await render(<CheckInResult />);
-    expect(screen.queryByRole('button', { name: content.results.gentle.topics })).toBeNull();
-  });
-});
 
 describe('the topic list', () => {
   test('content has five topics with unique ids and something to read', () => {

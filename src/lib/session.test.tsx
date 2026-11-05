@@ -4,11 +4,11 @@ import { router, useLocalSearchParams } from 'expo-router';
 import type { ReactElement } from 'react';
 import Breathing from '../../app/breathing';
 import CheckIn from '../../app/check-in';
-import CheckInResult from '../../app/check-in-result';
 import Finished from '../../app/finished';
 import Home from '../../app/home';
 import Index from '../../app/index';
 import NeedHelp from '../../app/need-help';
+import Results from '../../app/results';
 import TalkToSomeone from '../../app/talk-to-someone';
 import Topic from '../../app/topic';
 import Topics from '../../app/topics';
@@ -62,9 +62,9 @@ test('a whole session leaves only steady.welcomeSeen in storage', async () => {
 
   await tapEverything(<Home />);
   await tapEverything(<CheckIn />);
-  for (const group of ['kind', 'gentle']) {
-    jest.mocked(useLocalSearchParams).mockReturnValue({ group });
-    await tapEverything(<CheckInResult />);
+  for (const f of [...content.taxonomy.feelings.map((x) => x.id), 'unknown']) {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ f, t: 'study', n: '' });
+    await tapEverything(<Results />);
   }
   await tapEverything(<Topics />);
   for (const { id } of content.topics.list) {
