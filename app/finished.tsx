@@ -1,10 +1,11 @@
 import { router, useFocusEffect } from 'expo-router';
 import { type ComponentRef, useCallback, useEffect, useRef } from 'react';
-import { AccessibilityInfo, findNodeHandle, Text } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
+import { Droplet } from '@/components/Droplet';
 import { Screen } from '@/components/Screen';
 import { content, type FinishedOption } from '@/content/types';
-import { text } from '@/theme';
+import { colors, space, text } from '@/theme';
 
 // Routing lives in each option's `next` in content.json; anything unexpected goes to a person, the safe side.
 const go = (next: FinishedOption['next']) =>
@@ -24,7 +25,7 @@ export default function Finished() {
     }, []),
   );
 
-  // Start screen readers on the question, not on the Need help pill, once the screen has slid in.
+  // Start screen readers on the question once the screen has slid in.
   useEffect(() => {
     const id = setTimeout(() => {
       const tag = question.current && findNodeHandle(question.current);
@@ -42,15 +43,31 @@ export default function Finished() {
 
   return (
     <Screen
-      // Equal weight, like the check-in moods: no answer to a feelings question is the expected one.
+      calm
+      // As in the v3 design: the first answer is the teal one. Both go somewhere kind; neither is wrong.
       actions={options.map((o, i) => (
-        <BigButton key={`${o.label}-${i}`} label={o.label} hint={o.hint || undefined} onPress={() => answer(o.next)} />
+        <BigButton
+          key={`${o.label}-${i}`}
+          secondary={i > 0}
+          label={o.label}
+          hint={o.hint || undefined}
+          onPress={() => answer(o.next)}
+        />
       ))}
     >
-      {!!c.message?.trim() && <Text style={text.note}>{c.message}</Text>}
-      <Text ref={question} accessibilityRole="header" style={text.heading}>
+      <View style={styles.hero}>
+        <Droplet size={130} />
+      </View>
+      <Text ref={question} accessibilityRole="header" style={[text.heading, styles.center]}>
         {c.prompt}
       </Text>
+      {!!c.message?.trim() && <Text style={[text.body, styles.center, styles.soft]}>{c.message}</Text>}
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  hero: { alignItems: 'center', paddingTop: space.screen * 2, paddingBottom: space.gap },
+  center: { textAlign: 'center' },
+  soft: { color: colors.muted },
+});

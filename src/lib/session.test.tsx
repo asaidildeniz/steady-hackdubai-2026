@@ -10,6 +10,7 @@ import Index from '../../app/index';
 import NeedHelp from '../../app/need-help';
 import Results from '../../app/results';
 import TalkToSomeone from '../../app/talk-to-someone';
+import Untangle from '../../app/untangle';
 import Topic from '../../app/topic';
 import Topics from '../../app/topics';
 import Welcome from '../../app/welcome';
@@ -19,7 +20,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 jest.mock('expo-router', () => ({
-  router: { push: jest.fn(), replace: jest.fn(), dismissTo: jest.fn() },
+  router: { push: jest.fn(), replace: jest.fn(), dismissTo: jest.fn(), back: jest.fn() },
   useLocalSearchParams: jest.fn(),
   useFocusEffect: jest.fn(),
   Redirect: () => null,
@@ -78,6 +79,7 @@ test('a whole session leaves only steady.welcomeSeen in storage', async () => {
   await breathing.unmount();
   jest.useRealTimers();
 
+  await tapEverything(<Untangle />);
   await tapEverything(<Finished />);
   await tapEverything(<TalkToSomeone />);
   await tapEverything(<NeedHelp />);

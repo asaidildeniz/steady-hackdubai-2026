@@ -4,7 +4,6 @@ import { router, useLocalSearchParams } from 'expo-router';
 import CheckIn from '../../app/check-in';
 import Results from '../../app/results';
 import { content } from '@/content/types';
-import { heading } from '@/lib/matching';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -12,7 +11,10 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), dismissTo: jest.fn() },
   useLocalSearchParams: jest.fn(),
-  Redirect: () => null,
+  Redirect: ({ href }: { href: string }) => {
+    const { Text } = require('react-native');
+    return <Text>{`redirect:${href}`}</Text>;
+  },
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = require('react-native');
@@ -97,6 +99,13 @@ describe("Abel's check-in", () => {
     await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('stressed')));
   });
 
+  test('typed words with no feeling in them open Breathe', async () => {
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'qwerty asdf');
+    await fireEvent.press(button(c.find));
+    await waitFor(() => expect(router.push).toHaveBeenCalledWith('/breathing'));
+  });
+
   test('the box is cleared after searching', async () => {
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'stressed');
@@ -105,74 +114,85 @@ describe("Abel's check-in", () => {
   });
 });
 
-describe('results', () => {
+describe('feeling pages', () => {
+  const fp = content.feelingPages;
+  const tools = content.tools;
   const show = (f = '', t = '', n = '') => jest.mocked(useLocalSearchParams).mockReturnValue({ f, t, n });
+  const group = (id: string) => fp.groups.find((g) => g.id === id)!;
 
-  test('shows the heading and the cards, quick tool first for anxious', async () => {
-    show('anxious');
-    await render(<Results />);
-    expect(screen.getByText(heading({ feelings: ['anxious'], themes: [], needs: [] }))).toBeOnTheScreen();
-    const cards = screen.getAllByRole('button').map((b) => b.props.accessibilityLabel as string);
-    const tool = cards.findIndex((l) => l?.startsWith('Calm moment'));
-    const reading = cards.findIndex((l) => l?.startsWith('Anxiety or constant worry'));
-    expect(tool).toBeGreaterThanOrEqual(0);
-    expect(tool).toBeLessThan(reading);
+  test('every one of Abel\'s feelings opens exactly one page', () => {
+    for (const f of content.taxonomy.feelings) {
+      expect(fp.groups.filter((g) => g.feelings.includes(f.id))).toHaveLength(1);
+    }
   });
 
-  test('a tool card opens its screen and a reading card opens its topic', async () => {
+  test('each page offers all three tools once, first tool as in the design', () => {
+    for (const g of fp.groups) expect([...g.tools].sort()).toEqual(['breathe', 'reachOut', 'untangle']);
+    expect(group('anxious').tools[0]).toBe('breathe');
+    expect(group('overwhelmed').tools[0]).toBe('untangle');
+    expect(group('low').tools[0]).toBe('reachOut');
+    expect(group('okay').tools[0]).toBe('breathe');
+  });
+
+  test.each([
+    ['anxious', 'anxious'],
+    ['afraid', 'anxious'],
+    ['stressed', 'overwhelmed'],
+    ['lonely', 'low'],
+    ['distant-from-god', 'low'],
+    ['grateful', 'okay'],
+  ])('%s opens the %s page', async (feeling, id) => {
+    show(feeling);
+    await render(<Results />);
+    expect(screen.getByText(group(id).tag)).toBeOnTheScreen();
+    expect(screen.getByText(group(id).heading)).toBeOnTheScreen();
+  });
+
+  test('a good feeling mixed with a hard one opens the hard one\'s page', async () => {
+    show('stressed,grateful');
+    await render(<Results />);
+    expect(screen.getByText(group('overwhelmed').heading)).toBeOnTheScreen();
+  });
+
+  test('Try this first starts its tool; Or try opens the other two', async () => {
     show('anxious');
     await render(<Results />);
-    const card = (start: string) =>
-      screen.getAllByRole('button').find((b) => (b.props.accessibilityLabel as string)?.startsWith(start))!;
-    await fireEvent.press(card('Calm moment'));
+    expect(screen.getByText(fp.tryFirst)).toBeOnTheScreen();
+    await fireEvent.press(button(`${fp.start} ${tools.breathe.title}`));
     expect(router.push).toHaveBeenCalledWith('/breathing');
-    await fireEvent.press(card('Anxiety or constant worry'));
+    await fireEvent.press(button(tools.untangle.title));
+    expect(router.push).toHaveBeenCalledWith('/untangle');
+    await fireEvent.press(button(tools.reachOut.title));
+    expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
+  });
+
+  test('the overwhelmed page starts with Untangle', async () => {
+    show('stressed');
+    await render(<Results />);
+    await fireEvent.press(button(`${fp.start} ${tools.untangle.title}`));
+    expect(router.push).toHaveBeenCalledWith('/untangle');
+  });
+
+  test('matching readings follow under Or try and open their topic', async () => {
+    show('anxious');
+    await render(<Results />);
+    const reading = screen
+      .getAllByRole('button')
+      .find((b) => (b.props.accessibilityLabel as string)?.startsWith('Anxiety or constant worry'))!;
+    await fireEvent.press(reading);
     expect(router.push).toHaveBeenCalledWith({ pathname: '/topic', params: { id: 'anxiety' } });
   });
 
   test('always says it is not a replacement for professional help', async () => {
-    show('anxious');
+    show('sad');
     await render(<Results />);
     expect(screen.getByText(m.notReplacement)).toBeOnTheScreen();
   });
 
-  test('a good feeling gets a kind reply and Done, never the "nothing found" options', async () => {
-    show('grateful');
+  test('no recognisable feeling opens Breathe, a calm place to start', async () => {
+    show('made-up', 'study');
     await render(<Results />);
-    expect(screen.getByText(m.good.message)).toBeOnTheScreen();
-    expect(screen.queryByText(m.noMatch)).toBeNull();
-    expect(screen.queryByRole('button', { name: m.talk })).toBeNull();
-    await fireEvent.press(button(m.good.done));
-    expect(router.dismissTo).toHaveBeenCalledWith('/home');
-  });
-
-  test('a good feeling mixed with a hard one gets the normal cards', async () => {
-    show('grateful,stressed');
-    await render(<Results />);
-    expect(screen.queryByText(m.good.message)).toBeNull();
-    expect(screen.getByText(m.notReplacement)).toBeOnTheScreen();
-  });
-
-  test('nothing recognised asks for the closest feeling, with every feeling as a button', async () => {
-    show('made-up', 'also-made-up');
-    await render(<Results />);
-    expect(screen.getByText(m.closest)).toBeOnTheScreen();
-    expect(screen.queryByText(m.noMatch)).toBeNull();
-    await fireEvent.press(button(content.taxonomy.feelings[0].label));
-    expect(router.push).toHaveBeenCalledWith(results(content.taxonomy.feelings[0].id));
-    for (const f of content.taxonomy.feelings) expect(button(f.label)).toBeOnTheScreen();
-  });
-
-  test('a known feeling with no content offers breathing, a person and all topics', async () => {
-    show('angry');
-    await render(<Results />);
-    expect(screen.getByText(m.noMatch)).toBeOnTheScreen();
-    await fireEvent.press(button(m.browse));
-    expect(router.push).toHaveBeenCalledWith('/topics');
-    await fireEvent.press(button(m.breathe));
-    expect(router.push).toHaveBeenCalledWith('/breathing');
-    await fireEvent.press(button(m.talk));
-    expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
+    expect(screen.getByText('redirect:/breathing')).toBeOnTheScreen();
   });
 });
 

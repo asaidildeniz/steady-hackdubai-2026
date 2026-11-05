@@ -1,4 +1,4 @@
-import { content, type LibraryItem, type Tag } from '@/content/types';
+import { content, type FeelingGroup, type LibraryItem, type Tag } from '@/content/types';
 
 // Abel's Level 1 matching, entirely on the phone: no network, and typed text is never stored.
 
@@ -106,4 +106,14 @@ export function heading({ feelings, themes }: Tags): string {
   if (feeling) return m.headingFeeling.replace('{feeling}', feeling);
   if (theme) return m.headingTheme.replace('{theme}', theme);
   return m.headingNone;
+}
+
+// The v3 feeling page for these tags: the page of the first feeling found, or null when there is no feeling
+// (the app then opens Breathe, a calm place to start).
+export function groupFor({ feelings }: Tags): FeelingGroup | null {
+  for (const f of feelings) {
+    const g = content.feelingPages.groups.find((group) => group.feelings.includes(f));
+    if (g) return g;
+  }
+  return null;
 }

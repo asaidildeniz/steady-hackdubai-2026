@@ -39,9 +39,20 @@ export type LibraryItem = {
   status: 'draft' | 'inReview' | 'approved' | 'published' | 'retired';
 };
 
+export type ToolId = 'breathe' | 'untangle' | 'reachOut';
+
+export type FeelingGroup = {
+  id: string;
+  tag: string;
+  heading: string;
+  body: string;
+  tools: ToolId[]; // first is "Try this first"
+  feelings: string[]; // taxonomy feeling ids that open this page
+};
+
 export type HelpNumber ={ label: string; number: string; verified: boolean };
 
-export type DemoRoute = '/check-in' | '/topics' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
+export type DemoRoute = '/check-in' | '/topics' | '/untangle' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
 
 export type Content = {
   reviewStatus: string;
@@ -90,6 +101,46 @@ export type Content = {
     disclaimer: string;
     list: Topic[];
   };
+  tools: Record<ToolId, { title: string; body: string }>;
+  feelingPages: { tryFirst: string; orTry: string; start: string; readingMeta: string; groups: FeelingGroup[] };
+  untangle: {
+    title: string;
+    intro: string;
+    begin: string;
+    next: string;
+    done: string;
+    another: string;
+    stepOf: string;
+    steps: { title: string; body: string }[]; // the three stages on the intro
+    useExample: string;
+    name: { title: string; body: string; label: string; placeholder: string; examplesLabel: string; examples: string[]; note: string };
+    stepBack: { title: string; body: string; prefix: string; further: string; prefix2: string; note: string; button: string };
+    knowGuess: {
+      title: string;
+      body: string;
+      know: string;
+      guess: string;
+      moreLabel: string;
+      morePlaceholder: string;
+      allKnown: string;
+      guessOne: string;
+      guessMany: string;
+    };
+    friend: { title: string; body: string; label: string; placeholder: string; example: string };
+    balanced: { title: string; body: string; label: string; placeholder: string; example: string };
+    nextStep: {
+      title: string;
+      body: string;
+      label: string;
+      placeholder: string;
+      example: string;
+      whenLabel: string;
+      when: string[];
+      see: string;
+    };
+    summary: { heading: string; thought: string; balanced: string; step: string; returns: string; help: string };
+  };
+
   taxonomy: Taxonomy;
   library: LibraryItem[];
   safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch

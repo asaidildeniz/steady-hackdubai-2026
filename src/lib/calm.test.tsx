@@ -205,40 +205,40 @@ describe('S6 Breathing', () => {
 describe('S7 Finished', () => {
   test('Better returns Home and nothing is saved', async () => {
     await render(<Finished />);
-    await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[0].label }));
     expect(router.dismissTo).toHaveBeenCalledWith('/home');
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
 
   test('Still hard opens Talk to someone and nothing is saved', async () => {
     await render(<Finished />);
-    await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[1].label }));
     expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
 
   test('coming back from Talk to someone, the answers work again', async () => {
     await render(<Finished />);
-    await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[1].label }));
     await act(async () => mockOnFocus?.());
-    await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[0].label }));
     expect(router.dismissTo).toHaveBeenCalledWith('/home');
   });
 
   test('routing follows each option\'s next, not its position', async () => {
     content.finished.options = [...shipped.finished.options].reverse();
     await render(<Finished />);
-    await fireEvent.press(screen.getByRole('button', { name: 'Still hard' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[1].label }));
     expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
     expect(router.dismissTo).not.toHaveBeenCalled();
   });
 
   test('a fast second tap does nothing: Talk to someone opens once', async () => {
     await render(<Finished />);
-    const stillHard = screen.getByRole('button', { name: 'Still hard' });
+    const stillHard = screen.getByRole('button', { name: shipped.finished.options[1].label });
     await fireEvent.press(stillHard);
     await fireEvent.press(stillHard);
-    await fireEvent.press(screen.getByRole('button', { name: 'Better' }));
+    await fireEvent.press(screen.getByRole('button', { name: shipped.finished.options[0].label }));
     expect(router.push).toHaveBeenCalledTimes(1);
     expect(router.dismissTo).not.toHaveBeenCalled();
   });
@@ -258,7 +258,7 @@ describe('S7 Finished', () => {
     content.finished.options = [{ label: '  ', next: 'home' }, ...shipped.finished.options];
     await render(<Finished />);
     expect(screen.getAllByRole('button').map((b) => b.props.accessibilityLabel)).not.toContain('  ');
-    expect(screen.getByRole('button', { name: 'Better' })).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: shipped.finished.options[0].label })).toBeOnTheScreen();
   });
 
   test('the shipped content has at least one answer with a label and a known destination', () => {

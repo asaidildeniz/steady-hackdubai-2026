@@ -168,7 +168,7 @@ describe('Draft labels', () => {
     dropDraftLabels(copy);
     const { reviewStatus, reviewNotes, ...shown } = copy; // reviewer-only fields, never on screen
     expect(strings(shown).filter((s) => /^draft:/i.test(s))).toEqual([]);
-    expect(copy.finished.message).toBe('The minute is over. Take your time.');
+    expect(copy.finished.message).toBe('Whatever the answer is, it’s okay.');
     expect(copy.breathing.phases).toEqual(content.breathing.phases); // nothing else changes
   });
 });
