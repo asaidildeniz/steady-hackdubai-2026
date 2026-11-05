@@ -23,9 +23,12 @@ async function load(): Promise<Matcher | null> {
   const started = Date.now();
   status = { state: 'loading' };
   try {
-    // Expo Go can't run the model: skip before touching the 90 MB file.
-    const Constants = require('expo-constants').default;
-    if (Constants.executionEnvironment === 'storeClient' || Constants.appOwnership === 'expo') {
+    // Expo Go (or any build without the model's native parts) can't run it. Check the native modules
+    // before loading the library: in development, a library that fails while loading is reported as a
+    // crash even inside this try, so it must never be required where it can't work.
+    const { TurboModuleRegistry } = require('react-native');
+    const native = ['ReactNativeBlobUtil', 'RnExecutorch', 'ETInstaller'].every((m) => TurboModuleRegistry.get(m));
+    if (!native) {
       status = { state: 'off' };
       return null;
     }

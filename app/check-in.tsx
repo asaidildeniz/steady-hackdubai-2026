@@ -1,19 +1,21 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
+import { Chip, LogoRow } from '@/components/Bits';
+import { Droplet } from '@/components/Droplet';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { meaningTags } from '@/lib/embedder';
 import { isCrisis, type Tags, tagsFromText } from '@/lib/matching';
 import { mergeTags } from '@/lib/meaning';
-import { colors, space, text, type } from '@/theme';
+import { colors, fonts, radius, space, text, type } from '@/theme';
 
 // Only tag ids travel to the results screen; what someone typed never leaves this screen.
 const resultsHref = ({ feelings, themes, needs }: Tags) =>
   ({ pathname: '/results', params: { f: feelings.join(','), t: themes.join(','), n: needs.join(',') } }) as const;
 
-// S4, after Abel's plan: tap a feeling, or say it in your own words. Nothing is saved or sent.
+// Home (v3): say it in your own words, or tap a chip. Nothing is saved or sent.
 export default function CheckIn() {
   const c = content.checkIn;
   const [typed, setTyped] = useState('');
@@ -29,24 +31,15 @@ export default function CheckIn() {
   };
 
   return (
-    <Screen
-      actions={
-        <BigButton secondary label={c.unsafe} hint={c.unsafeHint} onPress={() => router.push('/need-help')} />
-      }
-    >
+    <Screen>
+      <LogoRow />
+      <View style={styles.hero}>
+        <Droplet size={130} />
+      </View>
       <Text accessibilityRole="header" style={text.heading}>
         {c.prompt}
       </Text>
-      <Text style={text.note}>{c.feelingsHint}</Text>
-      {content.taxonomy.feelings.map((f) => (
-        <BigButton
-          key={f.id}
-          secondary
-          label={f.label}
-          onPress={() => router.push(resultsHref({ feelings: [f.id], themes: [], needs: [] }))}
-        />
-      ))}
-      <Text style={text.title}>{c.typeLabel}</Text>
+      <Text style={[text.body, styles.soft]}>{c.feelingsHint}</Text>
       <TextInput
         accessibilityLabel={c.typeLabel}
         value={typed}
@@ -57,21 +50,45 @@ export default function CheckIn() {
         maxLength={300}
         style={styles.input}
       />
-      <Text style={text.note}>{c.typeNote}</Text>
+      <View style={styles.chips}>
+        {c.chips.map((chip) => (
+          <Chip
+            key={chip.feeling}
+            label={chip.label}
+            onPress={() => router.push(resultsHref({ feelings: [chip.feeling], themes: [], needs: [] }))}
+          />
+        ))}
+      </View>
       <BigButton label={c.find} disabled={!typed.trim()} onPress={find} />
+      <Text style={text.note}>{c.typeNote}</Text>
+      {/* Quiet, but always here: the direct way to emergency help. */}
+      <Pressable
+        onPress={() => router.push('/need-help')}
+        accessibilityRole="button"
+        accessibilityLabel={c.unsafe}
+        accessibilityHint={c.unsafeHint}
+        style={styles.unsafe}
+      >
+        <Text style={styles.unsafeText}>{c.unsafe}</Text>
+      </Pressable>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  hero: { alignItems: 'center', paddingVertical: space.gap / 2 },
+  soft: { color: colors.muted },
   input: {
-    minHeight: space.tap * 2,
-    borderWidth: 2,
-    borderColor: colors.text,
-    borderRadius: 16,
-    padding: space.gap,
+    minHeight: 120,
+    backgroundColor: colors.surface,
+    borderRadius: radius.card,
+    padding: space.screen - 4,
     fontSize: type.body,
+    fontFamily: fonts.regular,
     color: colors.text,
     textAlignVertical: 'top',
   },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.gap / 2 + 2 },
+  unsafe: { minHeight: 44, justifyContent: 'center', alignSelf: 'center' },
+  unsafeText: { fontSize: type.small, fontFamily: fonts.medium, color: colors.muted, textDecorationLine: 'underline' },
 });

@@ -37,7 +37,7 @@ beforeEach(() => AsyncStorage.clear());
 afterEach(() => jest.clearAllMocks());
 
 describe("Abel's check-in", () => {
-  test.each(content.taxonomy.feelings.map((f) => [f.label, f.id]))('tapping "%s" opens its results', async (label, id) => {
+  test.each(c.chips.map((chip) => [chip.label, chip.feeling]))('tapping the "%s" chip opens its results', async (label, id) => {
     await render(<CheckIn />);
     await fireEvent.press(button(label));
     expect(router.push).toHaveBeenCalledWith(results(id));

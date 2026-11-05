@@ -11,7 +11,7 @@ export type Contact = {
   verified: boolean;
 };
 
-export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'hold' | 'shrink' };
+export type BreathPhase = { label: string; seconds: number; motion: 'grow' | 'hold' | 'shrink'; short?: string }; // short: "In", "Hold", "Out"
 
 export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hint?: string };
 
@@ -46,22 +46,24 @@ export type DemoRoute = '/check-in' | '/topics' | '/breathing' | '/finished' | '
 export type Content = {
   reviewStatus: string;
   reviewNotes: string[];
-  home: { title: string; checkIn: string; calm: string; talk: string };
-  needHelpButton: { label: string; hint: string };
+  home: { title: string };
+  common: { back: string };
   welcome: {
     title: string;
     body: string;
     basis?: string;
     notEmergency: string;
     continue: string;
+    ageTag: string;
     ageQuestion: string;
+    ageBody: string;
     adult: string;
     underAge: string;
     inDanger: string;
     answerStays: string;
     back: string;
   };
-  adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
+  adultsOnly: { message: string; whereToGetHelp: string; cardTitle: string; inDanger?: string; goBack: string };
   checkIn: {
     prompt: string;
     feelingsHint: string;
@@ -71,6 +73,7 @@ export type Content = {
     find: string;
     unsafe: string;
     unsafeHint: string;
+    chips: { label: string; feeling: string }[]; // feeling: a taxonomy feeling id
   };
   topics: {
     prompt: string;
@@ -111,12 +114,21 @@ export type Content = {
   };
   breathing: {
     title: string;
-    stop: string;
     intro: string;
-    progress: string;
     phases: BreathPhase[];
-    cycles: number;
+    minutes: number[]; // the lengths offered, in minutes
+    defaultMinutes: number;
+    pause: string;
+    resume: string;
+    stop: string;
+    length: string;
+    lengthOption: string; // "{n} min"
+    lengthHint: string;
+    timeLeft: string; // "{time} left"
+    seconds: string; // "{n}s"
+    patternLabel: string; // "{label} {n} seconds", read out once for the whole pattern
   };
+
   finished: { message?: string; prompt: string; options: FinishedOption[] };
   talkToSomeone: {
     title: string;

@@ -41,7 +41,6 @@ describe('S0 launch gate', () => {
 describe('S1 age gate', () => {
   async function reachAgeQuestion() {
     await render(<Welcome />);
-    expect(screen.queryByRole('button', { name: content.needHelpButton.label })).toBeNull();
     await fireEvent.press(screen.getByRole('button', { name: w.continue }));
     expect(screen.getByText(w.ageQuestion)).toBeOnTheScreen();
   }
@@ -121,11 +120,13 @@ describe('S1 age gate', () => {
 });
 
 describe('S2 adults only', () => {
-  test('shows the kind message and where to get help, with no buttons and no storage', async () => {
+  test('shows the kind message and where to get help, and Go back returns to Welcome without storing anything', async () => {
     await render(<AdultsOnly />);
     expect(screen.getByText(content.adultsOnly.message)).toBeOnTheScreen();
     expect(screen.getByText(content.adultsOnly.whereToGetHelp)).toBeOnTheScreen();
-    expect(screen.queryAllByRole('button')).toHaveLength(0);
+    await fireEvent.press(screen.getByRole('button', { name: content.adultsOnly.goBack }));
+    expect(router.replace).toHaveBeenCalledWith('/welcome');
+    expect(router.push).not.toHaveBeenCalled();
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
 

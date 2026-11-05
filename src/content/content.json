@@ -36,45 +36,65 @@
     "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed.",
     "DRAFT for reviewer: matching.goodFeelings lists the feelings that get a kind reply (matching.good) instead of help options. Any approved content tagged with them still shows below the reply.",
     "matching.meaningThreshold (0 to 1) is how close a typed sentence must be in meaning to a feeling or theme for the on-phone model to add it. Higher means stricter. Tune it with the golden set before changing.",
-    "DRAFT for reviewer: some feelings now have sentence-like example phrases, because the on-phone model matches whole thoughts better than single words. The golden set (src/content/golden.json) chose meaningThreshold 0.40: 21 of 30 right and no false alarms before these phrases were added."
+    "DRAFT for reviewer: some feelings now have sentence-like example phrases, because the on-phone model matches whole thoughts better than single words. The golden set (src/content/golden.json) chose meaningThreshold 0.40: 21 of 30 right and no false alarms before these phrases were added.",
+    "DRAFT for reviewer: the welcome, age question, under-18 screen and Home now use the wording of the v3 screen design. Home is the check-in: a typing box and four chips (Anxious, Overwhelmed, Low, Okay). The under-18 screen now has a Go back button, as in the design.",
+    "DRAFT for reviewer: Breathe now follows the v3 design. The student can choose 1, 2 or 3 minutes; a longer session repeats the same breath (4 in, 4 hold, 6 out) and never makes one breath longer. Each step is also capped to a comfortable range in code: inhale 2 to 7 seconds, hold up to 7, exhale 2 to 10."
   ],
-  "home": {
-    "title": "Steady",
-    "checkIn": "Daily check-in",
-    "calm": "Calm moment",
-    "talk": "Arrange a time to talk"
+  "common": {
+    "back": "Back"
   },
-  "needHelpButton": {
-    "label": "Need help now",
-    "hint": "Opens the Need help now screen"
+  "home": {
+    "title": "Steady"
   },
   "welcome": {
-    "title": "Gentle support that stays on your phone",
-    "body": "Steady is for adult students. No account needed.",
+    "title": "A calm place to catch your breath",
+    "body": "Draft: breathe, untangle your thoughts, or reach out. No account needed.",
     "basis": "Draft: Steady’s encouragement comes from Christian values, and it is for everyone.",
     "notEmergency": "Steady is not emergency care.",
     "continue": "Continue",
-    "ageQuestion": "Steady is for adults. Are you 18 or older?",
-    "adult": "I am 18 or older",
-    "underAge": "I am under 18",
+    "ageQuestion": "How old are you?",
+    "adult": "I’m 18 or older",
+    "underAge": "I’m under 18",
     "inDanger": "Draft: if you are in danger, contact local emergency services.",
     "answerStays": "Draft: your answer stays on this phone.",
-    "back": "Back"
+    "back": "Back",
+    "ageTag": "Before we begin",
+    "ageBody": "Draft: steady is made for adults, so we ask once. No name, no account."
   },
   "adultsOnly": {
-    "message": "Steady is for people aged 18 and over.",
-    "whereToGetHelp": "If you need support, please talk to a trusted adult.",
-    "inDanger": "Draft: if you are in danger, contact local emergency services."
+    "message": "Steady is for adults",
+    "whereToGetHelp": "Draft: if you’re younger, you’re not in trouble, and you don’t have to carry things alone.",
+    "cardTitle": "Who to talk to",
+    "inDanger": "Draft: a parent, carer, teacher or school counsellor. If you’re in danger, contact your local emergency number or a youth helpline in your country.",
+    "goBack": "Go back"
   },
   "checkIn": {
-    "prompt": "How are you feeling today?",
-    "feelingsHint": "Tap the one closest to how you feel.",
-    "typeLabel": "Or put it in your own words",
-    "typePlaceholder": "For example: I can’t stop worrying about exams",
+    "prompt": "How are you feeling right now?",
+    "feelingsHint": "Draft: say it in your own words. Steady will find a gentle next step.",
+    "typeLabel": "How you are feeling, in your own words",
+    "typePlaceholder": "I’m feeling…",
     "typeNote": "Draft: you can also use your keyboard’s microphone to speak. Nothing you type is saved or sent.",
-    "find": "Find what might help",
+    "find": "Find what helps",
     "unsafe": "I don’t feel safe right now",
-    "unsafeHint": "Opens Need help now"
+    "unsafeHint": "Opens Need help now",
+    "chips": [
+      {
+        "label": "Anxious",
+        "feeling": "anxious"
+      },
+      {
+        "label": "Overwhelmed",
+        "feeling": "stressed"
+      },
+      {
+        "label": "Low",
+        "feeling": "sad"
+      },
+      {
+        "label": "Okay",
+        "feeling": "grateful"
+      }
+    ]
   },
   "topics": {
     "prompt": "Draft: what's weighing on you?",
@@ -154,28 +174,43 @@
     ]
   },
   "breathing": {
-    "title": "Calm moment",
-    "stop": "Stop",
-    "intro": "Draft: about one minute. Stop any time.",
-    "progress": "{current} of {total}",
+    "title": "Breathe",
+    "intro": "Draft: follow the droplet. There is nothing to get right.",
     "phases": [
       {
-        "label": "Breathe in",
+        "label": "Breathe in…",
         "seconds": 4,
-        "motion": "grow"
+        "motion": "grow",
+        "short": "In"
       },
       {
-        "label": "Hold",
+        "label": "Hold…",
         "seconds": 4,
-        "motion": "hold"
+        "motion": "hold",
+        "short": "Hold"
       },
       {
-        "label": "Breathe out",
+        "label": "Breathe out…",
         "seconds": 6,
-        "motion": "shrink"
+        "motion": "shrink",
+        "short": "Out"
       }
     ],
-    "cycles": 4
+    "minutes": [
+      1,
+      2,
+      3
+    ],
+    "defaultMinutes": 1,
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "length": "Length",
+    "lengthOption": "{n} min",
+    "lengthHint": "Choose how long to breathe",
+    "timeLeft": "{time} left",
+    "seconds": "{n}s",
+    "patternLabel": "{label} {n} seconds"
   },
   "finished": {
     "message": "Draft: the minute is over. Take your time.",
