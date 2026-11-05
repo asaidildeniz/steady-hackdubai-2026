@@ -6,7 +6,7 @@ import { Chip } from '@/components/Bits';
 import { BreathPattern } from '@/components/BreathPattern';
 import { Droplet } from '@/components/Droplet';
 import { Icon, type IconName } from '@/components/Icon';
-import { LiquidOrb } from '@/components/LiquidOrb';
+import { BreathOrb } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { cycleSeconds, cyclesFor, safePhases, stepAt, totalSeconds } from '@/lib/breathing';
@@ -146,7 +146,7 @@ export default function Breathing() {
           {reduceMotion ? (
             <Droplet size={size * 0.7} />
           ) : (
-            <LiquidOrb
+            <BreathOrb
               motion={step.phase.motion}
               seconds={step.phase.seconds}
               step={`${step.index}-${restarts}`}
