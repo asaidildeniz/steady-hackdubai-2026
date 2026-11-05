@@ -46,6 +46,23 @@ On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 
 To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` makes sure the demo switch is forgotten). The demo story to follow is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md).
 
+## Typed feelings and the on-phone model
+
+On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked against `safety.crisisPhrases` (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.
+
+- **Expo Go:** tags come from keywords (the taxonomy's example phrases) with small-typo tolerance.
+- **A built app (APK or development build):** a small sentence model, all-MiniLM-L6-v2 through React Native ExecuTorch, also adds tags by meaning, so "everyone's moving on without me" finds Lonely. The model is bundled in the app and runs offline.
+
+The model files (about 90 MB) are not in git. After cloning, run once:
+
+```bash
+npm run fetch-model
+```
+
+It downloads them from Software Mansion's Hugging Face page and checks their hashes.
+
+**Working on the smart version without rebuilding:** install the development build once (`cd android && ./gradlew assembleDebug`, then install `android/app/build/outputs/apk/debug/app-debug.apk`), then run `npm run demo:dev` and open the project from the development build. Code and content changes then appear live. `npm run demo` still opens in Expo Go (keywords only). Because the project has a development client, a plain `npx expo start` opens in development-build mode; use `npx expo start --go` for Expo Go. `npm install` holds back the library's own install step; if a native build complains about missing ExecuTorch libraries, run `RNET_NO_X86_64=1 node node_modules/react-native-executorch/scripts/download-libs.js` (it downloads the engine from the library's GitHub releases and checks each file's hash). The minimum versions the model needs (Android 8, iOS 17) are set in `app.json` through `expo-build-properties`, so they survive `npx expo prebuild --clean`.
+
 ## Change wording, contacts or helplines
 
 Everything people read lives in one file: [`src/content/content.json`](src/content/content.json). Screens never contain wording, so editing this file is enough. Save it and the app reloads.

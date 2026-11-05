@@ -51,3 +51,12 @@ test.each(library.map((i) => [i.id, i]))('%s has a valid type, status and target
 test('nothing is published before the reviewer approves it', () => {
   for (const item of library) expect(item.status).toBe('draft');
 });
+
+test('every golden-set feeling exists in the taxonomy', () => {
+  const golden = require('@/content/golden.json') as { sentences: { text: string; feelings: string[] }[] };
+  const known = ids('feelings');
+  for (const s of golden.sentences) {
+    expect(s.feelings.length).toBeGreaterThan(0);
+    for (const f of s.feelings) expect(known).toContain(f);
+  }
+});

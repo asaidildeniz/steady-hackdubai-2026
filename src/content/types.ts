@@ -1,9 +1,5 @@
 import data from './content.json';
 
-export type MoodGroup = 'kind' | 'gentle' | 'urgent';
-
-export type Mood = { id: string; label: string; group: MoodGroup; topic?: string }; // topic: a topics.list id
-
 export type Contact = {
   id: string;
   name: string;
@@ -66,10 +62,15 @@ export type Content = {
     back: string;
   };
   adultsOnly: { message: string; whereToGetHelp: string; inDanger?: string };
-  checkIn: { prompt: string; moods: Mood[] };
-  results: {
-    kind: { message: string; primary: string; secondary: string };
-    gentle: { message: string; primary: string; secondary: string; topics: string };
+  checkIn: {
+    prompt: string;
+    feelingsHint: string;
+    typeLabel: string;
+    typePlaceholder: string;
+    typeNote: string;
+    find: string;
+    unsafe: string;
+    unsafeHint: string;
   };
   topics: {
     prompt: string;
@@ -88,6 +89,26 @@ export type Content = {
   };
   taxonomy: Taxonomy;
   library: LibraryItem[];
+  safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch
+  matching: {
+    calmFirst: string[]; // feeling ids that put the quick tool before any reading
+    goodFeelings: string[]; // feeling ids that get a kind reply instead of help options
+    good: { heading: string; message: string; done: string };
+    headingFeeling: string;
+    headingFeelingTheme: string;
+    headingTheme: string;
+    headingNone: string;
+    more: string;
+    notReplacement: string;
+    noMatch: string;
+    closest: string; // nothing recognised at all: ask for the closest feeling
+    meaningThreshold: number; // 0..1, how close in meaning a typed sentence must be to add a tag
+    breathe: string;
+    talk: string;
+    browse: string;
+    types: Record<LibraryItem['type'], string>;
+    minutes: string;
+  };
   breathing: {
     title: string;
     stop: string;
@@ -121,6 +142,22 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
+    modelCheck: {
+      heading: string;
+      states: Record<'idle' | 'loading' | 'off' | 'ready' | 'failed', string>;
+      refresh: string;
+      tryLabel: string;
+      run: string;
+      tags: string;
+      top: string;
+      none: string;
+      unavailable: string;
+      golden: string;
+      goldenRow: string;
+      missesHeading: string;
+      alarmsHeading: string;
+      current: string;
+    };
     contacts: (Contact & { tappable?: boolean })[]; // tappable: shows a note instead of dialling
   };
   needHelp: {

@@ -18,8 +18,10 @@ To open as a fresh install, clear Expo Go's storage (Android: Settings → Apps 
 - [ ] "I am 18 or older" opens Home.
 - [ ] Force-quit and reopen: Home opens directly.
 - [ ] Home: Daily check-in opens S4.
-- [ ] S4: Good or Okay opens S5a; each of the five struggles opens its own topic; Struggling opens Need help now.
-- [ ] S5a: Done returns to Home; Calm moment opens Breathing.
+- [ ] S4: each of the 12 feelings opens results; "I don't feel safe right now" opens Need help now.
+- [ ] S4: typing "I keep panicking about my exams" and tapping Find shows Calm moment first, then Anxiety or constant worry. The box is empty again when you go back.
+- [ ] S4: typing "I can't go on" and tapping Find opens Need help now, with no results screen.
+- [ ] Results: a card opens its reading or the breathing; "Grateful or hopeful" (no content yet) offers Breathe, Arrange a time to talk and See all topics.
 - [ ] Topic: "If Christian faith is part of your life" opens the faith text; Breathe for a minute opens Breathing; Arrange a time to talk opens S8.
 - [ ] Breathing: Stop returns to Home at any point.
 - [ ] Breathing: finishing all rounds opens Finished.
@@ -43,7 +45,7 @@ To open as a fresh install, clear Expo Go's storage (Android: Settings → Apps 
 Use the phone's own recorder (iOS: Control Centre → Screen Recording; Android: Quick Settings → Screen record). Start from a fresh install, keep it under two minutes, and use no real names or messages.
 
 1. Welcome → Continue → "I am 18 or older".
-2. Home → Daily check-in → Stressed or overwhelmed → scroll the topic → Breathe for a minute.
+2. Home → Daily check-in → type "I keep panicking about my exams" → Find what might help → Calm moment.
 3. Let one round of breathing run, then wait for Finished (or record the whole minute).
 4. Finished → Still hard → Arrange a time to talk (show the disabled buttons and the "still checking" line).
 5. Need help now → S9 → Home.

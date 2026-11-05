@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# on-phone model (90 MB): npm run fetch-model
+/assets/models

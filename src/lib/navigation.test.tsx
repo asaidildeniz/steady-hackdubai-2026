@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { router, useLocalSearchParams } from 'expo-router';
-import CheckInResult from '../../app/check-in-result';
+import { router } from 'expo-router';
 import NeedHelp from '../../app/need-help';
 import { content } from '@/content/types';
 
@@ -29,12 +28,4 @@ test('S9 Talk to someone goes back to S8 instead of stacking S8 and S9 forever',
   await fireEvent.press(screen.getByRole('button', { name: content.needHelp.talk }));
   expect(router.dismissTo).toHaveBeenCalledWith('/talk-to-someone');
   expect(router.push).not.toHaveBeenCalled();
-});
-
-test('S5a Done returns to the existing Home', async () => {
-  jest.mocked(useLocalSearchParams).mockReturnValue({ group: 'kind' });
-  await render(<CheckInResult />);
-  await fireEvent.press(screen.getByRole('button', { name: content.results.kind.primary }));
-  expect(router.dismissTo).toHaveBeenCalledWith('/home');
-  expect(router.replace).not.toHaveBeenCalled();
 });

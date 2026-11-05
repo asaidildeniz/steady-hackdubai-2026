@@ -26,13 +26,17 @@
     "DRAFT for reviewer: adultsOnly.inDanger is new and shows on the under-18 screen, which has no Need help button. It matches welcome.inDanger; keep it text only, with no numbers unless they are verified.",
     "The demo section is only used when the app is started with npm run demo. It never appears in a normal start. Its example contacts have no phone numbers; the one marked tappable shows a note instead of dialling.",
     "DRAFT for reviewer: topics is new. Its wording is copied from the team’s “Finding Support” guide. It needs approval from the counsellor reviewer, and a pastor should check the faith text and Bible references.",
-    "DRAFT for reviewer: topics are reached from the gentle check-in result (results.gentle.topics). The faith text on each topic is hidden until the student taps faithShow, and that choice is never saved.",
     "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme.",
-    "DRAFT for reviewer: the check-in moods now follow the survey’s top five. Each mood’s topic sends the student straight to that support topic; a mood without a topic, or with one that does not exist, shows the gentle message instead. Lonely and Low were replaced by these five. Struggling still always opens Need help now.",
     "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone.",
     "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar.",
     "DRAFT for reviewer: taxonomy and library are new and follow Abel's feelings-to-content plan. Every definition and forWhom line is a draft. Example phrases will later match typed feelings on the phone; nothing typed is saved or sent. The screens do not use this data yet.",
-    "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built."
+    "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built.",
+    "DRAFT for reviewer: safety.crisisPhrases is new and must be reviewed by a qualified professional before launch. If typed text contains any of these phrases (ignoring capitals, punctuation and apostrophes), Steady skips the search and opens Need help now. Please add any phrases students really use.",
+    "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading.",
+    "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed.",
+    "DRAFT for reviewer: matching.goodFeelings lists the feelings that get a kind reply (matching.good) instead of help options. Any approved content tagged with them still shows below the reply.",
+    "matching.meaningThreshold (0 to 1) is how close a typed sentence must be in meaning to a feeling or theme for the on-phone model to add it. Higher means stricter. Tune it with the golden set before changing.",
+    "DRAFT for reviewer: some feelings now have sentence-like example phrases, because the on-phone model matches whole thoughts better than single words. The golden set (src/content/golden.json) chose meaningThreshold 0.40: 21 of 30 right and no false alarms before these phrases were added."
   ],
   "home": {
     "title": "Steady",
@@ -63,67 +67,14 @@
     "inDanger": "Draft: if you are in danger, contact local emergency services."
   },
   "checkIn": {
-    "prompt": "How are you today?",
-    "moods": [
-      {
-        "id": "good",
-        "label": "Good",
-        "group": "kind"
-      },
-      {
-        "id": "okay",
-        "label": "Okay",
-        "group": "kind"
-      },
-      {
-        "id": "stressed",
-        "label": "Stressed or overwhelmed",
-        "group": "gentle",
-        "topic": "stress"
-      },
-      {
-        "id": "anxious",
-        "label": "Anxious or worried",
-        "group": "gentle",
-        "topic": "anxiety"
-      },
-      {
-        "id": "exams",
-        "label": "Exam or study pressure",
-        "group": "gentle",
-        "topic": "exams"
-      },
-      {
-        "id": "faith",
-        "label": "Questions about faith",
-        "group": "gentle",
-        "topic": "faith"
-      },
-      {
-        "id": "down",
-        "label": "Feeling down",
-        "group": "gentle",
-        "topic": "down"
-      },
-      {
-        "id": "struggling",
-        "label": "Struggling",
-        "group": "urgent"
-      }
-    ]
-  },
-  "results": {
-    "kind": {
-      "message": "Draft: glad you checked in.",
-      "primary": "Done",
-      "secondary": "Calm moment"
-    },
-    "gentle": {
-      "message": "Draft: that sounds heavy. Would you like to breathe, or arrange a time to talk with someone?",
-      "primary": "Breathe",
-      "secondary": "Arrange a time to talk",
-      "topics": "Find ideas that may help"
-    }
+    "prompt": "How are you feeling today?",
+    "feelingsHint": "Tap the one closest to how you feel.",
+    "typeLabel": "Or put it in your own words",
+    "typePlaceholder": "For example: I can’t stop worrying about exams",
+    "typeNote": "Draft: you can also use your keyboard’s microphone to speak. Nothing you type is saved or sent.",
+    "find": "Find what might help",
+    "unsafe": "I don’t feel safe right now",
+    "unsafeHint": "Opens Need help now"
   },
   "topics": {
     "prompt": "Draft: what's weighing on you?",
@@ -320,7 +271,12 @@
           "overwhelmed",
           "too much to do",
           "under pressure",
-          "can't cope with everything"
+          "can't cope with everything",
+          "I feel like I am drowning",
+          "I feel buried under pressure",
+          "the workload is crushing me",
+          "I can’t keep up with everything",
+          "so much pressure on me"
         ]
       },
       {
@@ -332,7 +288,11 @@
           "feeling down",
           "low",
           "unmotivated",
-          "everything feels heavy"
+          "everything feels heavy",
+          "nothing makes me happy any more",
+          "I feel like giving up on everything",
+          "crying all the time",
+          "life feels pointless"
         ]
       },
       {
@@ -356,7 +316,11 @@
           "furious",
           "so annoyed",
           "frustrated",
-          "fed up"
+          "fed up",
+          "I am sick of how they treat me",
+          "they ignore everything I say",
+          "I could shout at someone",
+          "fed up with the people I live with"
         ]
       },
       {
@@ -380,7 +344,10 @@
           "failure",
           "useless",
           "behind everyone",
-          "wasting my life"
+          "wasting my life",
+          "everyone is better than me",
+          "I am not clever enough for this course",
+          "I always fall short"
         ]
       },
       {
@@ -416,7 +383,11 @@
           "God isn't listening",
           "can't pray",
           "lost my faith",
-          "spiritually dry"
+          "spiritually dry",
+          "I am questioning my faith",
+          "I do not know if God is real",
+          "my faith feels gone",
+          "doubting whether God exists"
         ]
       },
       {
@@ -428,7 +399,10 @@
           "ashamed",
           "I messed up",
           "regret",
-          "embarrassed"
+          "embarrassed",
+          "I hurt someone I care about",
+          "I feel terrible about what I did",
+          "I broke a promise"
         ]
       },
       {
@@ -502,7 +476,9 @@
           "family",
           "my mum",
           "my dad",
-          "relatives"
+          "relatives",
+          "pressure from my family",
+          "my parents want too much"
         ]
       },
       {
@@ -890,6 +866,67 @@
       "durationMinutes": 3
     }
   ],
+  "safety": {
+    "crisisPhrases": [
+      "suicide",
+      "suicidal",
+      "kill myself",
+      "killing myself",
+      "end my life",
+      "ending my life",
+      "want to die",
+      "wanna die",
+      "better off dead",
+      "better off without me",
+      "no reason to live",
+      "dont want to be here",
+      "cant go on",
+      "hurt myself",
+      "hurting myself",
+      "harm myself",
+      "self harm",
+      "cutting myself",
+      "overdose",
+      "not safe at home",
+      "being abused",
+      "someone is hurting me"
+    ]
+  },
+  "matching": {
+    "calmFirst": [
+      "anxious",
+      "stressed",
+      "afraid"
+    ],
+    "headingFeeling": "Draft: for when you’re feeling {feeling}",
+    "headingFeelingTheme": "Draft: for when you’re feeling {feeling} about {theme}",
+    "headingTheme": "Draft: for when {theme} feels hard",
+    "headingNone": "Draft: a few things that might help",
+    "more": "More like this",
+    "notReplacement": "Draft: these are not a replacement for professional help. If you need someone right now, use Need help now.",
+    "noMatch": "Draft: thank you for telling us. We don’t have something written for this yet, but these might still help.",
+    "breathe": "Breathe for a minute",
+    "talk": "Arrange a time to talk",
+    "browse": "See all topics",
+    "types": {
+      "tool": "Tool",
+      "reading": "Reading",
+      "scripture": "Scripture",
+      "video": "Video",
+      "audio": "Audio"
+    },
+    "minutes": "{n} min",
+    "goodFeelings": [
+      "grateful"
+    ],
+    "good": {
+      "heading": "Draft: glad to hear it",
+      "message": "Draft: hold on to this moment. You can come back any time.",
+      "done": "Done"
+    },
+    "closest": "Draft: we didn’t quite catch that. Which of these is closest to how you feel?",
+    "meaningThreshold": 0.4
+  },
   "demo": {
     "title": "Demo",
     "note": "For presenting only. Breathing is shortened and calls do not dial. Start the app normally to leave demo mode.",
@@ -954,6 +991,28 @@
         "phone": "",
         "verified": false
       }
-    ]
+    ],
+    "modelCheck": {
+      "heading": "On-phone model check",
+      "states": {
+        "idle": "Not started",
+        "loading": "Loading…",
+        "off": "Not available here (Expo Go). Keywords only.",
+        "ready": "Ready in {seconds} s ({phrases} phrases)",
+        "failed": "Failed: {error}"
+      },
+      "refresh": "Refresh status",
+      "tryLabel": "Try a sentence",
+      "run": "Check sentence",
+      "tags": "Tags: {tags}",
+      "top": "Closest: {top}",
+      "none": "none",
+      "unavailable": "The model is not ready, so only keywords would be used.",
+      "golden": "Run golden set",
+      "goldenRow": "Threshold {t}: {hits} of {total} right, {alarms} of {neutral} false alarms",
+      "missesHeading": "Missed at {t}:",
+      "alarmsHeading": "False alarms at {t}:",
+      "current": "(current)"
+    }
   }
 }
