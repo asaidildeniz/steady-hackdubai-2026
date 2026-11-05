@@ -21,6 +21,28 @@ export type FinishedOption = { label: string; next: 'home' | 'talkToSomeone'; hi
 
 export type Topic = { id: string; label: string; opening: string; tips: string[]; faith: string };
 
+// Abel's feelings-to-content taxonomy. Matching only ever uses these ids.
+export type Tag = { id: string; label: string; definition: string; examplePhrases: string[] };
+export type Taxonomy = {
+  feelings: Tag[];
+  themes: Tag[];
+  needs: Tag[];
+  intensity: { id: string; label: string }[]; // filtering only, never shown
+};
+
+export type LibraryItem = {
+  id: string;
+  type: 'tool' | 'reading' | 'scripture' | 'video' | 'audio';
+  title: string;
+  summary: string;
+  forWhom: string; // in the student's own words; drives matching quality
+  opens: { topic?: string; screen?: 'breathing' }; // exactly one
+  tags: { feelings: string[]; themes: string[]; needs: string[]; intensity: string[] };
+  durationMinutes: number;
+  scriptureRefs: string[];
+  status: 'draft' | 'inReview' | 'approved' | 'published' | 'retired';
+};
+
 export type HelpNumber ={ label: string; number: string; verified: boolean };
 
 export type DemoRoute = '/check-in' | '/topics' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
@@ -64,6 +86,8 @@ export type Content = {
     disclaimer: string;
     list: Topic[];
   };
+  taxonomy: Taxonomy;
+  library: LibraryItem[];
   breathing: {
     title: string;
     stop: string;

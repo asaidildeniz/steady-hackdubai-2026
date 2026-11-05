@@ -36,5 +36,5 @@ export function BreathingCircle({ motion, seconds, step, size }: Props) {
 }
 
 const styles = StyleSheet.create({
-  circle: { backgroundColor: colors.accent, alignSelf: 'center' },
+  circle: { backgroundColor: colors.calm, alignSelf: 'center' },
 });

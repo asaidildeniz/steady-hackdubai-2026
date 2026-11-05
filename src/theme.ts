@@ -1,11 +1,12 @@
-// Section 7 of the build guide. System font only, nothing to download.
+// Section 7 of the build guide, with the team's palette from Samuel's design deck. System font only, nothing to download.
 export const colors = {
-  background: '#F5F2ED',
-  text: '#121212',
-  muted: '#6B6B6B',
-  accent: '#EFE56F', // button fills only, always with dark text, never as text colour
-  needHelp: '#121212',
-  needHelpText: '#F5F2ED',
+  background: '#F4F7FA', // soft background
+  text: '#1E2A33',
+  muted: '#56636E', // 5.7:1 on the background
+  accent: '#EFE56F', // soft yellow: button fills only, always with dark text, never as text colour
+  calm: '#7EC0EE', // calm blue: the breathing circle only
+  needHelp: '#3A3A3A',
+  needHelpText: '#F4F7FA',
 };
 
 export const type = {
