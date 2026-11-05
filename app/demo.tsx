@@ -1,6 +1,7 @@
 import { Redirect, router } from 'expo-router';
 import { Text } from 'react-native';
 import { BigButton } from '@/components/BigButton';
+import { ModelCheck } from '@/components/ModelCheck';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { demo } from '@/lib/demo';
@@ -33,6 +34,7 @@ export default function Demo() {
       {c.screens.map((s) => (
         <BigButton key={s.route} secondary label={s.label} onPress={() => router.push(s.route)} />
       ))}
+      <ModelCheck />
     </Screen>
   );
 }

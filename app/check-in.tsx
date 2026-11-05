@@ -4,7 +4,9 @@ import { StyleSheet, Text, TextInput } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
+import { meaningTags } from '@/lib/embedder';
 import { isCrisis, type Tags, tagsFromText } from '@/lib/matching';
+import { mergeTags } from '@/lib/meaning';
 import { colors, space, text, type } from '@/theme';
 
 // Only tag ids travel to the results screen; what someone typed never leaves this screen.
@@ -16,11 +18,14 @@ export default function CheckIn() {
   const c = content.checkIn;
   const [typed, setTyped] = useState('');
 
-  const find = () => {
+  const find = async () => {
     const said = typed;
     setTyped(''); // forget it straight away
-    if (isCrisis(said)) return router.push('/need-help'); // safety first, no search
-    router.push(resultsHref(tagsFromText(said)));
+    if (isCrisis(said)) return router.push('/need-help'); // safety first, before any model
+    const words = tagsFromText(said);
+    // The on-phone model adds tags by meaning; without it (Expo Go, loading, failure) keywords alone are used.
+    const meaning = await meaningTags(said).catch(() => null);
+    router.push(resultsHref(meaning ? mergeTags(words, meaning) : words));
   };
 
   return (

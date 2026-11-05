@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import CheckIn from '../../app/check-in';
 import Results from '../../app/results';
@@ -18,6 +18,15 @@ jest.mock('react-native-safe-area-context', () => {
   const { View } = require('react-native');
   return { SafeAreaView: View };
 });
+// The on-phone model can't run in Jest. By default it is "not available" (as in Expo Go); tests swap in answers.
+jest.mock('@/lib/embedder', () => ({
+  meaningTags: jest.fn(async () => null),
+  startEmbedder: jest.fn(),
+  embedderStatus: jest.fn(() => ({ state: 'failed', error: 'no native module' })),
+  explain: jest.fn(async () => null),
+  goldenReport: jest.fn(async () => null),
+}));
+const { meaningTags } = jest.requireMock('@/lib/embedder') as { meaningTags: jest.Mock };
 
 const c = content.checkIn;
 const m = content.matching;
@@ -50,7 +59,7 @@ describe("Abel's check-in", () => {
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), typed);
     await fireEvent.press(button(c.find));
-    expect(router.push).toHaveBeenCalledWith(results('anxious', 'study'));
+    await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('anxious', 'study')));
     expect(JSON.stringify(jest.mocked(router.push).mock.calls)).not.toContain('panicking');
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
   });
@@ -61,6 +70,31 @@ describe("Abel's check-in", () => {
     await fireEvent.press(button(c.find));
     expect(router.push).toHaveBeenCalledTimes(1);
     expect(router.push).toHaveBeenCalledWith('/need-help');
+  });
+
+  test('with the model ready, meaning tags are added to the keyword tags', async () => {
+    meaningTags.mockResolvedValueOnce({ feelings: ['lonely'], themes: ['comparison'], needs: [] });
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), "everyone's moving on without me and I'm stressed");
+    await fireEvent.press(button(c.find));
+    // keywords: "stressed" and "moving" (change); meaning adds lonely and comparison
+    await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('stressed,lonely', 'change,comparison')));
+  });
+
+  test('a crisis phrase wins before the model is ever asked', async () => {
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'I want to die');
+    await fireEvent.press(button(c.find));
+    expect(router.push).toHaveBeenCalledWith('/need-help');
+    expect(meaningTags).not.toHaveBeenCalled();
+  });
+
+  test('if the model fails, the keyword tags are still used', async () => {
+    meaningTags.mockRejectedValueOnce(new Error('native crash'));
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'so stressed');
+    await fireEvent.press(button(c.find));
+    await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('stressed')));
   });
 
   test('the box is cleared after searching', async () => {
@@ -139,5 +173,28 @@ describe('results', () => {
     expect(router.push).toHaveBeenCalledWith('/breathing');
     await fireEvent.press(button(m.talk));
     expect(router.push).toHaveBeenCalledWith('/talk-to-someone');
+  });
+});
+
+describe('demo model check', () => {
+  const { ModelCheck } = require('@/components/ModelCheck');
+  const mc = content.demo.modelCheck;
+
+  test('shows why the model is not running', async () => {
+    await render(<ModelCheck />);
+    expect(screen.getByText(mc.states.failed.replace('{error}', 'no native module'))).toBeOnTheScreen();
+  });
+
+  test('a test sentence shows its tags and closest scores', async () => {
+    const { explain } = jest.requireMock('@/lib/embedder') as { explain: jest.Mock };
+    explain.mockResolvedValueOnce({
+      tags: { feelings: ['sad'], themes: ['purpose'], needs: [] },
+      top: [{ layer: 'feelings', id: 'sad', score: 0.61 }],
+    });
+    await render(<ModelCheck />);
+    await fireEvent.changeText(screen.getByLabelText(mc.tryLabel), "I don't see the point of anything lately");
+    await fireEvent.press(button(mc.run));
+    await waitFor(() => expect(screen.getByText(mc.tags.replace('{tags}', 'sad, purpose'))).toBeOnTheScreen());
+    expect(screen.getByText(mc.top.replace('{top}', 'sad 0.61'))).toBeOnTheScreen();
   });
 });

@@ -34,7 +34,9 @@
     "DRAFT for reviewer: safety.crisisPhrases is new and must be reviewed by a qualified professional before launch. If typed text contains any of these phrases (ignoring capitals, punctuation and apostrophes), Steady skips the search and opens Need help now. Please add any phrases students really use.",
     "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading.",
     "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed.",
-    "DRAFT for reviewer: matching.goodFeelings lists the feelings that get a kind reply (matching.good) instead of help options. Any approved content tagged with them still shows below the reply."
+    "DRAFT for reviewer: matching.goodFeelings lists the feelings that get a kind reply (matching.good) instead of help options. Any approved content tagged with them still shows below the reply.",
+    "matching.meaningThreshold (0 to 1) is how close a typed sentence must be in meaning to a feeling or theme for the on-phone model to add it. Higher means stricter. Tune it with the golden set before changing.",
+    "DRAFT for reviewer: some feelings now have sentence-like example phrases, because the on-phone model matches whole thoughts better than single words. The golden set (src/content/golden.json) chose meaningThreshold 0.40: 21 of 30 right and no false alarms before these phrases were added."
   ],
   "home": {
     "title": "Steady",
@@ -269,7 +271,12 @@
           "overwhelmed",
           "too much to do",
           "under pressure",
-          "can't cope with everything"
+          "can't cope with everything",
+          "I feel like I am drowning",
+          "I feel buried under pressure",
+          "the workload is crushing me",
+          "I can’t keep up with everything",
+          "so much pressure on me"
         ]
       },
       {
@@ -281,7 +288,11 @@
           "feeling down",
           "low",
           "unmotivated",
-          "everything feels heavy"
+          "everything feels heavy",
+          "nothing makes me happy any more",
+          "I feel like giving up on everything",
+          "crying all the time",
+          "life feels pointless"
         ]
       },
       {
@@ -305,7 +316,11 @@
           "furious",
           "so annoyed",
           "frustrated",
-          "fed up"
+          "fed up",
+          "I am sick of how they treat me",
+          "they ignore everything I say",
+          "I could shout at someone",
+          "fed up with the people I live with"
         ]
       },
       {
@@ -329,7 +344,10 @@
           "failure",
           "useless",
           "behind everyone",
-          "wasting my life"
+          "wasting my life",
+          "everyone is better than me",
+          "I am not clever enough for this course",
+          "I always fall short"
         ]
       },
       {
@@ -365,7 +383,11 @@
           "God isn't listening",
           "can't pray",
           "lost my faith",
-          "spiritually dry"
+          "spiritually dry",
+          "I am questioning my faith",
+          "I do not know if God is real",
+          "my faith feels gone",
+          "doubting whether God exists"
         ]
       },
       {
@@ -377,7 +399,10 @@
           "ashamed",
           "I messed up",
           "regret",
-          "embarrassed"
+          "embarrassed",
+          "I hurt someone I care about",
+          "I feel terrible about what I did",
+          "I broke a promise"
         ]
       },
       {
@@ -451,7 +476,9 @@
           "family",
           "my mum",
           "my dad",
-          "relatives"
+          "relatives",
+          "pressure from my family",
+          "my parents want too much"
         ]
       },
       {
@@ -897,7 +924,8 @@
       "message": "Draft: hold on to this moment. You can come back any time.",
       "done": "Done"
     },
-    "closest": "Draft: we didn’t quite catch that. Which of these is closest to how you feel?"
+    "closest": "Draft: we didn’t quite catch that. Which of these is closest to how you feel?",
+    "meaningThreshold": 0.4
   },
   "demo": {
     "title": "Demo",
@@ -963,6 +991,28 @@
         "phone": "",
         "verified": false
       }
-    ]
+    ],
+    "modelCheck": {
+      "heading": "On-phone model check",
+      "states": {
+        "idle": "Not started",
+        "loading": "Loading…",
+        "off": "Not available here (Expo Go). Keywords only.",
+        "ready": "Ready in {seconds} s ({phrases} phrases)",
+        "failed": "Failed: {error}"
+      },
+      "refresh": "Refresh status",
+      "tryLabel": "Try a sentence",
+      "run": "Check sentence",
+      "tags": "Tags: {tags}",
+      "top": "Closest: {top}",
+      "none": "none",
+      "unavailable": "The model is not ready, so only keywords would be used.",
+      "golden": "Run golden set",
+      "goldenRow": "Threshold {t}: {hits} of {total} right, {alarms} of {neutral} false alarms",
+      "missesHeading": "Missed at {t}:",
+      "alarmsHeading": "False alarms at {t}:",
+      "current": "(current)"
+    }
   }
 }

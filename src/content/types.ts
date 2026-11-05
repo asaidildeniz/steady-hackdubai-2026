@@ -102,6 +102,7 @@ export type Content = {
     notReplacement: string;
     noMatch: string;
     closest: string; // nothing recognised at all: ask for the closest feeling
+    meaningThreshold: number; // 0..1, how close in meaning a typed sentence must be to add a tag
     breathe: string;
     talk: string;
     browse: string;
@@ -141,6 +142,22 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
+    modelCheck: {
+      heading: string;
+      states: Record<'idle' | 'loading' | 'off' | 'ready' | 'failed', string>;
+      refresh: string;
+      tryLabel: string;
+      run: string;
+      tags: string;
+      top: string;
+      none: string;
+      unavailable: string;
+      golden: string;
+      goldenRow: string;
+      missesHeading: string;
+      alarmsHeading: string;
+      current: string;
+    };
     contacts: (Contact & { tappable?: boolean })[]; // tappable: shows a note instead of dialling
   };
   needHelp: {
