@@ -1,11 +1,13 @@
 import { router } from 'expo-router';
 import { type ComponentRef, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, BackHandler, findNodeHandle, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, BackHandler, findNodeHandle, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
+import { Chip, LogoRow } from '@/components/Bits';
+import { Droplet } from '@/components/Droplet';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { setWelcomeSeen } from '@/lib/storage';
-import { space, text } from '@/theme';
+import { colors, space, text } from '@/theme';
 
 // S1, two steps on one route. replace (never push) so the back gesture cannot return to the age gate.
 export default function Welcome() {
@@ -55,51 +57,56 @@ export default function Welcome() {
 
   if (!askAge) {
     return (
-      <Screen showNeedHelp={false} actions={<BigButton label={c.continue} onPress={() => setAskAge(true)} />}>
-        <Text ref={heading} accessibilityRole="header" style={text.heading}>
+      <Screen calm actions={<BigButton label={c.continue} onPress={() => setAskAge(true)} />}>
+        <LogoRow />
+        <View style={styles.hero}>
+          <Droplet size={190} />
+        </View>
+        <Text ref={heading} accessibilityRole="header" style={[text.heading, styles.center]}>
           {c.title}
         </Text>
-        {!!c.body && <Text style={text.body}>{c.body}</Text>}
-        {!!c.basis && <Text style={text.body}>{c.basis}</Text>}
-        {/* The safety pair is one thought, so it reads as one block, set apart. */}
-        <View style={styles.safety}>
-          {!!c.notEmergency && <Text style={text.body}>{c.notEmergency}</Text>}
-          {!!c.inDanger && <Text style={text.body}>{c.inDanger}</Text>}
+        {!!c.body && <Text style={[text.body, styles.center, styles.soft]}>{c.body}</Text>}
+        {/* Honest up front: what Steady is based on, and that it is not emergency care. */}
+        <View style={styles.notes}>
+          {!!c.basis && <Text style={[text.note, styles.center]}>{c.basis}</Text>}
+          {!!c.notEmergency && <Text style={[text.note, styles.center]}>{c.notEmergency}</Text>}
+          {!!c.inDanger && <Text style={[text.note, styles.center]}>{c.inDanger}</Text>}
         </View>
       </Screen>
     );
   }
 
-  // Both answers look the same so neither is nudged. Under 18 writes nothing.
+  // The age question. Under 18 writes nothing; the round Back returns to step 1 (iPhone has no back button here).
   return (
     <Screen
-      showNeedHelp={false}
+      calm
+      back={() => setAskAge(false)}
       actions={
         <>
-          <BigButton secondary label={c.adult} onPress={adult} />
+          <BigButton label={c.adult} onPress={adult} />
           <BigButton secondary label={c.underAge} onPress={underAge} />
         </>
       }
     >
-      {/* iPhone has no back button and the swipe is off on the gate, so step 2 offers a quiet Back. */}
-      <Pressable
-        onPress={() => setAskAge(false)}
-        accessibilityRole="button"
-        accessibilityLabel={c.back}
-        style={({ pressed }) => [styles.back, pressed && { opacity: 0.6 }]}
-      >
-        <Text style={[text.body, styles.backLabel]}>{c.back}</Text>
-      </Pressable>
-      <Text ref={heading} accessibilityRole="header" style={text.heading}>
+      <View style={styles.hero}>
+        <Droplet size={110} />
+      </View>
+      <View style={styles.tagRow}>
+        <Chip label={c.ageTag} />
+      </View>
+      <Text ref={heading} accessibilityRole="header" style={[text.heading, styles.center]}>
         {c.ageQuestion}
       </Text>
-      {!!c.answerStays && <Text style={text.note}>{c.answerStays}</Text>}
+      {!!c.ageBody && <Text style={[text.body, styles.center, styles.soft]}>{c.ageBody}</Text>}
+      {!!c.answerStays && <Text style={[text.note, styles.center]}>{c.answerStays}</Text>}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  safety: { gap: space.gap / 2, marginTop: space.gap },
-  back: { alignSelf: 'flex-start', minHeight: space.tap, justifyContent: 'center' },
-  backLabel: { textDecorationLine: 'underline' },
+  hero: { alignItems: 'center', paddingVertical: space.gap },
+  center: { textAlign: 'center' },
+  soft: { color: colors.muted },
+  notes: { gap: space.gap / 4, marginTop: space.gap / 2 },
+  tagRow: { alignItems: 'center' },
 });

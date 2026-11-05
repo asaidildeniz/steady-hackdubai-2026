@@ -1,28 +1,48 @@
 import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NeedHelpButton } from '@/components/NeedHelpButton';
-import { colors, space } from '@/theme';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import { BackButton } from '@/components/Bits';
+import { colors, fonts, space, type } from '@/theme';
 
 type Props = {
   children: ReactNode;
   actions?: ReactNode; // buttons that sit at the bottom, in thumb reach
-  pinActions?: boolean; // keep actions outside the scroll, always visible (Breathing's Stop)
-  showNeedHelp?: boolean; // off on S1, S2 and S9
+  pinActions?: boolean; // keep actions outside the scroll, always visible (Breathe's controls)
+  back?: boolean | (() => void); // the round back button, top left
+  title?: string; // small centred title next to the back button (Breathe)
+  calm?: boolean; // the soft off-white to sage gradient of the calmer screens
+  centered?: boolean; // centre the content column (Welcome, age question)
 };
 
-// The Need help pill sits in its own row above the scrolling content,
-// so it stays in the same place and never covers text at large font sizes.
-// `actions` sit at the bottom when there is room and scroll with the text when there is not.
-export function Screen({ children, actions, pinActions, showNeedHelp = true }: Props) {
+// v3 frame: optional back button and title on top, content that scrolls, actions at the bottom.
+// Help in a crisis comes from the typed-text safety check and the Reach Out emergency link.
+export function Screen({ children, actions, pinActions, back, title, calm, centered }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
-      {showNeedHelp && (
+      {calm && (
+        <Svg style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
+          <Defs>
+            <LinearGradient id="calm" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={colors.background} />
+              <Stop offset="1" stopColor={colors.backgroundLow} />
+            </LinearGradient>
+          </Defs>
+          <Rect width="100%" height="100%" fill="url(#calm)" />
+        </Svg>
+      )}
+      {(back || title) && (
         <View style={styles.top}>
-          <NeedHelpButton />
+          {back ? <BackButton onPress={typeof back === 'function' ? back : undefined} /> : <View style={styles.spacer} />}
+          {title ? (
+            <Text accessibilityRole="header" style={styles.title}>
+              {title}
+            </Text>
+          ) : null}
+          <View style={styles.spacer} />
         </View>
       )}
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={[styles.content, centered && styles.centered]}>
         {children}
         {actions && !pinActions && <View style={styles.actions}>{actions}</View>}
       </ScrollView>
@@ -33,8 +53,17 @@ export function Screen({ children, actions, pinActions, showNeedHelp = true }: P
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  top: { alignItems: 'flex-end', paddingHorizontal: space.screen, paddingTop: space.gap },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: space.screen,
+    paddingTop: space.gap,
+  },
+  spacer: { width: 46 },
+  title: { fontSize: type.body, fontFamily: fonts.medium, color: '#2B3A34' },
   content: { flexGrow: 1, padding: space.screen, gap: space.gap },
-  actions: { marginTop: 'auto', gap: space.gap, paddingTop: space.screen },
+  centered: { alignItems: 'center' },
+  actions: { marginTop: 'auto', gap: space.gap - 4, paddingTop: space.screen, alignSelf: 'stretch' },
   pinned: { gap: space.gap, paddingHorizontal: space.screen, paddingBottom: space.screen, paddingTop: space.gap },
 });

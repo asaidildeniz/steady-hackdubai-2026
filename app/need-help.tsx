@@ -42,7 +42,7 @@ export default function NeedHelp() {
   };
 
   return (
-    <Screen showNeedHelp={false}>
+    <Screen>
       <Text accessibilityRole="header" style={text.heading}>
         {c.title}
       </Text>

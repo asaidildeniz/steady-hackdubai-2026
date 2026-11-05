@@ -30,6 +30,10 @@ jest.mock('@/content/types', () => ({
 
 const shipped: Content = JSON.parse(JSON.stringify(jest.requireActual('@/content/types').content));
 const seconds = (n: number) => act(async () => jest.advanceTimersByTime(n * 1000));
+const b = shipped.breathing;
+const opt = (n: number) => b.lengthOption.replace('{n}', String(n));
+const left = (time: string) => b.timeLeft.replace('{time}', time);
+const secs = (n: number) => b.seconds.replace('{n}', String(n));
 
 beforeEach(() => {
   Object.assign(content, JSON.parse(JSON.stringify(shipped)));
@@ -74,13 +78,26 @@ describe('S6 Breathing', () => {
     expect(router.replace).not.toHaveBeenCalled();
   });
 
-  test('with reduce motion on there is no circle, only the label and countdown', async () => {
+  test('with reduce motion on there is no moving droplet, only the words and the seconds', async () => {
     jest.mocked(AccessibilityInfo.isReduceMotionEnabled).mockResolvedValue(true);
     await render(<Breathing />);
     await seconds(0);
     expect(screen.queryByTestId('breathing-circle', { includeHiddenElements: true })).toBeNull();
     expect(screen.getByText(shipped.breathing.phases[0].label)).toBeOnTheScreen();
-    expect(screen.getByText('4')).toBeOnTheScreen();
+    expect(screen.getAllByText(secs(4)).length).toBeGreaterThan(0);
+  });
+
+  test('shows the seconds of breathing in, holding and breathing out; the current step counts down', async () => {
+    await render(<Breathing />);
+    for (const p of b.phases) expect(screen.getByText(p.short!)).toBeOnTheScreen();
+    expect(screen.getAllByText(secs(4))).toHaveLength(2); // In 4s (now), Hold 4s
+    expect(screen.getByText(secs(6))).toBeOnTheScreen(); // Out 6s
+    await seconds(3);
+    expect(screen.getByText(secs(1))).toBeOnTheScreen(); // In counts down
+    expect(screen.getByText(secs(4))).toBeOnTheScreen(); // Hold still shows its full length
+    expect(
+      screen.getByLabelText(b.phases.map((p) => b.patternLabel.replace('{label}', p.label.replace(/…$/, '')).replace('{n}', String(p.seconds))).join(', ')),
+    ).toBeOnTheScreen(); // read out once, as a whole
   });
 
   test('with reduce motion off the circle is shown', async () => {
@@ -100,7 +117,7 @@ describe('S6 Breathing', () => {
     expect(router.replace).not.toHaveBeenCalled(); // nothing ran while away
     await act(async () => onChange('active'));
     expect(screen.getByText(shipped.breathing.phases[0].label)).toBeOnTheScreen();
-    expect(screen.getByText('4')).toBeOnTheScreen(); // the phase starts again from the top
+    expect(screen.getByText(left('0:56'))).toBeOnTheScreen(); // the phase starts again from the top
   });
 
   test('coming back after a lock announces the restarted phase to screen readers', async () => {
@@ -130,16 +147,55 @@ describe('S6 Breathing', () => {
     expect(useKeepAwake).toHaveBeenCalled();
   });
 
-  test('says how long it lasts and which round it is on', async () => {
+  test('shows the time left, counting down', async () => {
     await render(<Breathing />);
-    expect(screen.getByText(shipped.breathing.intro)).toBeOnTheScreen();
-    expect(screen.getByText('1 of 4')).toBeOnTheScreen();
+    expect(screen.getByText(left('0:56'))).toBeOnTheScreen();
     await seconds(14);
-    expect(screen.getByText('2 of 4')).toBeOnTheScreen();
+    expect(screen.getByText(left('0:42'))).toBeOnTheScreen();
+  });
+
+  test('choosing 2 minutes repeats the same breath for longer instead of stretching it', async () => {
+    await render(<Breathing />);
+    await fireEvent.press(screen.getByRole('button', { name: `${b.length}: ${opt(1)}` }));
+    await fireEvent.press(screen.getByRole('button', { name: opt(2) }));
+    expect(screen.getByText(left('2:06'))).toBeOnTheScreen(); // 9 breaths of 14 s
+    await seconds(14);
+    expect(screen.getByText(shipped.breathing.phases[0].label)).toBeOnTheScreen(); // breath 2 starts after 14 s, as before
+    await seconds(56);
+    expect(router.replace).not.toHaveBeenCalled(); // the 1-minute end has passed
+    await seconds(60);
+    expect(router.replace).toHaveBeenCalledWith('/finished');
+  });
+
+  test('a shorter length chosen mid-session never cuts the current breath short', async () => {
+    await render(<Breathing />);
+    await fireEvent.press(screen.getByRole('button', { name: `${b.length}: ${opt(1)}` }));
+    await fireEvent.press(screen.getByRole('button', { name: opt(3) }));
+    await seconds(60); // into breath 5 of 13
+    await fireEvent.press(screen.getByRole('button', { name: `${b.length}: ${opt(3)}` }));
+    await fireEvent.press(screen.getByRole('button', { name: opt(1) }));
+    expect(router.replace).not.toHaveBeenCalled();
+    expect(screen.getByText(left('0:10'))).toBeOnTheScreen(); // finishes breath 5 (70 s), then stops
+    await seconds(10);
+    expect(router.replace).toHaveBeenCalledWith('/finished');
+  });
+
+  test('Pause stops the clock; Resume starts the phase again from the top', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await render(<Breathing />);
+    await seconds(2);
+    await fireEvent.press(screen.getByRole('button', { name: b.pause }));
+    await seconds(120);
+    expect(router.replace).not.toHaveBeenCalled();
+    expect(screen.getByText(left('0:54'))).toBeOnTheScreen();
+    const before = announce.mock.calls.length;
+    await fireEvent.press(screen.getByRole('button', { name: b.resume }));
+    expect(screen.getByText(left('0:56'))).toBeOnTheScreen();
+    expect(announce.mock.calls.length).toBe(before + 1); // the phase is announced again
   });
 
   test('timings with nothing valid go straight to Finished instead of hanging', async () => {
-    content.breathing.cycles = 0;
+    content.breathing.phases = [];
     await render(<Breathing />);
     await seconds(0);
     expect(router.replace).toHaveBeenCalledWith('/finished');

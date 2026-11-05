@@ -6,10 +6,10 @@ export const demo = { on: process.env.EXPO_PUBLIC_DEMO === '1' };
 
 // The same breathing steps and words, one short round, so a live demo reaches Finished quickly.
 export function breathingTiming() {
-  const { phases, cycles } = content.breathing;
-  if (!demo.on) return { phases, cycles };
+  const { phases } = content.breathing;
+  if (!demo.on) return { phases, short: false };
   const seconds = content.demo.breathingSeconds;
-  return { phases: phases.map((p, i) => ({ ...p, seconds: seconds[i] ?? p.seconds })), cycles: 1 };
+  return { phases: phases.map((p, i) => ({ ...p, seconds: seconds[i] ?? p.seconds })), short: true };
 }
 
 // The example contacts. A private number in .env.local (EXPO_PUBLIC_DEMO_PHONE, never committed, from someone

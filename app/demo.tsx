@@ -21,7 +21,7 @@ export default function Demo() {
     router.push('/home');
   };
   return (
-    <Screen showNeedHelp={false}>
+    <Screen>
       <Text accessibilityRole="header" style={text.heading}>
         {c.title}
       </Text>
