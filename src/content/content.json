@@ -33,7 +33,8 @@
     "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built.",
     "DRAFT for reviewer: safety.crisisPhrases is new and must be reviewed by a qualified professional before launch. If typed text contains any of these phrases (ignoring capitals, punctuation and apostrophes), Steady skips the search and opens Need help now. Please add any phrases students really use.",
     "DRAFT for reviewer: matching holds the results headings and calmFirst, the feelings for which the quick breathing tool is shown before any reading.",
-    "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed."
+    "DRAFT for reviewer: the check-in now follows Abel’s plan: the 12 taxonomy feelings as buttons, a box to type in your own words, and “I don’t feel safe right now”, which always opens Need help now. Typed text is checked for crisis phrases first, turned into tags on the phone, then cleared. It is never saved or sent. The old mood list and its result messages were removed.",
+    "DRAFT for reviewer: matching.goodFeelings lists the feelings that get a kind reply (matching.good) instead of help options. Any approved content tagged with them still shows below the reply."
   ],
   "home": {
     "title": "Steady",
@@ -887,7 +888,15 @@
       "video": "Video",
       "audio": "Audio"
     },
-    "minutes": "{n} min"
+    "minutes": "{n} min",
+    "goodFeelings": [
+      "grateful"
+    ],
+    "good": {
+      "heading": "Draft: glad to hear it",
+      "message": "Draft: hold on to this moment. You can come back any time.",
+      "done": "Done"
+    }
   },
   "demo": {
     "title": "Demo",

@@ -92,6 +92,8 @@ export type Content = {
   safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch
   matching: {
     calmFirst: string[]; // feeling ids that put the quick tool before any reading
+    goodFeelings: string[]; // feeling ids that get a kind reply instead of help options
+    good: { heading: string; message: string; done: string };
     headingFeeling: string;
     headingFeelingTheme: string;
     headingTheme: string;

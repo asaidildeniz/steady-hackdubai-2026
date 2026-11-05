@@ -102,6 +102,23 @@ describe('results', () => {
     expect(screen.getByText(m.notReplacement)).toBeOnTheScreen();
   });
 
+  test('a good feeling gets a kind reply and Done, never the "nothing found" options', async () => {
+    show('grateful');
+    await render(<Results />);
+    expect(screen.getByText(m.good.message)).toBeOnTheScreen();
+    expect(screen.queryByText(m.noMatch)).toBeNull();
+    expect(screen.queryByRole('button', { name: m.talk })).toBeNull();
+    await fireEvent.press(button(m.good.done));
+    expect(router.dismissTo).toHaveBeenCalledWith('/home');
+  });
+
+  test('a good feeling mixed with a hard one gets the normal cards', async () => {
+    show('grateful,stressed');
+    await render(<Results />);
+    expect(screen.queryByText(m.good.message)).toBeNull();
+    expect(screen.getByText(m.notReplacement)).toBeOnTheScreen();
+  });
+
   test('unknown ids are ignored, and nothing found offers breathing, a person and all topics', async () => {
     show('made-up', 'also-made-up');
     await render(<Results />);

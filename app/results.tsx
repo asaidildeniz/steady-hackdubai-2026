@@ -20,6 +20,23 @@ export default function Results() {
   const { feelings, themes, needs } = content.taxonomy;
   const tags = { feelings: read(f, feelings), themes: read(t, themes), needs: read(n, needs) };
   const { main, more } = pickCards(tags);
+  // Only good feelings (e.g. grateful): a kind reply, not help options. Any matching cards still follow.
+  const good =
+    tags.feelings.length > 0 && tags.feelings.every((id) => m.goodFeelings.includes(id)) && !tags.themes.length;
+
+  if (good) {
+    return (
+      <Screen actions={<BigButton label={m.good.done} onPress={() => router.dismissTo('/home')} />}>
+        <Text accessibilityRole="header" style={text.heading}>
+          {m.good.heading}
+        </Text>
+        <Text style={text.body}>{m.good.message}</Text>
+        {[...main, ...more].map((item) => (
+          <Card key={item.id} item={item} />
+        ))}
+      </Screen>
+    );
+  }
 
   return (
     <Screen>
