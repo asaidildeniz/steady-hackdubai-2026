@@ -1,118 +1,70 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { Pressable, StyleSheet, Text } from 'react-native';
-import { BigButton } from '@/components/BigButton';
+import { Redirect, router, useLocalSearchParams } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+import { Chip } from '@/components/Bits';
 import { Screen } from '@/components/Screen';
-import { content, type LibraryItem, type Tag } from '@/content/types';
-import { heading, pickCards } from '@/lib/matching';
+import { FeaturedTool, OtherTool, ToolRow } from '@/components/ToolCard';
+import { content, type LibraryItem, type Tag, type ToolId } from '@/content/types';
+import { groupFor, pickCards } from '@/lib/matching';
 import { colors, space, text } from '@/theme';
 
 // Only ids that exist in the taxonomy are used; anything else in the link is ignored.
 const read = (param: string | undefined, known: Tag[]) =>
   (param ?? '').split(',').filter((id) => known.some((t) => t.id === id));
 
-const open = (item: LibraryItem) =>
+const toolRoute: Record<ToolId, '/breathing' | '/untangle' | '/talk-to-someone'> = {
+  breathe: '/breathing',
+  untangle: '/untangle',
+  reachOut: '/talk-to-someone', // until Reach Out has its own screen
+};
+
+const openReading = (item: LibraryItem) =>
   item.opens.topic ? router.push({ pathname: '/topic', params: { id: item.opens.topic } }) : router.push('/breathing');
 
-// Abel 1.6: a balanced set of cards for what the student tapped or typed.
+// The v3 feeling page: what the student shared, one tool to try first, the others and matching readings after.
 export default function Results() {
-  const m = content.matching;
+  const fp = content.feelingPages;
   const { f, t, n } = useLocalSearchParams<{ f?: string; t?: string; n?: string }>();
   const { feelings, themes, needs } = content.taxonomy;
   const tags = { feelings: read(f, feelings), themes: read(t, themes), needs: read(n, needs) };
-  const { main, more } = pickCards(tags);
-  // Only good feelings (e.g. grateful): a kind reply, not help options. Any matching cards still follow.
-  const good =
-    tags.feelings.length > 0 && tags.feelings.every((id) => m.goodFeelings.includes(id)) && !tags.themes.length;
+  const group = groupFor(tags);
+  if (!group) return <Redirect href="/breathing" />; // no feeling found: Breathe is a calm place to start
 
-  // Nothing recognised (or a typo too far to guess): one more tap instead of a dead end.
-  if (!tags.feelings.length && !tags.themes.length && !tags.needs.length) {
-    return (
-      <Screen>
-        <Text accessibilityRole="header" style={text.heading}>
-          {m.closest}
-        </Text>
-        {feelings.map((f) => (
-          <BigButton
-            key={f.id}
-            secondary
-            label={f.label}
-            onPress={() => router.push({ pathname: '/results', params: { f: f.id, t: '', n: '' } })}
-          />
-        ))}
-      </Screen>
-    );
-  }
-
-  if (good) {
-    return (
-      <Screen actions={<BigButton label={m.good.done} onPress={() => router.dismissTo('/home')} />}>
-        <Text accessibilityRole="header" style={text.heading}>
-          {m.good.heading}
-        </Text>
-        <Text style={text.body}>{m.good.message}</Text>
-        {[...main, ...more].map((item) => (
-          <Card key={item.id} item={item} />
-        ))}
-      </Screen>
-    );
-  }
+  const [first, ...others] = group.tools;
+  const readings = [...pickCards(tags).main, ...pickCards(tags).more].filter((i) => i.type === 'reading');
 
   return (
-    <Screen>
+    <Screen back>
+      <Chip label={group.tag} />
       <Text accessibilityRole="header" style={text.heading}>
-        {main.length ? heading(tags) : m.headingNone}
+        {group.heading}
       </Text>
-      {main.length ? (
-        main.map((item) => <Card key={item.id} item={item} />)
-      ) : (
-        <>
-          <Text style={text.body}>{m.noMatch}</Text>
-          <BigButton label={m.breathe} onPress={() => router.push('/breathing')} />
-          <BigButton secondary label={m.talk} onPress={() => router.push('/talk-to-someone')} />
-          <BigButton secondary label={m.browse} onPress={() => router.push('/topics')} />
-        </>
-      )}
-      {more.length > 0 && (
-        <>
-          <Text accessibilityRole="header" style={text.title}>
-            {m.more}
-          </Text>
-          {more.map((item) => (
-            <Card key={item.id} item={item} />
-          ))}
-        </>
-      )}
-      <Text style={text.note}>{m.notReplacement}</Text>
+      <Text style={[text.body, styles.soft]}>{group.body}</Text>
+      <FeaturedTool tool={first} onPress={() => router.push(toolRoute[first])} />
+      <Text style={[text.note, styles.orTry]}>{fp.orTry}</Text>
+      <View style={styles.list}>
+        {others.map((tool) => (
+          <OtherTool key={tool} tool={tool} onPress={() => router.push(toolRoute[tool])} />
+        ))}
+        {readings.map((item) => (
+          <ToolRow
+            key={item.id}
+            icon="read"
+            tint={colors.chip}
+            ink={colors.primary}
+            title={item.title}
+            body={fp.readingMeta.replace('{n}', String(item.durationMinutes))}
+            a11yLabel={`${item.title}, ${fp.readingMeta.replace('{n}', String(item.durationMinutes))}`}
+            onPress={() => openReading(item)}
+          />
+        ))}
+      </View>
+      <Text style={text.note}>{content.matching.notReplacement}</Text>
     </Screen>
   );
 }
 
-function Card({ item }: { item: LibraryItem }) {
-  const m = content.matching;
-  const meta = `${m.types[item.type]} · ${m.minutes.replace('{n}', String(item.durationMinutes))}`;
-  return (
-    <Pressable
-      onPress={() => open(item)}
-      accessibilityRole="button"
-      accessibilityLabel={`${item.title}, ${meta}`}
-      accessibilityHint={item.summary}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
-    >
-      <Text style={text.note}>{meta}</Text>
-      <Text style={text.title}>{item.title}</Text>
-      <Text style={text.body}>{item.summary}</Text>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
-  card: {
-    gap: space.gap / 4,
-    padding: space.gap,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: colors.text,
-    minHeight: space.tap,
-  },
-  pressed: { opacity: 0.8 },
+  soft: { color: colors.muted },
+  orTry: { marginTop: space.gap / 2 },
+  list: { gap: space.gap - 4 },
 });

@@ -1,7 +1,7 @@
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 // The small line icons from the v3 screens. Decorative: the text next to each icon says what it is.
-export type IconName = 'drop' | 'wave' | 'heart' | 'back' | 'timer' | 'pause' | 'play' | 'stop' | 'logo';
+export type IconName = 'drop' | 'wave' | 'heart' | 'back' | 'timer' | 'pause' | 'play' | 'stop' | 'logo' | 'read';
 
 export function Icon({ name, size = 22, color = '#2B3A34' }: { name: IconName; size?: number; color?: string }) {
   const stroke = { stroke: color, strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, fill: 'none' };
@@ -38,6 +38,8 @@ export function Icon({ name, size = 22, color = '#2B3A34' }: { name: IconName; s
         );
       case 'play':
         return <Path d="M8 5 L19 12 L8 19 Z" fill={color} />;
+      case 'read':
+        return <Path d="M4 6 C7 5 10 5.5 12 7 C14 5.5 17 5 20 6 V18 C17 17 14 17.5 12 19 C10 17.5 7 17 4 18 Z M12 7 V19" {...stroke} />;
       case 'stop':
         return <Rect x="6.5" y="6.5" width="11" height="11" rx="2" fill={color} />;
     }

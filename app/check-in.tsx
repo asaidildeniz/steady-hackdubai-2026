@@ -7,7 +7,7 @@ import { Droplet } from '@/components/Droplet';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { meaningTags } from '@/lib/embedder';
-import { isCrisis, type Tags, tagsFromText } from '@/lib/matching';
+import { groupFor, isCrisis, type Tags, tagsFromText } from '@/lib/matching';
 import { mergeTags } from '@/lib/meaning';
 import { colors, fonts, radius, space, text, type } from '@/theme';
 
@@ -27,7 +27,9 @@ export default function CheckIn() {
     const words = tagsFromText(said);
     // The on-phone model adds tags by meaning; without it (Expo Go, loading, failure) keywords alone are used.
     const meaning = await meaningTags(said).catch(() => null);
-    router.push(resultsHref(meaning ? mergeTags(words, meaning) : words));
+    const tags = meaning ? mergeTags(words, meaning) : words;
+    // No feeling in what they wrote: Breathe, a calm place to start (the v3 response table).
+    router.push(groupFor(tags) ? resultsHref(tags) : '/breathing');
   };
 
   return (
