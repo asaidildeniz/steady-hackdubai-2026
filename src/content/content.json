@@ -30,7 +30,9 @@
     "DRAFT for reviewer: the faith topic’s last tip, “Join ALPHA 😊”, is kept as written. Please decide whether it stays: it is the only emoji in the app and reads like a recommendation of one programme.",
     "DRAFT for reviewer: the check-in moods now follow the survey’s top five. Each mood’s topic sends the student straight to that support topic; a mood without a topic, or with one that does not exist, shows the gentle message instead. Lonely and Low were replaced by these five. Struggling still always opens Need help now.",
     "DRAFT for reviewer: welcome.basis is new and says plainly that Steady is based on Christian values and is for everyone.",
-    "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar."
+    "DRAFT for reviewer: Talk to someone is now “Arrange a time to talk”, because the volunteers cannot always reply straight away. Need help now keeps its name: it points to emergency services and helplines, which answer any time. Booking happens by message or call with the person; the app has no calendar.",
+    "DRAFT for reviewer: taxonomy and library are new and follow Abel's feelings-to-content plan. Every definition and forWhom line is a draft. Example phrases will later match typed feelings on the phone; nothing typed is saved or sent. The screens do not use this data yet.",
+    "DRAFT for reviewer: every library item has status draft. Only approved items will ever be shown once matching is built."
   ],
   "home": {
     "title": "Steady",
@@ -295,6 +297,599 @@
     "call": "Call",
     "callHint": "Opens your phone app to call this number"
   },
+  "taxonomy": {
+    "feelings": [
+      {
+        "id": "anxious",
+        "label": "Anxious",
+        "definition": "Draft: worry or fear about what might happen, often with a racing mind or body.",
+        "examplePhrases": [
+          "panic",
+          "anxious",
+          "worried",
+          "can't stop overthinking",
+          "my heart is racing"
+        ]
+      },
+      {
+        "id": "stressed",
+        "label": "Stressed or overwhelmed",
+        "definition": "Draft: too many demands at once and not enough time or energy for them.",
+        "examplePhrases": [
+          "stressed",
+          "overwhelmed",
+          "too much to do",
+          "under pressure",
+          "can't cope with everything"
+        ]
+      },
+      {
+        "id": "sad",
+        "label": "Sad or low",
+        "definition": "Draft: a heavy, low mood that makes ordinary things feel harder.",
+        "examplePhrases": [
+          "sad",
+          "feeling down",
+          "low",
+          "unmotivated",
+          "everything feels heavy"
+        ]
+      },
+      {
+        "id": "lonely",
+        "label": "Lonely",
+        "definition": "Draft: feeling alone or cut off from people, even when others are around.",
+        "examplePhrases": [
+          "lonely",
+          "alone",
+          "no friends",
+          "nobody understands me",
+          "homesick"
+        ]
+      },
+      {
+        "id": "angry",
+        "label": "Angry",
+        "definition": "Draft: frustration or anger at a person, a situation or yourself.",
+        "examplePhrases": [
+          "angry",
+          "furious",
+          "so annoyed",
+          "frustrated",
+          "fed up"
+        ]
+      },
+      {
+        "id": "grieving",
+        "label": "Grieving",
+        "definition": "Draft: the pain of losing someone or something that mattered.",
+        "examplePhrases": [
+          "grief",
+          "funeral",
+          "someone died",
+          "I miss them",
+          "lost someone"
+        ]
+      },
+      {
+        "id": "not-good-enough",
+        "label": "Not good enough",
+        "definition": "Draft: feeling that you fall short or are worth less than others.",
+        "examplePhrases": [
+          "not good enough",
+          "failure",
+          "useless",
+          "behind everyone",
+          "wasting my life"
+        ]
+      },
+      {
+        "id": "afraid",
+        "label": "Afraid",
+        "definition": "Draft: fear of a specific thing, person or situation.",
+        "examplePhrases": [
+          "scared",
+          "afraid",
+          "frightened",
+          "terrified",
+          "fear"
+        ]
+      },
+      {
+        "id": "numb",
+        "label": "Numb or empty",
+        "definition": "Draft: feeling flat, disconnected or empty instead of sad.",
+        "examplePhrases": [
+          "numb",
+          "empty",
+          "don't feel anything",
+          "disconnected",
+          "just going through the motions"
+        ]
+      },
+      {
+        "id": "distant-from-god",
+        "label": "Distant from God",
+        "definition": "Draft: feeling far from God, or unsure where God is in this.",
+        "examplePhrases": [
+          "far from God",
+          "God isn't listening",
+          "can't pray",
+          "lost my faith",
+          "spiritually dry"
+        ]
+      },
+      {
+        "id": "guilty",
+        "label": "Guilty or ashamed",
+        "definition": "Draft: regret or shame about something you did or something about you.",
+        "examplePhrases": [
+          "guilty",
+          "ashamed",
+          "I messed up",
+          "regret",
+          "embarrassed"
+        ]
+      },
+      {
+        "id": "grateful",
+        "label": "Grateful or hopeful",
+        "definition": "Draft: a good moment worth noticing and holding on to.",
+        "examplePhrases": [
+          "grateful",
+          "thankful",
+          "hopeful",
+          "good day",
+          "blessed"
+        ]
+      }
+    ],
+    "themes": [
+      {
+        "id": "work",
+        "label": "Work and career",
+        "definition": "Draft: jobs, internships and what comes after study.",
+        "examplePhrases": [
+          "job",
+          "career",
+          "internship",
+          "unemployed",
+          "after graduation"
+        ]
+      },
+      {
+        "id": "study",
+        "label": "Study",
+        "definition": "Draft: exams, deadlines, grades and coursework.",
+        "examplePhrases": [
+          "exam",
+          "exams",
+          "deadline",
+          "grades",
+          "assignment"
+        ]
+      },
+      {
+        "id": "comparison",
+        "label": "Comparison",
+        "definition": "Draft: measuring yourself against other people's lives.",
+        "examplePhrases": [
+          "everyone else",
+          "comparing myself",
+          "social media",
+          "behind my friends",
+          "jealous"
+        ]
+      },
+      {
+        "id": "purpose",
+        "label": "Purpose",
+        "definition": "Draft: what your life is for and where it is going.",
+        "examplePhrases": [
+          "purpose",
+          "meaning",
+          "what's the point",
+          "direction",
+          "calling"
+        ]
+      },
+      {
+        "id": "family",
+        "label": "Family",
+        "definition": "Draft: parents, relatives and expectations at home.",
+        "examplePhrases": [
+          "parents",
+          "family",
+          "my mum",
+          "my dad",
+          "relatives"
+        ]
+      },
+      {
+        "id": "friendships",
+        "label": "Friendships",
+        "definition": "Draft: making, keeping or losing friends.",
+        "examplePhrases": [
+          "friends",
+          "friendship",
+          "left out",
+          "fitting in",
+          "peer pressure"
+        ]
+      },
+      {
+        "id": "relationships",
+        "label": "Relationships",
+        "definition": "Draft: dating, partners and break-ups.",
+        "examplePhrases": [
+          "relationship",
+          "boyfriend",
+          "girlfriend",
+          "break-up",
+          "dating"
+        ]
+      },
+      {
+        "id": "loss",
+        "label": "Loss",
+        "definition": "Draft: death, endings and things that cannot come back.",
+        "examplePhrases": [
+          "loss",
+          "death",
+          "lost",
+          "ending",
+          "gone"
+        ]
+      },
+      {
+        "id": "change",
+        "label": "Change and moving",
+        "definition": "Draft: a new city, country or chapter of life.",
+        "examplePhrases": [
+          "new city",
+          "moving",
+          "new country",
+          "homesick",
+          "starting over"
+        ]
+      },
+      {
+        "id": "doubt",
+        "label": "Doubt",
+        "definition": "Draft: questions or uncertainty about faith.",
+        "examplePhrases": [
+          "doubt",
+          "questions about faith",
+          "not sure I believe",
+          "is God real",
+          "confused about faith"
+        ]
+      },
+      {
+        "id": "prayer",
+        "label": "Prayer life",
+        "definition": "Draft: finding it hard, or wanting, to pray.",
+        "examplePhrases": [
+          "pray",
+          "prayer",
+          "don't know how to pray",
+          "quiet time",
+          "devotion"
+        ]
+      },
+      {
+        "id": "identity",
+        "label": "Identity in Christ",
+        "definition": "Draft: who you are and what gives you worth.",
+        "examplePhrases": [
+          "who am I",
+          "identity",
+          "my worth",
+          "self-worth",
+          "belong"
+        ]
+      },
+      {
+        "id": "forgiveness",
+        "label": "Forgiveness",
+        "definition": "Draft: forgiving others or being forgiven.",
+        "examplePhrases": [
+          "forgive",
+          "forgiveness",
+          "can't let go",
+          "they hurt me",
+          "grudge"
+        ]
+      },
+      {
+        "id": "sleep",
+        "label": "Sleep",
+        "definition": "Draft: trouble falling or staying asleep, or sleeping too much.",
+        "examplePhrases": [
+          "can't sleep",
+          "insomnia",
+          "tired",
+          "exhausted",
+          "up all night"
+        ]
+      },
+      {
+        "id": "burnout",
+        "label": "Burnout",
+        "definition": "Draft: long-term exhaustion from doing too much for too long.",
+        "examplePhrases": [
+          "burnout",
+          "burnt out",
+          "drained",
+          "no energy",
+          "running on empty"
+        ]
+      },
+      {
+        "id": "future",
+        "label": "Future",
+        "definition": "Draft: uncertainty about what is ahead.",
+        "examplePhrases": [
+          "future",
+          "what next",
+          "uncertain",
+          "plans",
+          "don't know what to do"
+        ]
+      }
+    ],
+    "needs": [
+      {
+        "id": "calm",
+        "label": "Calm",
+        "definition": "Draft: help to settle in about two minutes.",
+        "examplePhrases": [
+          "calm down",
+          "breathe",
+          "relax",
+          "settle"
+        ]
+      },
+      {
+        "id": "comfort",
+        "label": "Comfort",
+        "definition": "Draft: to feel less alone and cared for.",
+        "examplePhrases": [
+          "comfort",
+          "hug",
+          "someone to care",
+          "feel better"
+        ]
+      },
+      {
+        "id": "understand",
+        "label": "Understand",
+        "definition": "Draft: to make sense of what is happening.",
+        "examplePhrases": [
+          "understand",
+          "why do I feel",
+          "make sense",
+          "explain"
+        ]
+      },
+      {
+        "id": "act",
+        "label": "Act",
+        "definition": "Draft: a small practical next step.",
+        "examplePhrases": [
+          "what should I do",
+          "next step",
+          "plan",
+          "fix it"
+        ]
+      }
+    ],
+    "intensity": [
+      {
+        "id": "low",
+        "label": "Low"
+      },
+      {
+        "id": "moderate",
+        "label": "Moderate"
+      },
+      {
+        "id": "high",
+        "label": "High"
+      }
+    ]
+  },
+  "library": [
+    {
+      "status": "draft",
+      "scriptureRefs": [],
+      "id": "breathe-one-minute",
+      "type": "tool",
+      "title": "Calm moment",
+      "summary": "One minute of guided breathing.",
+      "forWhom": "Draft: for when your mind is racing and you need to slow down right now.",
+      "opens": {
+        "screen": "breathing"
+      },
+      "tags": {
+        "feelings": [
+          "anxious",
+          "stressed",
+          "afraid"
+        ],
+        "themes": [
+          "sleep"
+        ],
+        "needs": [
+          "calm"
+        ],
+        "intensity": [
+          "low",
+          "moderate",
+          "high"
+        ]
+      },
+      "durationMinutes": 1
+    },
+    {
+      "status": "draft",
+      "scriptureRefs": [
+        "Matthew 11:28–30",
+        "Galatians 6:2"
+      ],
+      "id": "reading-stress",
+      "type": "reading",
+      "title": "Stress or feeling overwhelmed",
+      "summary": "Practical steps when demands build up, with optional Christian encouragement.",
+      "forWhom": "Draft: for when there's too much to do and you don't know where to start.",
+      "opens": {
+        "topic": "stress"
+      },
+      "tags": {
+        "feelings": [
+          "stressed"
+        ],
+        "themes": [
+          "burnout",
+          "study",
+          "work"
+        ],
+        "needs": [
+          "act",
+          "calm"
+        ],
+        "intensity": [
+          "low",
+          "moderate"
+        ]
+      },
+      "durationMinutes": 3
+    },
+    {
+      "status": "draft",
+      "scriptureRefs": [
+        "Philippians 4:6–7"
+      ],
+      "id": "reading-anxiety",
+      "type": "reading",
+      "title": "Anxiety or constant worry",
+      "summary": "Naming worries, grounding, and when to get more help.",
+      "forWhom": "Draft: for when your worries feel certain and you can't switch them off.",
+      "opens": {
+        "topic": "anxiety"
+      },
+      "tags": {
+        "feelings": [
+          "anxious",
+          "afraid"
+        ],
+        "themes": [
+          "future"
+        ],
+        "needs": [
+          "calm",
+          "understand"
+        ],
+        "intensity": [
+          "low",
+          "moderate"
+        ]
+      },
+      "durationMinutes": 3
+    },
+    {
+      "status": "draft",
+      "scriptureRefs": [],
+      "id": "reading-exams",
+      "type": "reading",
+      "title": "Exam or study pressure",
+      "summary": "A steady, realistic way to prepare without losing sleep or worth.",
+      "forWhom": "Draft: for when exams feel like they decide your whole future.",
+      "opens": {
+        "topic": "exams"
+      },
+      "tags": {
+        "feelings": [
+          "stressed",
+          "not-good-enough"
+        ],
+        "themes": [
+          "study",
+          "future"
+        ],
+        "needs": [
+          "act"
+        ],
+        "intensity": [
+          "low",
+          "moderate"
+        ]
+      },
+      "durationMinutes": 3
+    },
+    {
+      "status": "draft",
+      "scriptureRefs": [
+        "Psalm 13"
+      ],
+      "id": "reading-faith",
+      "type": "reading",
+      "title": "Questions about faith or doubt",
+      "summary": "Space to ask questions without shame or pressure.",
+      "forWhom": "Draft: for when you're not sure what you believe any more, or God feels far away.",
+      "opens": {
+        "topic": "faith"
+      },
+      "tags": {
+        "feelings": [
+          "distant-from-god"
+        ],
+        "themes": [
+          "doubt",
+          "prayer",
+          "identity"
+        ],
+        "needs": [
+          "understand",
+          "comfort"
+        ],
+        "intensity": [
+          "low",
+          "moderate"
+        ]
+      },
+      "durationMinutes": 3
+    },
+    {
+      "status": "draft",
+      "scriptureRefs": [],
+      "id": "reading-down",
+      "type": "reading",
+      "title": "Feeling down",
+      "summary": "Small acts of care and gentle structure for low days.",
+      "forWhom": "Draft: for when everything feels heavy and you can’t say why.",
+      "opens": {
+        "topic": "down"
+      },
+      "tags": {
+        "feelings": [
+          "sad",
+          "numb",
+          "lonely"
+        ],
+        "themes": [],
+        "needs": [
+          "comfort",
+          "act"
+        ],
+        "intensity": [
+          "low",
+          "moderate"
+        ]
+      },
+      "durationMinutes": 3
+    }
+  ],
   "demo": {
     "title": "Demo",
     "note": "For presenting only. Breathing is shortened and calls do not dial. Start the app normally to leave demo mode.",
