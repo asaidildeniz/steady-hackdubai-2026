@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { type ComponentRef, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, BackHandler, findNodeHandle, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, BackHandler, findNodeHandle, Platform, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Chip, LogoRow } from '@/components/Bits';
 import { LivingDroplet } from '@/components/BreathOrb';
@@ -23,7 +23,7 @@ export default function Welcome() {
       stepChanged.current = true;
       return; // first render: the screen reader starts at the top anyway
     }
-    const tag = heading.current && findNodeHandle(heading.current);
+    const tag = Platform.OS !== 'web' && heading.current && findNodeHandle(heading.current);
     if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
     else AccessibilityInfo.announceForAccessibility(askAge ? c.ageQuestion : c.title);
   }, [askAge, c.ageQuestion, c.title]);

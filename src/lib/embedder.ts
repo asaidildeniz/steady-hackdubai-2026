@@ -26,8 +26,10 @@ async function load(): Promise<Matcher | null> {
     // Expo Go (or any build without the model's native parts) can't run it. Check the native modules
     // before loading the library: in development, a library that fails while loading is reported as a
     // crash even inside this try, so it must never be required where it can't work.
-    const { TurboModuleRegistry } = require('react-native');
-    const native = ['ReactNativeBlobUtil', 'RnExecutorch', 'ETInstaller'].every((m) => TurboModuleRegistry.get(m));
+    const { Platform, TurboModuleRegistry } = require('react-native');
+    const native =
+      Platform.OS !== 'web' && // the web has no native modules at all
+      ['ReactNativeBlobUtil', 'RnExecutorch', 'ETInstaller'].every((m) => TurboModuleRegistry.get(m));
     if (!native) {
       status = { state: 'off' };
       return null;

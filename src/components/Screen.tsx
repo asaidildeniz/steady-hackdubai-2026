@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useId } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
@@ -18,17 +18,18 @@ type Props = {
 // v3 frame: optional back button and title on top, content that scrolls, actions at the bottom.
 // Help in a crisis comes from the typed-text safety check and the Reach Out emergency link.
 export function Screen({ children, actions, pinActions, back, title, calm, centered }: Props) {
+  const uid = useId().replace(/\W/g, ''); // SVG ids must be unique per page on the web
   return (
     <SafeAreaView style={styles.safe}>
       {calm && (
-        <Svg style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
+        <Svg width="100%" height="100%" style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
           <Defs>
-            <LinearGradient id="calm" x1="0" y1="0" x2="0" y2="1">
+            <LinearGradient id={`calm${uid}`} x1="0" y1="0" x2="0" y2="1">
               <Stop offset="0" stopColor={colors.background} />
               <Stop offset="1" stopColor={colors.backgroundLow} />
             </LinearGradient>
           </Defs>
-          <Rect width="100%" height="100%" fill="url(#calm)" />
+          <Rect width="100%" height="100%" fill={`url(#calm${uid})`} />
         </Svg>
       )}
       {(back || title) && (

@@ -18,7 +18,7 @@ const clock = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2,
 // S6 Breathe. Fully offline: a one-second timer drives the phases; the droplet animates on the native thread.
 // A longer session repeats the same breath; it never makes one breath longer (see lib/breathing).
 export default function Breathing() {
-  useKeepAwake(); // only while this screen is open
+  useKeepAwake(undefined, { suppressDeactivateWarnings: true }); // only while this screen is open; a browser may refuse the lock
   const c = content.breathing;
   const { phases, short } = breathingTiming(); // shortened only in demo mode
   const [minutes, setMinutes] = useState<number | null>(short ? null : c.defaultMinutes);

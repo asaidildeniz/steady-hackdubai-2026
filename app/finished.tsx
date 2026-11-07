@@ -1,6 +1,6 @@
 import { router, useFocusEffect } from 'expo-router';
 import { type ComponentRef, useCallback, useEffect, useRef } from 'react';
-import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
@@ -28,7 +28,7 @@ export default function Finished() {
   // Start screen readers on the question once the screen has slid in.
   useEffect(() => {
     const id = setTimeout(() => {
-      const tag = question.current && findNodeHandle(question.current);
+      const tag = Platform.OS !== 'web' && question.current && findNodeHandle(question.current);
       if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
       else AccessibilityInfo.announceForAccessibility(c.prompt);
     }, 500);
