@@ -46,7 +46,6 @@ export function BackButton({ onPress = () => router.back() }: { onPress?: () => 
 export function LogoRow() {
   return (
     <View style={styles.logo} accessibilityRole="header">
-      <Icon name="logo" size={24} color="#8FAF9C" />
       <Text style={styles.logoText}>{content.home.title}</Text>
     </View>
   );
