@@ -40,7 +40,8 @@
     "DRAFT for reviewer: the welcome, age question, under-18 screen and Home now use the wording of the v3 screen design. Home is the check-in: a typing box and four chips (Anxious, Overwhelmed, Low, Okay). The under-18 screen now has a Go back button, as in the design.",
     "DRAFT for reviewer: Breathe now follows the v3 design. The student can choose 1, 2 or 3 minutes; a longer session repeats the same breath (4 in, 4 hold, 6 out) and never makes one breath longer. Each step is also capped to a comfortable range in code: inhale 2 to 7 seconds, hold up to 7, exhale 2 to 10.",
     "DRAFT for reviewer: the four feeling pages (Anxious, Overwhelmed, Low, Okay), the three tool cards and Untangle follow the v3 screen design. feelingPages.groups decides which of Abel’s feelings opens which page and the order of the tools; a typed message with no feeling opens Breathe. Untangle keeps what the student types in memory only; it is never saved and is cleared when they leave.",
-    "Untangle now follows Abel’s six-step tool, which the counsellor approved: name the thought, step back from it, what you know and what you are guessing, what you would tell a friend, a more balanced view, one small next step. Abel’s wording is used as written. DRAFT for reviewer: step 5’s instruction and the three “Use example” texts are new and need checking."
+    "Untangle now follows Abel’s six-step tool, which the counsellor approved: name the thought, step back from it, what you know and what you are guessing, what you would tell a friend, a more balanced view, one small next step. Abel’s wording is used as written. DRAFT for reviewer: step 5’s instruction and the three “Use example” texts are new and need checking.",
+    "DRAFT for reviewer: added the crisis phrase “notice if i disappeared” (7 Nov 2026). In testing, “I feel like nobody would notice if I disappeared” opened Breathe: it was not in this list and the on-phone model found no feeling in it. The phrase also catches “no one would notice if I disappeared”. Please confirm, reword or remove, and consider similar phrasings."
   ],
   "common": {
     "back": "Back"
@@ -926,7 +927,8 @@
       "overdose",
       "not safe at home",
       "being abused",
-      "someone is hurting me"
+      "someone is hurting me",
+      "notice if i disappeared"
     ]
   },
   "matching": {
