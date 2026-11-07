@@ -111,7 +111,7 @@ export type Content = {
     done: string;
     another: string;
     stepOf: string;
-    steps: { title: string; body: string }[]; // the three stages on the intro
+    steps: { title: string; body: string }[]; // one card per step on the intro
     useExample: string;
     name: { title: string; body: string; label: string; placeholder: string; examplesLabel: string; examples: string[]; note: string };
     stepBack: { title: string; body: string; prefix: string; further: string; prefix2: string; note: string; button: string };

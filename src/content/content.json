@@ -41,7 +41,8 @@
     "DRAFT for reviewer: Breathe now follows the v3 design. The student can choose 1, 2 or 3 minutes; a longer session repeats the same breath (4 in, 4 hold, 6 out) and never makes one breath longer. Each step is also capped to a comfortable range in code: inhale 2 to 7 seconds, hold up to 7, exhale 2 to 10.",
     "DRAFT for reviewer: the four feeling pages (Anxious, Overwhelmed, Low, Okay), the three tool cards and Untangle follow the v3 screen design. feelingPages.groups decides which of Abel’s feelings opens which page and the order of the tools; a typed message with no feeling opens Breathe. Untangle keeps what the student types in memory only; it is never saved and is cleared when they leave.",
     "Untangle now follows Abel’s six-step tool, which the counsellor approved: name the thought, step back from it, what you know and what you are guessing, what you would tell a friend, a more balanced view, one small next step. Abel’s wording is used as written. DRAFT for reviewer: step 5’s instruction and the three “Use example” texts are new and need checking.",
-    "DRAFT for reviewer: added the crisis phrase “notice if i disappeared” (7 Nov 2026). In testing, “I feel like nobody would notice if I disappeared” opened Breathe: it was not in this list and the on-phone model found no feeling in it. The phrase also catches “no one would notice if I disappeared”. Please confirm, reword or remove, and consider similar phrasings."
+    "DRAFT for reviewer: added the crisis phrase “notice if i disappeared” (7 Nov 2026). In testing, “I feel like nobody would notice if I disappeared” opened Breathe: it was not in this list and the on-phone model found no feeling in it. The phrase also catches “no one would notice if I disappeared”. Please confirm, reword or remove, and consider similar phrasings.",
+    "DRAFT for reviewer (7 Nov 2026), from the screen review: the age screen now says the answer isn’t kept (it never was); the feeling pages point to “I don’t feel safe right now” on Home, because v3 has no Need help now button there; the Untangle intro lists all six steps instead of three; the Untangle summary no longer suggests coming back to what was written, because nothing is saved. Please confirm or reword."
   ],
   "common": {
     "back": "Back"
@@ -59,7 +60,7 @@
     "adult": "I’m 18 or older",
     "underAge": "I’m under 18",
     "inDanger": "Draft: if you are in danger, contact local emergency services.",
-    "answerStays": "Draft: your answer stays on this phone.",
+    "answerStays": "Draft: we don’t keep your answer. Steady only remembers that you’ve been here before.",
     "back": "Back",
     "ageTag": "Before we begin",
     "ageBody": "Draft: steady is made for adults, so we ask once. No name, no account."
@@ -942,7 +943,7 @@
     "headingTheme": "Draft: for when {theme} feels hard",
     "headingNone": "Draft: a few things that might help",
     "more": "More like this",
-    "notReplacement": "Draft: these are not a replacement for professional help. If you need someone right now, use Need help now.",
+    "notReplacement": "Draft: these are not a replacement for professional help. If you need someone right now, go back to Home and tap “I don’t feel safe right now”.",
     "noMatch": "Draft: thank you for telling us. We don’t have something written for this yet, but these might still help.",
     "breathe": "Breathe for a minute",
     "talk": "Arrange a time to talk",
@@ -1155,15 +1156,27 @@
     "steps": [
       {
         "title": "Name it",
-        "body": "Write down the one thought that keeps coming back."
+        "body": "Draft: write down the thought that keeps coming back."
       },
       {
-        "title": "Look at it",
-        "body": "Is it something you can act on today, or not yet?"
+        "title": "Step back",
+        "body": "Draft: notice that it’s a thought, not a fact."
       },
       {
-        "title": "Choose one small step",
-        "body": "Something gentle you can do next, even if it’s tiny."
+        "title": "Know or guess",
+        "body": "Draft: sort what you know from what you’re guessing."
+      },
+      {
+        "title": "A friend’s view",
+        "body": "Draft: what would you tell a friend who felt this way?"
+      },
+      {
+        "title": "A fairer view",
+        "body": "Draft: put it into one more balanced sentence."
+      },
+      {
+        "title": "One small step",
+        "body": "Draft: choose something small you can do next."
       }
     ],
     "useExample": "Use example",
@@ -1234,7 +1247,7 @@
       "thought": "The thought",
       "balanced": "A more balanced view",
       "step": "My next step",
-      "returns": "The original thought may come back, and that’s normal. When it does, you can remind yourself of what you wrote here.",
+      "returns": "Draft: the original thought may come back, and that’s normal. Nothing here is saved, so if it helps, write your balanced view down somewhere you’ll see it.",
       "help": "If heavy thoughts keep coming back or are getting in the way of daily life, talking to a counsellor or someone you trust can really help."
     }
   }

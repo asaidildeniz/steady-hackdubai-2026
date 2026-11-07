@@ -169,7 +169,8 @@ export default function Breathing() {
               .map((p) => c.patternLabel.replace('{label}', p.label.replace(/…$/, '')).replace('{n}', String(p.seconds)))
               .join(', ')}
           />
-          {!!c.intro && <Text style={[text.body, styles.centred, styles.soft]}>{c.intro}</Text>}
+          {/* Hidden while the length chips are open: they take its room, and a half-cut line looks broken. */}
+          {!!c.intro && !choosing && <Text style={[text.body, styles.centred, styles.soft]}>{c.intro}</Text>}
         </View>
       )}
     </Screen>
