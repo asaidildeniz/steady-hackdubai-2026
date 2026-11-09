@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
 import { type ComponentRef, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, BackHandler, findNodeHandle, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, BackHandler, findNodeHandle, Platform, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Chip, LogoRow } from '@/components/Bits';
-import { Droplet } from '@/components/Droplet';
+import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { setWelcomeSeen } from '@/lib/storage';
@@ -23,7 +23,7 @@ export default function Welcome() {
       stepChanged.current = true;
       return; // first render: the screen reader starts at the top anyway
     }
-    const tag = heading.current && findNodeHandle(heading.current);
+    const tag = Platform.OS !== 'web' && heading.current && findNodeHandle(heading.current);
     if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
     else AccessibilityInfo.announceForAccessibility(askAge ? c.ageQuestion : c.title);
   }, [askAge, c.ageQuestion, c.title]);
@@ -60,7 +60,7 @@ export default function Welcome() {
       <Screen calm actions={<BigButton label={c.continue} onPress={() => setAskAge(true)} />}>
         <LogoRow />
         <View style={styles.hero}>
-          <Droplet size={190} />
+          <LivingDroplet size={190} />
         </View>
         <Text ref={heading} accessibilityRole="header" style={[text.heading, styles.center]}>
           {c.title}
@@ -89,7 +89,7 @@ export default function Welcome() {
       }
     >
       <View style={styles.hero}>
-        <Droplet size={110} />
+        <LivingDroplet size={110} />
       </View>
       <View style={styles.tagRow}>
         <Chip label={c.ageTag} />

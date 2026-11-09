@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 import Svg, { Defs, Ellipse, Path, RadialGradient, Stop } from 'react-native-svg';
 import type { BreathPhase } from '@/content/types';
@@ -71,6 +71,7 @@ const turn = (v: Animated.Value, dir = 1) =>
   v.interpolate({ inputRange: [0, 1], outputRange: ['0deg', `${dir * 360}deg`] });
 
 export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
+  const uid = useId().replace(/\W/g, ''); // SVG ids must be unique per page on the web
   const breath = useRef(new Animated.Value(0)).current; // 0 = breathed out, 1 = breathed in
   const pulse = useRef(new Animated.Value(1)).current; // a tiny swell while holding
   const ring = useRef(new Animated.Value(1)).current; // 0 → 1 as a ripple travels out
@@ -133,12 +134,12 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
       >
         <Svg width={size} height={size * 0.18} viewBox="0 0 200 36">
           <Defs>
-            <RadialGradient id="lqShadow" cx="50%" cy="50%" r="50%">
+            <RadialGradient id={`lqShadow${uid}`} cx="50%" cy="50%" r="50%">
               <Stop offset="0" stopColor="#5E7E78" stopOpacity="0.3" />
               <Stop offset="1" stopColor="#5E7E78" stopOpacity="0" />
             </RadialGradient>
           </Defs>
-          <Ellipse cx="100" cy="18" rx="80" ry="14" fill="url(#lqShadow)" />
+          <Ellipse cx="100" cy="18" rx="80" ry="14" fill={`url(#lqShadow${uid})`} />
         </Svg>
       </Animated.View>
 
@@ -174,25 +175,25 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
         <Animated.View style={[styles.fill, { transform: [{ rotate: turn(spinA) }] }]}>
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqBodyA" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqBodyA${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#DAE4E9" />
                 <Stop offset="0.6" stopColor="#B7CAD2" />
                 <Stop offset="1" stopColor="#8EA8B3" />
               </RadialGradient>
             </Defs>
-            <Path d={BODY_A} fill="url(#lqBodyA)" />
+            <Path d={BODY_A} fill={`url(#lqBodyA${uid})`} />
           </Svg>
         </Animated.View>
         <Animated.View style={[styles.fill, { transform: [{ rotate: turn(spinB, -1) }] }]}>
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqBodyB" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqBodyB${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#DAE4E9" />
                 <Stop offset="0.6" stopColor="#B7CAD2" />
                 <Stop offset="1" stopColor="#8EA8B3" />
               </RadialGradient>
             </Defs>
-            <Path d={BODY_B} fill="url(#lqBodyB)" />
+            <Path d={BODY_B} fill={`url(#lqBodyB${uid})`} />
           </Svg>
         </Animated.View>
 
@@ -200,12 +201,12 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
         <View style={styles.fill} pointerEvents="none">
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqDepth" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqDepth${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#5F818C" stopOpacity="0.28" />
                 <Stop offset="1" stopColor="#5F818C" stopOpacity="0" />
               </RadialGradient>
             </Defs>
-            <Ellipse cx="122" cy="128" rx="62" ry="54" fill="url(#lqDepth)" />
+            <Ellipse cx="122" cy="128" rx="62" ry="54" fill={`url(#lqDepth${uid})`} />
           </Svg>
         </View>
 
@@ -221,12 +222,12 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
         >
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqLilac" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqLilac${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#E7DAEE" stopOpacity="0.85" />
                 <Stop offset="1" stopColor="#E7DAEE" stopOpacity="0" />
               </RadialGradient>
             </Defs>
-            <Path d={CURRENT_A} fill="url(#lqLilac)" />
+            <Path d={CURRENT_A} fill={`url(#lqLilac${uid})`} />
           </Svg>
         </Animated.View>
         <Animated.View
@@ -240,12 +241,12 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
         >
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqAqua" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqAqua${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#EEF7F8" stopOpacity="0.75" />
                 <Stop offset="1" stopColor="#EEF7F8" stopOpacity="0" />
               </RadialGradient>
             </Defs>
-            <Path d={CURRENT_B} fill="url(#lqAqua)" />
+            <Path d={CURRENT_B} fill={`url(#lqAqua${uid})`} />
           </Svg>
         </Animated.View>
 
@@ -256,19 +257,19 @@ export function LiquidOrb({ motion, seconds, step, paused, size }: Props) {
         >
           <Svg width={size} height={size} viewBox="0 0 200 200">
             <Defs>
-              <RadialGradient id="lqShine" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqShine${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#FFFFFF" stopOpacity="0.95" />
                 <Stop offset="0.5" stopColor="#FFFFFF" stopOpacity="0.45" />
                 <Stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
               </RadialGradient>
-              <RadialGradient id="lqGlow" cx="50%" cy="50%" r="50%">
+              <RadialGradient id={`lqGlow${uid}`} cx="50%" cy="50%" r="50%">
                 <Stop offset="0" stopColor="#FFFFFF" stopOpacity="0.4" />
                 <Stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
               </RadialGradient>
             </Defs>
-            <Ellipse cx="72" cy="66" rx="22" ry="17" fill="url(#lqShine)" />
+            <Ellipse cx="72" cy="66" rx="22" ry="17" fill={`url(#lqShine${uid})`} />
             <Ellipse cx="66" cy="60" rx="5" ry="4" fill="#FFFFFF" fillOpacity="0.9" />
-            <Ellipse cx="134" cy="140" rx="24" ry="17" fill="url(#lqGlow)" />
+            <Ellipse cx="134" cy="140" rx="24" ry="17" fill={`url(#lqGlow${uid})`} />
             <Path
               d="M164 112 A66 66 0 0 1 118 164"
               stroke="#FFFFFF"

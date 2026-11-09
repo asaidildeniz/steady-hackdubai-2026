@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Chip, LogoRow } from '@/components/Bits';
-import { Droplet } from '@/components/Droplet';
+import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { meaningTags } from '@/lib/embedder';
@@ -36,7 +36,7 @@ export default function CheckIn() {
     <Screen>
       <LogoRow />
       <View style={styles.hero}>
-        <Droplet size={130} />
+        <LivingDroplet size={130} />
       </View>
       <Text accessibilityRole="header" style={text.heading}>
         {c.prompt}

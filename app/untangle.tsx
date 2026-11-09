@@ -43,7 +43,7 @@ export default function Untangle() {
 
   if (stage === 'intro') {
     return (
-      <Screen back actions={<BigButton label={u.begin} onPress={() => setStage(1)} />}>
+      <Screen key="intro" back actions={<BigButton label={u.begin} onPress={() => setStage(1)} />}>
         <Text accessibilityRole="header" style={text.heading}>
           {u.title}
         </Text>
@@ -69,6 +69,7 @@ export default function Untangle() {
     const s = u.summary;
     return (
       <Screen
+        key="summary"
         back={back}
         actions={
           <>
@@ -90,7 +91,7 @@ export default function Untangle() {
     );
   }
 
-  // Steps 1 to 6.
+  // Steps 1 to 6. key={n}: a fresh scroll for each step, so a step never opens scrolled halfway down.
   const n = stage;
   const parts = thoughtParts(thought);
   const guesses = Object.values(marks).filter((m) => m === 'guess').length;
@@ -102,6 +103,7 @@ export default function Untangle() {
 
   return (
     <Screen
+      key={n}
       back={back}
       actions={
         <>

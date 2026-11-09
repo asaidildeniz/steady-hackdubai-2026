@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
-import { Droplet } from '@/components/Droplet';
+import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { colors, radius, space, text } from '@/theme';
@@ -14,7 +14,7 @@ export default function AdultsOnly() {
   return (
     <Screen calm back={goBack} actions={<BigButton secondary label={c.goBack} onPress={goBack} />}>
       <View style={styles.hero}>
-        <Droplet size={110} />
+        <LivingDroplet size={110} />
       </View>
       <Text accessibilityRole="header" style={[text.heading, styles.center]}>
         {c.message}

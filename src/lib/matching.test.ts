@@ -18,6 +18,14 @@ describe('safety check (runs before any search)', () => {
     expect(isCrisis(text)).toBe(true);
   });
 
+  // Feeling that no one would miss you can signal real risk; the meaning model found no feeling in it.
+  test.each(['I feel like nobody would notice if I disappeared', 'No one would notice if I disappeared.'])(
+    'catches feeling invisible: "%s"',
+    (text) => {
+      expect(isCrisis(text)).toBe(true);
+    },
+  );
+
   test.each(['I smashed my exam, killing it', 'so stressed about my deadline', ''])('does not flag "%s"', (text) => {
     expect(isCrisis(text)).toBe(false);
   });

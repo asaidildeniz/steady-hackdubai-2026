@@ -1,8 +1,8 @@
 import { router, useFocusEffect } from 'expo-router';
 import { type ComponentRef, useCallback, useEffect, useRef } from 'react';
-import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
-import { Droplet } from '@/components/Droplet';
+import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content, type FinishedOption } from '@/content/types';
 import { colors, space, text } from '@/theme';
@@ -28,7 +28,7 @@ export default function Finished() {
   // Start screen readers on the question once the screen has slid in.
   useEffect(() => {
     const id = setTimeout(() => {
-      const tag = question.current && findNodeHandle(question.current);
+      const tag = Platform.OS !== 'web' && question.current && findNodeHandle(question.current);
       if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
       else AccessibilityInfo.announceForAccessibility(c.prompt);
     }, 500);
@@ -56,7 +56,7 @@ export default function Finished() {
       ))}
     >
       <View style={styles.hero}>
-        <Droplet size={130} />
+        <LivingDroplet size={130} />
       </View>
       <Text ref={question} accessibilityRole="header" style={[text.heading, styles.center]}>
         {c.prompt}

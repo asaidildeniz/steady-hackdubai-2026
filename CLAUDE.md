@@ -10,7 +10,7 @@ No streaks, points, badges, push notifications or pop-ups. Tone: honest, gentle,
 Do not add dependencies beyond the guide without asking.
 Exception: test devDependencies jest, jest-expo, @types/jest, @testing-library/react-native.
 Approved by the developer (2026-10-29): expo-keep-awake, used only on the Breathing screen.
-Approved by the developer (2026-11): react-native-executorch, react-native-blob-util, react-native-worklets, expo-asset, expo-dev-client, expo-build-properties (on-phone matching model); react-native-svg and expo-font with bundled DM Sans (v3 design).
+Approved by the developer (2026-11): react-native-executorch, react-native-blob-util, react-native-worklets, expo-asset, expo-dev-client, expo-build-properties (on-phone matching model); react-native-svg and expo-font with bundled DM Sans (v3 design); @shopify/react-native-skia and react-native-reanimated for the water-orb shader (Steady's own SkSL, no third-party shader code).
 No real student stories or personal data in any file (PRODUCT.md, specs and plans included).
 
 ## Tools (the guide and hard rules always win; flag any plugin conflict, then follow the guide)

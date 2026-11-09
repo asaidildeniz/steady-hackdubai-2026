@@ -6,7 +6,7 @@ import { Chip } from '@/components/Bits';
 import { BreathPattern } from '@/components/BreathPattern';
 import { Droplet } from '@/components/Droplet';
 import { Icon, type IconName } from '@/components/Icon';
-import { LiquidOrb } from '@/components/LiquidOrb';
+import { BreathOrb } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
 import { cycleSeconds, cyclesFor, safePhases, stepAt, totalSeconds } from '@/lib/breathing';
@@ -18,7 +18,7 @@ const clock = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2,
 // S6 Breathe. Fully offline: a one-second timer drives the phases; the droplet animates on the native thread.
 // A longer session repeats the same breath; it never makes one breath longer (see lib/breathing).
 export default function Breathing() {
-  useKeepAwake(); // only while this screen is open
+  useKeepAwake(undefined, { suppressDeactivateWarnings: true }); // only while this screen is open; a browser may refuse the lock
   const c = content.breathing;
   const { phases, short } = breathingTiming(); // shortened only in demo mode
   const [minutes, setMinutes] = useState<number | null>(short ? null : c.defaultMinutes);
@@ -146,7 +146,7 @@ export default function Breathing() {
           {reduceMotion ? (
             <Droplet size={size * 0.7} />
           ) : (
-            <LiquidOrb
+            <BreathOrb
               motion={step.phase.motion}
               seconds={step.phase.seconds}
               step={`${step.index}-${restarts}`}
@@ -169,7 +169,8 @@ export default function Breathing() {
               .map((p) => c.patternLabel.replace('{label}', p.label.replace(/…$/, '')).replace('{n}', String(p.seconds)))
               .join(', ')}
           />
-          {!!c.intro && <Text style={[text.body, styles.centred, styles.soft]}>{c.intro}</Text>}
+          {/* Hidden while the length chips are open: they take its room, and a half-cut line looks broken. */}
+          {!!c.intro && !choosing && <Text style={[text.body, styles.centred, styles.soft]}>{c.intro}</Text>}
         </View>
       )}
     </Screen>
