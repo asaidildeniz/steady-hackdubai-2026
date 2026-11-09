@@ -11,10 +11,10 @@ import { colors, space, text } from '@/theme';
 const read = (param: string | undefined, known: Tag[]) =>
   (param ?? '').split(',').filter((id) => known.some((t) => t.id === id));
 
-const toolRoute: Record<ToolId, '/breathing' | '/untangle' | '/talk-to-someone'> = {
+const toolRoute: Record<ToolId, '/breathing' | '/untangle' | '/reach-out'> = {
   breathe: '/breathing',
   untangle: '/untangle',
-  reachOut: '/talk-to-someone', // until Reach Out has its own screen
+  reachOut: '/reach-out',
 };
 
 const openReading = (item: LibraryItem) =>

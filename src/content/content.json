@@ -42,7 +42,8 @@
     "DRAFT for reviewer: the four feeling pages (Anxious, Overwhelmed, Low, Okay), the three tool cards and Untangle follow the v3 screen design. feelingPages.groups decides which of Abel’s feelings opens which page and the order of the tools; a typed message with no feeling opens Breathe. Untangle keeps what the student types in memory only; it is never saved and is cleared when they leave.",
     "Untangle now follows Abel’s six-step tool, which the counsellor approved: name the thought, step back from it, what you know and what you are guessing, what you would tell a friend, a more balanced view, one small next step. Abel’s wording is used as written. DRAFT for reviewer: step 5’s instruction and the three “Use example” texts are new and need checking.",
     "DRAFT for reviewer: added the crisis phrase “notice if i disappeared” (7 Nov 2026). In testing, “I feel like nobody would notice if I disappeared” opened Breathe: it was not in this list and the on-phone model found no feeling in it. The phrase also catches “no one would notice if I disappeared”. Please confirm, reword or remove, and consider similar phrasings.",
-    "DRAFT for reviewer (7 Nov 2026), from the screen review: the age screen now says the answer isn’t kept (it never was); the feeling pages point to “I don’t feel safe right now” on Home, because v3 has no Need help now button there; the Untangle intro lists all six steps instead of three; the Untangle summary no longer suggests coming back to what was written, because nothing is saved. Please confirm or reword."
+    "DRAFT for reviewer (7 Nov 2026), from the screen review: the age screen now says the answer isn’t kept (it never was); the feeling pages point to “I don’t feel safe right now” on Home, because v3 has no Need help now button there; the Untangle intro lists all six steps instead of three; the Untangle summary no longer suggests coming back to what was written, because nothing is saved. Please confirm or reword.",
+    "DRAFT for reviewer (9 Nov 2026): reachOut is the new Reach Out tool, adapted from Abel’s self-care tools prototype (self-care-tools/js/reachout.js). The three moment lines follow Kristin Neff’s Self-Compassion Break. Please have the counsellor approve the three lines and all 18 messages (3 needs × casual or more open × 3 wordings). The emoji in one of Abel’s messages was removed. Steady never sends anything: Send opens the phone’s own share menu and the student chooses the person. Nothing written is saved."
   ],
   "common": {
     "back": "Back"
@@ -991,6 +992,10 @@
         "route": "/untangle"
       },
       {
+        "label": "Reach Out",
+        "route": "/reach-out"
+      },
+      {
         "label": "How do you feel now?",
         "route": "/finished"
       },
@@ -1249,6 +1254,99 @@
       "step": "My next step",
       "returns": "Draft: the original thought may come back, and that’s normal. Nothing here is saved, so if it helps, write your balanced view down somewhere you’ll see it.",
       "help": "If heavy thoughts keep coming back or are getting in the way of daily life, talking to a counsellor or someone you trust can really help."
+    }
+  },
+  "reachOut": {
+    "title": "Reach Out",
+    "moment": {
+      "heading": "First, a moment for you",
+      "body": "Draft: take a slow breath and read each line to yourself.",
+      "lines": [
+        {
+          "text": "Draft: This is hard right now.",
+          "note": "Draft: feeling alone is painful, and it’s okay to admit that."
+        },
+        {
+          "text": "Draft: Lots of people feel this way too.",
+          "note": "Draft: loneliness is really common, especially among students. You’re not the only one."
+        },
+        {
+          "text": "Draft: I can be kind to myself.",
+          "note": "Draft: if it helps, place a hand on your chest. Speak to yourself the way you would to a friend."
+        }
+      ],
+      "lineOf": "{n} of {total}",
+      "next": "Next",
+      "continue": "Continue",
+      "skip": "Skip"
+    },
+    "needs": {
+      "heading": "What would help right now?",
+      "body": "Draft: even starting a message can feel hard. Pick one, and Steady will help with the words.",
+      "options": [
+        {
+          "id": "listen",
+          "label": "Someone to listen",
+          "sub": "Draft: I don’t need advice, just company",
+          "casual": [
+            "Draft: Hey, I’ve had a bit of a rough day. Are you free to talk for a bit?",
+            "Draft: No pressure, but would you be up for a call later? I could use a chat.",
+            "Draft: I don’t need advice or anything, I’d just really like someone to listen for a bit. Free at some point?"
+          ],
+          "open": [
+            "Draft: Hey, I’ve been feeling pretty low lately and I’d really like to talk to someone. Would you have some time today or tomorrow?",
+            "Draft: I’m finding things harder than usual at the moment. I don’t need you to fix anything, but it would mean a lot to talk. Are you around?",
+            "Draft: I’ve been feeling quite lonely recently and I trust you. Could we talk sometime soon?"
+          ]
+        },
+        {
+          "id": "reconnect",
+          "label": "Reconnect with a friend",
+          "sub": "Draft: It’s been a while",
+          "casual": [
+            "Draft: Hey! It’s been ages. How are you doing? Want to catch up sometime?",
+            "Draft: Saw something today that reminded me of you. How’s everything going?",
+            "Draft: Fancy grabbing a coffee or going for a walk this week? It would be really good to see you."
+          ],
+          "open": [
+            "Draft: Hey, I know we haven’t talked in a while, and that’s on me too. I’ve missed chatting with you. Would you like to catch up?",
+            "Draft: I’ve been thinking about you and realised how much I miss our conversations. Any chance we could meet up soon?",
+            "Draft: It’s been a while and I’d really love to reconnect. No pressure at all, but I’d love to hear how you’re doing."
+          ]
+        },
+        {
+          "id": "trust",
+          "label": "Talk to someone I trust",
+          "sub": "Draft: A family member, mentor, pastor or counsellor",
+          "casual": [
+            "Draft: Hi, do you have a few minutes sometime this week? There’s something I’d like to talk through.",
+            "Draft: Hey, could we have a chat soon? Nothing urgent, but I’d value your perspective.",
+            "Draft: Hi, would you be free for a quick call? I’ve had a lot on my mind."
+          ],
+          "open": [
+            "Draft: Hi, I’ve been struggling a bit lately and I’d really value talking to you about it. When would be a good time?",
+            "Draft: I’ve been feeling quite alone recently and it’s been getting to me. Would you be able to make some time to talk?",
+            "Draft: Hi, I wanted to reach out because things have felt heavy lately. I’m not sure what I need yet, but I think talking would help. Are you free soon?"
+          ]
+        }
+      ]
+    },
+    "message": {
+      "heading": "Here’s a message you could send",
+      "body": "Draft: change it so it sounds like you. A small, honest message is usually enough.",
+      "label": "Your message",
+      "toneLabel": "How it sounds",
+      "casual": "Casual",
+      "open": "More open",
+      "wordingOf": "Wording {n} of {total}",
+      "another": "Try another wording",
+      "send": "Send…",
+      "sendHint": "Opens your phone’s share menu. You choose who gets it.",
+      "who": "Draft: not sure who to send it to? Think of one person who has been kind to you, even in a small way. It doesn’t have to be your closest friend.",
+      "help": "Draft: if you feel like this a lot, or it’s starting to feel like too much, a pastor or counsellor can listen.",
+      "talk": "Arrange a time to talk",
+      "back": "Choose something else",
+      "note": "Nothing you write here is saved. Steady never sends it for you."
     }
   }
 }
