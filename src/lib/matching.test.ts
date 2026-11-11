@@ -63,8 +63,8 @@ describe('typed text to tags', () => {
     expect(tagsFromText('greyfurt')).toEqual(none);
   });
 
-  test('typo tolerance never reaches the crisis check', () => {
-    expect(isCrisis('suicde')).toBe(false); // exact list only; Renji adds real spellings to the list
+  test('a small typo in a long crisis word still counts (decided 11 Nov, checklist 04)', () => {
+    expect(isCrisis('suicde')).toBe(true);
   });
 
   test('nothing recognisable gives no tags', () => {

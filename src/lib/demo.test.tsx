@@ -109,8 +109,9 @@ describe('demo mode', () => {
     expect(screen.getByText(d.callNote)).toBeOnTheScreen();
   });
 
-  test('example contacts never carry a phone number', () => {
-    for (const example of d.contacts) expect(example.phone).toBe('');
+  // Checklist 04: test numbers only, never a real person's. 00 is not a UAE prefix, so it reaches no one.
+  test('example contacts carry no number or only the obviously fake test number', () => {
+    for (const example of d.contacts) expect(['', '+971 00 000 0000']).toContain(example.phone);
   });
 });
 

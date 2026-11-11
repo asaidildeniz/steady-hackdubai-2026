@@ -48,7 +48,15 @@ To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` make
 
 ## Typed feelings and the on-phone model
 
-On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked against `safety.crisisPhrases` (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.
+On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked for crisis phrases (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.
+
+**The crisis check** (`safety` in content.json, tested in `src/lib/crisis.test.ts`):
+- `crisisPhrases` match anywhere in what was typed, in English or Arabic. Capitals, punctuation and apostrophes are ignored, and Arabic is matched however it is typed (with or without hamza and vowel marks).
+- Small typos count in English crisis words of 5+ letters ("suicde"). Short words and Arabic must match exactly, so "will myself" and الامتحان (the exam) never trigger it.
+- `crisisEndings` ("I'm done") count only at the end of a sentence, so "I'm done with my exam" stays calm.
+- Every phrase is a draft until Renji (and a native speaker for Arabic) has reviewed it.
+
+**Need help now** is one tap away on every screen: a quiet link at the top right. It lists 999 (Police) and 998 (Ambulance). In demo mode no number ever dials, and the demo contact shows the obviously fake test number +971 00 000 0000.
 
 - **Expo Go:** tags come from keywords (the taxonomy's example phrases) with small-typo tolerance.
 - **A built app (APK or development build):** a small sentence model, all-MiniLM-L6-v2 through React Native ExecuTorch, also adds tags by meaning, so "everyone's moving on without me" finds Lonely. The model is bundled in the app and runs offline.

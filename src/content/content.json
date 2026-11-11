@@ -43,10 +43,17 @@
     "Untangle now follows Abel’s six-step tool, which the counsellor approved: name the thought, step back from it, what you know and what you are guessing, what you would tell a friend, a more balanced view, one small next step. Abel’s wording is used as written. DRAFT for reviewer: step 5’s instruction and the three “Use example” texts are new and need checking.",
     "DRAFT for reviewer: added the crisis phrase “notice if i disappeared” (7 Nov 2026). In testing, “I feel like nobody would notice if I disappeared” opened Breathe: it was not in this list and the on-phone model found no feeling in it. The phrase also catches “no one would notice if I disappeared”. Please confirm, reword or remove, and consider similar phrasings.",
     "DRAFT for reviewer (7 Nov 2026), from the screen review: the age screen now says the answer isn’t kept (it never was); the feeling pages point to “I don’t feel safe right now” on Home, because v3 has no Need help now button there; the Untangle intro lists all six steps instead of three; the Untangle summary no longer suggests coming back to what was written, because nothing is saved. Please confirm or reword.",
-    "DRAFT for reviewer (9 Nov 2026): reachOut is the new Reach Out tool, adapted from Abel’s self-care tools prototype (self-care-tools/js/reachout.js). The three moment lines follow Kristin Neff’s Self-Compassion Break. Please have the counsellor approve the three lines and all 18 messages (3 needs × casual or more open × 3 wordings). The emoji in one of Abel’s messages was removed. Steady never sends anything: Send opens the phone’s own share menu and the student chooses the person. Nothing written is saved."
+    "DRAFT for reviewer (9 Nov 2026): reachOut is the new Reach Out tool, adapted from Abel’s self-care tools prototype (self-care-tools/js/reachout.js). The three moment lines follow Kristin Neff’s Self-Compassion Break. Please have the counsellor approve the three lines and all 18 messages (3 needs × casual or more open × 3 wordings). The emoji in one of Abel’s messages was removed. Steady never sends anything: Send opens the phone’s own share menu and the student chooses the person. Nothing written is saved.",
+    "DRAFT for reviewer (11 Nov 2026, checklist 04): needHelp.emergencyNumbers now lists 999 (Police) and 998 (Ambulance), marked verified so they can be called. They come from the mentors’ checklist and match several UAE sources (ADAD helpline guide, Dubai news pages). Please double-check them against an official UAE government source.",
+    "DRAFT for reviewer (11 Nov 2026, checklist 04): new crisis phrases for varied phrasing: “no point anymore”, “no point in living”, “can’t do this anymore”, “end it all”, “don’t want to wake up”. safety.crisisEndings (“I’m done”, “I am done”) count only at the end of a sentence, so “I’m done with my exam” is not flagged. Small typos in crisis words of 5+ letters now also count (for example “suicde”).",
+    "DRAFT for reviewer (11 Nov 2026, checklist 04): Arabic crisis phrases were added (Modern Standard Arabic and Gulf): أريد أن أموت، أبي أموت، أبغى أموت، انتحار، الانتحار، انتحر، أقتل نفسي، بقتل نفسي، أنهي حياتي، لا أريد أن أعيش، ما أبي أعيش، أؤذي نفسي. They are stored without hamza or vowel marks because the check ignores them. A native Arabic speaker and Renji must check them and add phrases students really use. Arabic must match exactly: no typo tolerance, because a near-miss could turn الامتحان (the exam) into الانتحار.",
+    "DRAFT for reviewer (11 Nov 2026, checklist 04): a quiet “Need help now” link (common.needHelpLink) now sits at the top of every screen except Need help now itself and the presenter’s Demo screen.",
+    "The demo’s tappable example contact shows the test number +971 00 000 0000 (demo.testNumber). 00 is not a UAE prefix, so it can never reach anyone, and in demo mode Call shows a note instead of dialling. Emergency numbers never dial in demo mode either."
   ],
   "common": {
-    "back": "Back"
+    "back": "Back",
+    "needHelpLink": "Need help now",
+    "needHelpLinkHint": "Emergency numbers and people you can call"
   },
   "home": {
     "title": "Steady"
@@ -270,9 +277,14 @@
     "peopleHeading": "People you can talk to",
     "emergencyNumbers": [
       {
-        "label": "Emergency services",
-        "number": "",
-        "verified": false
+        "label": "Police",
+        "number": "999",
+        "verified": true
+      },
+      {
+        "label": "Ambulance",
+        "number": "998",
+        "verified": true
       }
     ],
     "helplines": [
@@ -930,7 +942,30 @@
       "not safe at home",
       "being abused",
       "someone is hurting me",
-      "notice if i disappeared"
+      "notice if i disappeared",
+      "no point anymore",
+      "no point any more",
+      "no point in living",
+      "cant do this anymore",
+      "cant do this any more",
+      "end it all",
+      "dont want to wake up",
+      "اريد ان اموت",
+      "ابي اموت",
+      "ابغى اموت",
+      "انتحار",
+      "الانتحار",
+      "انتحر",
+      "اقتل نفسي",
+      "بقتل نفسي",
+      "انهي حياتي",
+      "لا اريد ان اعيش",
+      "ما ابي اعيش",
+      "اوذي نفسي"
+    ],
+    "crisisEndings": [
+      "im done",
+      "i am done"
     ]
   },
   "matching": {
@@ -1026,7 +1061,7 @@
         "church": "A local partner church",
         "canHelpWith": "Listening, prayer, encouragement",
         "cannotHelpWith": "Emergencies, medical advice",
-        "phone": "",
+        "phone": "+971 00 000 0000",
         "verified": false,
         "tappable": true
       },
@@ -1062,7 +1097,8 @@
       "missesHeading": "Missed at {t}:",
       "alarmsHeading": "False alarms at {t}:",
       "current": "(current)"
-    }
+    },
+    "testNumber": "Test number: {number}"
   },
   "tools": {
     "breathe": {

@@ -60,7 +60,7 @@ export type Content = {
   reviewStatus: string;
   reviewNotes: string[];
   home: { title: string };
-  common: { back: string };
+  common: { back: string; needHelpLink: string; needHelpLinkHint: string };
   welcome: {
     title: string;
     body: string;
@@ -176,7 +176,7 @@ export type Content = {
 
   taxonomy: Taxonomy;
   library: LibraryItem[];
-  safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch
+  safety: { crisisPhrases: string[]; crisisEndings: string[] }; // reviewed by a qualified professional before launch; endings count only at the end of a sentence
   matching: {
     calmFirst: string[]; // feeling ids that put the quick tool before any reading
     goodFeelings: string[]; // feeling ids that get a kind reply instead of help options
@@ -238,6 +238,7 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
+    testNumber: string; // "{number}" is the demo contact's obviously fake test number
     modelCheck: {
       heading: string;
       states: Record<'idle' | 'loading' | 'off' | 'ready' | 'failed', string>;
