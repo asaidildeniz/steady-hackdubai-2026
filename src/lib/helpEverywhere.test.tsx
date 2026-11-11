@@ -101,3 +101,21 @@ describe('demo test number', () => {
     expect(screen.getByText(content.demo.callNote)).toBeOnTheScreen();
   });
 });
+
+// Option D (11 Nov): Ambulance first, because a student here is most likely at risk of hurting themselves,
+// and each number says when to call it, so nobody has to work out which service they need.
+describe('choosing the right emergency number', () => {
+  test('Ambulance 998 comes before Police 999', async () => {
+    await render(<NeedHelp />);
+    const calls = screen.getAllByRole('button', { name: /^Call / }).map((b) => b.props.accessibilityLabel);
+    expect(calls.slice(0, 2)).toEqual(['Call Ambulance, 9 9 8', 'Call Police, 9 9 9']);
+  });
+
+  test('each emergency number says when to call it', async () => {
+    await render(<NeedHelp />);
+    for (const e of content.needHelp.emergencyNumbers) {
+      expect(e.when).toBeTruthy();
+      expect(screen.getByText(e.when!)).toBeOnTheScreen();
+    }
+  });
+});

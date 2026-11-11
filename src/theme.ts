@@ -23,6 +23,9 @@ export const colors = {
   calm: '#A9C4CC',
   needHelp: '#2B3A34',
   needHelpText: '#F8F4EE',
+  // Only the emergency call buttons are red (option D, 11 Nov): a deep brick, so it stands out without shouting.
+  emergency: '#B23A2B', // white text on it is 5.9:1
+  onEmergency: '#FFFFFF',
 };
 
 export const fonts = {
