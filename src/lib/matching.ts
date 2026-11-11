@@ -5,11 +5,18 @@ import { content, type FeelingGroup, type LibraryItem, type Tag } from '@/conten
 export type Tags = { feelings: string[]; themes: string[]; needs: string[] };
 
 // Lower case, apostrophes dropped ("can't" -> "cant"), everything else that isn't a letter or digit becomes one space.
+// Arabic is kept and typed the common ways: vowel marks and tatweel dropped, alef forms, ta marbuta and alef maqsura unified.
 const normalise = (s: string) =>
   s
     .toLowerCase()
     .replace(/[’']/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/[ً-ٰٟـ]/g, '')
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim();
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -48,9 +55,36 @@ function nearlyContains(text: string, phrase: string): boolean {
     .some((w) => Math.abs(w.length - p.length) <= allowed && distance(w, p) <= allowed);
 }
 
+// A crisis phrase with a small typo: each Latin word of 5+ letters may be one letter off (two for 8+),
+// shorter words and Arabic must match exactly ("will myself" is not "kill myself"; الامتحان, the exam, is not الانتحار).
+function nearlyContainsPhrase(text: string, phrase: string): boolean {
+  const p = normalise(phrase).split(' ');
+  const words = normalise(text).split(' ');
+  const close = (w: string, q: string) => {
+    if (w === q) return true;
+    if (q.length < 5 || !/^[a-z]+$/.test(q)) return false;
+    const allowed = q.length >= 8 ? 2 : 1;
+    return Math.abs(w.length - q.length) <= allowed && distance(w, q) <= allowed;
+  };
+  return words.some((_, start) => p.every((q, i) => words[start + i] !== undefined && close(words[start + i], q)));
+}
+
+// Phrases like "I'm done" count only at the end of a sentence, so "I'm done with my exam" stays calm.
+function endsASentence(text: string, phrase: string): boolean {
+  const p = normalise(phrase);
+  return text.split(/[.!?\n]+/).some((s) => {
+    const n = normalise(s);
+    return n === p || n.endsWith(` ${p}`);
+  });
+}
+
 // Safety first (Abel 1.8): checked before any search, and a match always wins.
 export function isCrisis(text: string): boolean {
-  return content.safety.crisisPhrases.some((p) => contains(text, p));
+  const { crisisPhrases, crisisEndings } = content.safety;
+  return (
+    crisisPhrases.some((p) => contains(text, p) || nearlyContainsPhrase(text, p)) ||
+    crisisEndings.some((p) => endsASentence(text, p))
+  );
 }
 
 // Keyword-to-tag dictionary (Abel 1.5): the taxonomy's labels and example phrases.

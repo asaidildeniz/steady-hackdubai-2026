@@ -4,6 +4,7 @@ import { AccessibilityInfo, Text } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Screen } from '@/components/Screen';
 import { content } from '@/content/types';
+import { demo } from '@/lib/demo';
 import { callableNumber, openPhone } from '@/lib/phone';
 import { text } from '@/theme';
 
@@ -28,13 +29,18 @@ function callableGroups() {
   ].filter((g) => g.entries.length > 0);
 }
 
-// S9. No Need help pill here.
+// S9. The one screen without the Need help now link, since this is where it leads.
 export default function NeedHelp() {
   const c = content.needHelp;
   const groups = callableGroups();
   const [failed, setFailed] = useState<string | null>(null);
 
   const call = async (number: string) => {
+    // A live demo must never ring the police or an ambulance.
+    if (demo.on) {
+      setFailed(content.demo.callNote);
+      return AccessibilityInfo.announceForAccessibility(content.demo.callNote);
+    }
     if (await openPhone('tel', number)) return setFailed(null);
     const message = content.talkToSomeone.openFailed.replace('{number}', number);
     setFailed(message);
@@ -42,7 +48,7 @@ export default function NeedHelp() {
   };
 
   return (
-    <Screen>
+    <Screen noHelpLink>
       <Text accessibilityRole="header" style={text.heading}>
         {c.title}
       </Text>

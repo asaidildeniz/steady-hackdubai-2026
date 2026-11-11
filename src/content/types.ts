@@ -52,13 +52,15 @@ export type FeelingGroup = {
 
 export type HelpNumber ={ label: string; number: string; verified: boolean };
 
-export type DemoRoute = '/check-in' | '/topics' | '/untangle' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
+export type ReachOutNeed = { id: string; label: string; sub: string; casual: string[]; open: string[] };
+
+export type DemoRoute = '/check-in' | '/topics' | '/untangle' | '/reach-out' | '/breathing' | '/finished' | '/talk-to-someone' | '/need-help' | '/adults-only';
 
 export type Content = {
   reviewStatus: string;
   reviewNotes: string[];
   home: { title: string };
-  common: { back: string };
+  common: { back: string; needHelpLink: string; needHelpLinkHint: string };
   welcome: {
     title: string;
     body: string;
@@ -140,10 +142,41 @@ export type Content = {
     };
     summary: { heading: string; thought: string; balanced: string; step: string; returns: string; help: string };
   };
+  // Reach Out: a short kind moment, then help with the words. Nothing written is saved; Send opens the phone's share menu.
+  reachOut: {
+    title: string;
+    moment: {
+      heading: string;
+      body: string;
+      lines: { text: string; note: string }[];
+      lineOf: string;
+      next: string;
+      continue: string;
+      skip: string;
+    };
+    needs: { heading: string; body: string; options: ReachOutNeed[] };
+    message: {
+      heading: string;
+      body: string;
+      label: string;
+      toneLabel: string;
+      casual: string;
+      open: string;
+      wordingOf: string;
+      another: string;
+      send: string;
+      sendHint: string;
+      who: string;
+      help: string;
+      talk: string;
+      back: string;
+      note: string;
+    };
+  };
 
   taxonomy: Taxonomy;
   library: LibraryItem[];
-  safety: { crisisPhrases: string[] }; // reviewed by a qualified professional before launch
+  safety: { crisisPhrases: string[]; crisisEndings: string[] }; // reviewed by a qualified professional before launch; endings count only at the end of a sentence
   matching: {
     calmFirst: string[]; // feeling ids that put the quick tool before any reading
     goodFeelings: string[]; // feeling ids that get a kind reply instead of help options
@@ -205,6 +238,7 @@ export type Content = {
     screens: { label: string; route: DemoRoute }[];
     breathingSeconds: number[];
     callNote: string;
+    testNumber: string; // "{number}" is the demo contact's obviously fake test number
     modelCheck: {
       heading: string;
       states: Record<'idle' | 'loading' | 'off' | 'ready' | 'failed', string>;

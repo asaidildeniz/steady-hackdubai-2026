@@ -5,7 +5,7 @@ Hard rules: adults only (18+), no accounts, no network calls, no analytics, noth
 Only persisted value is the AsyncStorage key steady.welcomeSeen. Never store mood, age answer or any text.
 All wording, moods, contacts and helplines live in src/content/content.json (reviewer edits it, not code).
 Never show an unverified or empty phone number as tappable, and never invent realistic numbers.
-No Need help now pill (developer's v3 design decision, 2026-11-05); the Need help now screen stays reachable from typed crisis phrases, "I don't feel safe right now" on Home and the Reach Out emergency line. Breathing must work offline.
+Need help now is one tap away on every screen as a quiet white "Need help now" link, top right (developer's decision 2026-11-11 for the mentors' checklist 04; it replaces the 2026-11-05 "no pill" rule). Only Need help now itself and the Demo screen hide it. It is also reached from typed crisis phrases and "I don't feel safe right now" on Home. Emergency numbers never dial in demo mode. Breathing must work offline.
 No streaks, points, badges, push notifications or pop-ups. Tone: honest, gentle, never preachy.
 Do not add dependencies beyond the guide without asking.
 Exception: test devDependencies jest, jest-expo, @types/jest, @testing-library/react-native.

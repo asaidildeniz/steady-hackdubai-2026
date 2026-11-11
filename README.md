@@ -1,6 +1,6 @@
 # Steady
 
-A gentle support app for adult students (18 and over), built for HACK2026 Dubai. It has a daily check-in, a one-minute breathing exercise, a list of trusted people (pastors and counsellors), and a "Need help now" screen.
+A gentle support app for adult students (18 and over), built for HACK2026 Dubai. It has a daily check-in, a one-minute breathing exercise, Untangle for racing thoughts, Reach Out for finding the words to contact someone, a list of trusted people (pastors and counsellors), and a "Need help now" screen.
 
 This is a prototype. All wording is a draft until the content reviewer approves it.
 
@@ -48,7 +48,15 @@ To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` make
 
 ## Typed feelings and the on-phone model
 
-On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked against `safety.crisisPhrases` (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.
+On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked for crisis phrases (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.
+
+**The crisis check** (`safety` in content.json, tested in `src/lib/crisis.test.ts`):
+- `crisisPhrases` match anywhere in what was typed, in English or Arabic. Capitals, punctuation and apostrophes are ignored, and Arabic is matched however it is typed (with or without hamza and vowel marks).
+- Small typos count in English crisis words of 5+ letters ("suicde"). Short words and Arabic must match exactly, so "will myself" and الامتحان (the exam) never trigger it.
+- `crisisEndings` ("I'm done") count only at the end of a sentence, so "I'm done with my exam" stays calm.
+- Every phrase is a draft until Renji (and a native speaker for Arabic) has reviewed it.
+
+**Need help now** is one tap away on every screen: a quiet link at the top right. It lists 999 (Police) and 998 (Ambulance). In demo mode no number ever dials, and the demo contact shows the obviously fake test number +971 00 000 0000.
 
 - **Expo Go:** tags come from keywords (the taxonomy's example phrases) with small-typo tolerance.
 - **A built app (APK or development build):** a small sentence model, all-MiniLM-L6-v2 through React Native ExecuTorch, also adds tags by meaning, so "everyone's moving on without me" finds Lonely. The model is bundled in the app and runs offline.
@@ -62,6 +70,16 @@ npm run fetch-model
 It downloads them from Software Mansion's Hugging Face page and checks their hashes.
 
 **Working on the smart version without rebuilding:** install the development build once (`cd android && ./gradlew assembleDebug`, then install `android/app/build/outputs/apk/debug/app-debug.apk`), then run `npm run demo:dev` and open the project from the development build. Code and content changes then appear live. `npm run demo` still opens in Expo Go (keywords only). Because the project has a development client, a plain `npx expo start` opens in development-build mode; use `npx expo start --go` for Expo Go. `npm install` holds back the library's own install step; if a native build complains about missing ExecuTorch libraries, run `RNET_NO_X86_64=1 node node_modules/react-native-executorch/scripts/download-libs.js` (it downloads the engine from the library's GitHub releases and checks each file's hash). The minimum versions the model needs (Android 8, iOS 17) are set in `app.json` through `expo-build-properties`, so they survive `npx expo prebuild --clean`.
+
+## Reach Out
+
+Reach Out is the self-care tool for feeling low or alone. It opens from the Reach Out card on any feeling page (it comes first on Feeling low), and from the Demo screen.
+
+1. **A moment for you:** three short, kind lines, one at a time, based on Kristin Neff's Self-Compassion Break. Next moves on; Skip goes straight to step 2.
+2. **What would help right now?** Someone to listen, Reconnect with a friend, or Talk to someone I trust.
+3. **A message you could send:** an editable message in a Casual or More open tone, with three wordings each (18 in all). **Send…** opens the phone's own share menu, so the student picks the app and the person. A link to Arrange a time to talk sits underneath.
+
+Nothing written is saved, and Steady never sends anything itself. On the web, Send only appears where the browser has a share menu. It is adapted from Abel's self-care tools prototype ([`self-care-tools/js/reachout.js`](self-care-tools/js/reachout.js)). The lines and all 18 messages are drafts in `content.json` (`reachOut`) until the counsellor approves them.
 
 ## Change wording, contacts or helplines
 

@@ -40,7 +40,7 @@ export default function TalkToSomeone() {
   );
 }
 
-// demoOnly: tappable, but shows a note instead of dialling. Never has a number.
+// demoOnly: tappable, but shows a note instead of dialling. Its only number is the obviously fake test number.
 function ContactCard({ contact, demoOnly }: { contact: Contact; demoOnly?: boolean }) {
   const c = content.talkToSomeone;
   const number = demoOnly ? null : numberOf(contact);
@@ -79,6 +79,9 @@ function ContactCard({ contact, demoOnly }: { contact: Contact; demoOnly?: boole
           <Text style={text.note}>{c.cannotHelpWith}: </Text>
           {contact.cannotHelpWith}
         </Text>
+      )}
+      {demoOnly && !!contact.phone && (
+        <Text style={text.body}>{content.demo.testNumber.replace('{number}', contact.phone)}</Text>
       )}
       {!live && <Text style={text.note}>{c.pending}</Text>}
       <BigButton

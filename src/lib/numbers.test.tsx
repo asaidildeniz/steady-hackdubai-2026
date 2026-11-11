@@ -95,11 +95,20 @@ describe('S8 with imperfect content from a hand-edited content.json', () => {
 });
 
 describe('S9 Need help now', () => {
-  test('with the shipped content no number is tappable and the pending message shows', async () => {
+  test('with no verified numbers at all, nothing is tappable and the pending message shows', async () => {
+    content.needHelp.emergencyNumbers = [{ label: 'Unverified line', number: UNVERIFIED, verified: false }];
+    content.needHelp.helplines = [];
     await render(<NeedHelp />);
     expect(screen.getByText(shipped.needHelp.pendingMessage)).toBeOnTheScreen();
     const labels = screen.getAllByRole('button').map((b) => b.props.accessibilityLabel);
     expect(labels.sort()).toEqual([shipped.needHelp.home, shipped.needHelp.talk].sort());
+  });
+
+  test('the shipped content offers only the verified UAE emergency numbers', async () => {
+    await render(<NeedHelp />);
+    expect(screen.queryByText(shipped.needHelp.pendingMessage)).toBeNull();
+    expect(screen.getByRole('button', { name: 'Call Police, 9 9 9' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Call Ambulance, 9 9 8' })).toBeEnabled();
   });
 
   test('only verified numbers appear, and unverified ones never show at all', async () => {
