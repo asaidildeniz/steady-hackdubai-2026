@@ -33,7 +33,7 @@ export function Screen({ children, actions, pinActions, back, title, calm, cente
         </Svg>
       )}
       {(back || title) && (
-        <View style={styles.top}>
+        <View style={[styles.top, styles.column]}>
           {back ? <BackButton onPress={typeof back === 'function' ? back : undefined} /> : <View style={styles.spacer} />}
           {title ? (
             <Text accessibilityRole="header" style={styles.title}>
@@ -43,11 +43,11 @@ export function Screen({ children, actions, pinActions, back, title, calm, cente
           <View style={styles.spacer} />
         </View>
       )}
-      <ScrollView contentContainerStyle={[styles.content, centered && styles.centered]}>
+      <ScrollView contentContainerStyle={[styles.content, styles.column, centered && styles.centered]}>
         {children}
         {actions && !pinActions && <View style={styles.actions}>{actions}</View>}
       </ScrollView>
-      {actions && pinActions && <View style={styles.pinned}>{actions}</View>}
+      {actions && pinActions && <View style={[styles.pinned, styles.column]}>{actions}</View>}
     </SafeAreaView>
   );
 }
@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
   title: { fontSize: type.body, fontFamily: fonts.medium, color: '#2B3A34' },
   content: { flexGrow: 1, padding: space.screen, gap: space.gap },
   centered: { alignItems: 'center' },
+  // On a tablet the page stays a phone-like column in the middle, so lines and buttons keep a readable width.
+  column: { width: '100%', maxWidth: 640, alignSelf: 'center' },
   actions: { marginTop: 'auto', gap: space.gap - 4, paddingTop: space.screen, alignSelf: 'stretch' },
   pinned: { gap: space.gap, paddingHorizontal: space.screen, paddingBottom: space.screen, paddingTop: space.gap },
 });
