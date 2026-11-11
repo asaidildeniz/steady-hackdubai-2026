@@ -1,6 +1,6 @@
 # Steady
 
-A gentle support app for adult students (18 and over), built for HACK2026 Dubai. It has a daily check-in, a one-minute breathing exercise, a list of trusted people (pastors and counsellors), and a "Need help now" screen.
+A gentle support app for adult students (18 and over), built for HACK2026 Dubai. It has a daily check-in, a one-minute breathing exercise, Untangle for racing thoughts, Reach Out for finding the words to contact someone, a list of trusted people (pastors and counsellors), and a "Need help now" screen.
 
 This is a prototype. All wording is a draft until the content reviewer approves it.
 
@@ -62,6 +62,16 @@ npm run fetch-model
 It downloads them from Software Mansion's Hugging Face page and checks their hashes.
 
 **Working on the smart version without rebuilding:** install the development build once (`cd android && ./gradlew assembleDebug`, then install `android/app/build/outputs/apk/debug/app-debug.apk`), then run `npm run demo:dev` and open the project from the development build. Code and content changes then appear live. `npm run demo` still opens in Expo Go (keywords only). Because the project has a development client, a plain `npx expo start` opens in development-build mode; use `npx expo start --go` for Expo Go. `npm install` holds back the library's own install step; if a native build complains about missing ExecuTorch libraries, run `RNET_NO_X86_64=1 node node_modules/react-native-executorch/scripts/download-libs.js` (it downloads the engine from the library's GitHub releases and checks each file's hash). The minimum versions the model needs (Android 8, iOS 17) are set in `app.json` through `expo-build-properties`, so they survive `npx expo prebuild --clean`.
+
+## Reach Out
+
+Reach Out is the self-care tool for feeling low or alone. It opens from the Reach Out card on any feeling page (it comes first on Feeling low), and from the Demo screen.
+
+1. **A moment for you:** three short, kind lines, one at a time, based on Kristin Neff's Self-Compassion Break. Next moves on; Skip goes straight to step 2.
+2. **What would help right now?** Someone to listen, Reconnect with a friend, or Talk to someone I trust.
+3. **A message you could send:** an editable message in a Casual or More open tone, with three wordings each (18 in all). **Send…** opens the phone's own share menu, so the student picks the app and the person. A link to Arrange a time to talk sits underneath.
+
+Nothing written is saved, and Steady never sends anything itself. On the web, Send only appears where the browser has a share menu. It is adapted from Abel's self-care tools prototype ([`self-care-tools/js/reachout.js`](self-care-tools/js/reachout.js)). The lines and all 18 messages are drafts in `content.json` (`reachOut`) until the counsellor approves them.
 
 ## Change wording, contacts or helplines
 
