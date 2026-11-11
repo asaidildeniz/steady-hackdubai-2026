@@ -48,7 +48,8 @@
     "DRAFT for reviewer (11 Nov 2026, checklist 04): new crisis phrases for varied phrasing: “no point anymore”, “no point in living”, “can’t do this anymore”, “end it all”, “don’t want to wake up”. safety.crisisEndings (“I’m done”, “I am done”) count only at the end of a sentence, so “I’m done with my exam” is not flagged. Small typos in crisis words of 5+ letters now also count (for example “suicde”).",
     "DRAFT for reviewer (11 Nov 2026, checklist 04): Arabic crisis phrases were added (Modern Standard Arabic and Gulf): أريد أن أموت، أبي أموت، أبغى أموت، انتحار، الانتحار، انتحر، أقتل نفسي، بقتل نفسي، أنهي حياتي، لا أريد أن أعيش، ما أبي أعيش، أؤذي نفسي. They are stored without hamza or vowel marks because the check ignores them. A native Arabic speaker and Renji must check them and add phrases students really use. Arabic must match exactly: no typo tolerance, because a near-miss could turn الامتحان (the exam) into الانتحار.",
     "DRAFT for reviewer (11 Nov 2026, checklist 04): a quiet “Need help now” link (common.needHelpLink) now sits at the top of every screen except Need help now itself and the presenter’s Demo screen.",
-    "The demo’s tappable example contact shows the test number +971 00 000 0000 (demo.testNumber). 00 is not a UAE prefix, so it can never reach anyone, and in demo mode Call shows a note instead of dialling. Emergency numbers never dial in demo mode either."
+    "The demo’s tappable example contact shows the test number +971 00 000 0000 (demo.testNumber). 00 is not a UAE prefix, so it can never reach anyone, and in demo mode Call shows a note instead of dialling. Emergency numbers never dial in demo mode either.",
+    "DRAFT for reviewer (11 Nov 2026): on Need help now, Ambulance (998) now comes before Police (999), because a student on this screen is most likely at risk of hurting themselves. Each number has a short “when to call” line (needHelp.emergencyNumbers[].when) so nobody has to work out which service they need. The numbers are shown as red call buttons; nothing else on the screen is red."
   ],
   "common": {
     "back": "Back",
@@ -277,14 +278,16 @@
     "peopleHeading": "People you can talk to",
     "emergencyNumbers": [
       {
-        "label": "Police",
-        "number": "999",
-        "verified": true
-      },
-      {
         "label": "Ambulance",
         "number": "998",
-        "verified": true
+        "verified": true,
+        "when": "Draft: if you’ve hurt yourself, taken something, or might."
+      },
+      {
+        "label": "Police",
+        "number": "999",
+        "verified": true,
+        "when": "Draft: if someone is hurting you, or you’re not safe where you are."
       }
     ],
     "helplines": [

@@ -50,7 +50,7 @@ export type FeelingGroup = {
   feelings: string[]; // taxonomy feeling ids that open this page
 };
 
-export type HelpNumber ={ label: string; number: string; verified: boolean };
+export type HelpNumber = { label: string; number: string; verified: boolean; when?: string }; // when: who should call it
 
 export type ReachOutNeed = { id: string; label: string; sub: string; casual: string[]; open: string[] };
 
