@@ -46,6 +46,21 @@ On Windows (PowerShell): `$env:EXPO_PUBLIC_DEMO="1"; npx expo start --clear`
 
 To leave demo mode, stop it and run `npx expo start --clear` (the `--clear` makes sure the demo switch is forgotten). The demo story to follow is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md).
 
+## Run it in a browser (for iPhone testers)
+
+```bash
+npm run web          # live, on this computer: press w to open it
+npm run web:demo     # builds one shareable file: dist-web-demo/steady.html
+```
+
+`dist-web-demo/steady.html` holds the whole app in one page (code, fonts and images inlined), so it loads nothing from any other site. Open it from any static host, or share it as a link. On iPhone, Share → Add to Home Screen makes it open like an app.
+
+Things to know about the browser version:
+
+- The on-phone model does not run in a browser, so typed text uses keywords only. The chips and the crisis phrases work as on the phone.
+- Refreshing partway through can show an error, because the address changes between screens. Opening the link again fixes it.
+- Hosting the page is a network step the phone app never has. The person who visits is seen by the host, never what they type. Use a plain static host with no analytics.
+
 ## Typed feelings and the on-phone model
 
 On the check-in, a student can type (or speak with the keyboard microphone) how they feel. Typed text is first checked for crisis phrases (any match opens Need help now), then turned into feeling and theme tags on the phone, then cleared. It is never saved or sent.

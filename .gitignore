@@ -44,3 +44,6 @@ example
 
 # on-phone model (90 MB): npm run fetch-model
 /assets/models
+
+# browser demo build: npm run web:demo
+/dist-web-demo
