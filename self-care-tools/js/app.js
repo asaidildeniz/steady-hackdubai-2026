@@ -37,6 +37,14 @@
       <path d="M116 138c3-5 10-4 10 2 0-6 8-7 10-2 2 7-10 13-10 16 0-3-12-9-10-16z"/>
       <path d="M58 132l-10 8M50 120l-14-2M64 150l-6 12"/>
     </svg>`,
+    stories: `<svg viewBox="0 0 160 200" ${S}>
+      <circle class="fill" cx="104" cy="58" r="26" stroke="none"/>
+      <path d="M40 186c6-28 34-30 40-54s-22-30-16-54c5-20 30-24 40-24"/>
+      <path d="M80 132c18-6 40 0 50-14"/>
+      <circle cx="104" cy="54" r="6"/>
+      <circle cx="130" cy="118" r="5"/>
+      <path d="M52 160l-10-4M70 108l-12-6M26 120l-8 2M138 160l10 6"/>
+    </svg>`,
     hero: `<svg viewBox="0 0 220 240" ${S}>
       <circle class="fill" cx="150" cy="70" r="40" stroke="none"/>
       <circle cx="150" cy="70" r="22"/>
@@ -56,7 +64,9 @@
     { id: "untangle", route: "untangle", num: "02", title: "Untangle", for: "Overthinking", time: "2–3 min",
       desc: "Step back from a heavy thought and find one next step." },
     { id: "reach", route: "reach-out", num: "03", title: "Reach Out", for: "Loneliness", time: "1–2 min",
-      desc: "A moment of kindness, then a message you can send." }
+      desc: "A moment of kindness, then a message you can send." },
+    { id: "stories", route: "stories", num: "04", title: "Walk through it", for: "Worry, low days, doubt", time: "3–5 min",
+      desc: "Short steps through a reading, shaped by what you choose." }
   ];
 
   function esc(s) {
@@ -102,7 +112,7 @@
         <section class="hero">
           <span class="label">Steady — Self-care tools</span>
           <h1>A little space to breathe.</h1>
-          <p class="muted">Three short tools for three different moments. Pick the one that fits right now.</p>
+          <p class="muted">Four short tools for different moments. Pick the one that fits right now.</p>
           <div class="doodle" aria-hidden="true">${doodles.hero}</div>
         </section>
         <div class="index-head label" aria-hidden="true">
@@ -125,7 +135,7 @@
         </nav>
         <section class="colophon">
           <div><p class="small muted" style="margin:0">Each tool takes a few minutes. You can stop at any point, and nothing you type is stored.</p></div>
-          <div class="swatches" aria-hidden="true"><i style="background:var(--breathe)"></i><i style="background:var(--untangle)"></i><i style="background:var(--reach)"></i></div>
+          <div class="swatches" aria-hidden="true"><i style="background:var(--breathe)"></i><i style="background:var(--untangle)"></i><i style="background:var(--reach)"></i><i style="background:var(--walk)"></i></div>
         </section>
       </div>`;
   }
