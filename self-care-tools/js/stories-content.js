@@ -11,16 +11,17 @@
   // Shared ending, used by both paths. {msg} is the suggested message for the path.
   const shared = (p, msg) => ({
     [p + "reach"]: { beat: "Reach out", say: ["One more step. Things often feel lighter when someone else knows.", "Who could you tell, even in one line?"],
-      choices: [["A friend", p + "msg"], ["Family", p + "msg"], ["A pastor or counsellor", "@reach:" + p + "check"], ["No one comes to mind", p + "noone"]] },
+      choices: [["A friend", p + "msg"], ["Family", p + "msg"], ["A pastor or counsellor", "@talk:" + p + "check"], ["Someone else", p + "who"], ["No one comes to mind", p + "noone"]] },
+    [p + "who"]: { beat: "Reach out", say: ["Who could it be?", "Just a name or a few words. It's only for you."], input: { placeholder: "Someone I could tell is…", to: p + "msg", optional: true } },
     [p + "msg"]: { beat: "Reach out", say: ["You could send this, or say it your own way:"], copy: msg,
       choices: [["I'll send it", p + "check"], ["Maybe later", p + "check"]] },
-    [p + "noone"]: { beat: "Reach out", say: ["That happens to a lot of people, and it's okay.", "Reach Out lists pastors and counsellors who are there for this."],
-      choices: [["Open Reach Out", "@reach:" + p + "check"], ["Not now", p + "check"]] },
+    [p + "noone"]: { beat: "Reach out", say: ["That happens to a lot of people, and it's okay.", "There are pastors and counsellors who are there for this. You can call or message one now."],
+      choices: [["Talk to someone now", "@talk:" + p + "check"], ["Not now", p + "check"]] },
     [p + "check"]: { beat: "Check out", say: ["How do you feel now?", "Whatever the answer is, it's okay."],
       choices: [["A little lighter", p + "better"], ["Still heavy", p + "heavy"]] },
     [p + "better"]: { beat: "Check out", say: ["I'm glad.", "It may come back, and that's normal. You can walk through this again whenever you need to."], end: [["Back to Home", "@home"]] },
     [p + "heavy"]: { beat: "Check out", say: ["Thank you for being honest.", "Some things take longer than a few minutes. You don't have to hold this alone."],
-      end: [["Talk to someone", "@reach:@home"], ["Breathe for a minute", "@breathe:@home"], ["I don't feel safe right now", "@help"], ["Back to Home", "@home"]] },
+      end: [["Talk to someone now", "@talk:@home"], ["Breathe for a minute", "@breathe:@home"], ["I don't feel safe right now", "@help"], ["Back to Home", "@home"]] },
   });
 
   const STORIES = {
@@ -32,7 +33,9 @@
       nodes: Object.assign({
         "w.start": { beat: "Arrive", say: ["Worry can take up a lot of room.", "Let's go one small step at a time. You can stop whenever you like."], choices: [["Let's start", "w.what"]], primary: true },
         "w.what": { beat: "Name it", say: ["What's on your mind most right now?"],
-          choices: [["Studies or exams", "w.study"], ["Family", "w.family"], ["Friends or relationships", "w.friends"], ["The future", "w.future"], ["Everything at once", "w.all"]] },
+          choices: [["Studies or exams", "w.study"], ["Family", "w.family"], ["Friends or relationships", "w.friends"], ["The future", "w.future"], ["Everything at once", "w.all"], ["Something else", "w.otherType"]] },
+        "w.otherType": { beat: "Name it", say: ["What's on your mind?", "Write it the way it sounds in your head."], input: { placeholder: "In your own words…", to: "w.otherSaid", optional: true } },
+        "w.otherSaid": { beat: "Name it", echo: true, say: ["Thank you for putting it into words.", "We'll take it one small step at a time."], next: "w.where" },
         "w.study": { beat: "Name it", say: ["Exams and deadlines can fill every thought.", "That's a lot to carry."], next: "w.where" },
         "w.family": { beat: "Name it", say: ["Worrying about family can feel heavy, especially from far away or when you can't fix things."], next: "w.where" },
         "w.friends": { beat: "Name it", say: ["Relationships matter, so worry about them can follow you everywhere."], next: "w.where" },
@@ -61,13 +64,16 @@
       nodes: Object.assign({
         "d.start": { beat: "Arrive", say: ["Some days feel heavier than others.", "You don't need the right words, or a clear reason, to deserve care."], choices: [["Let's start", "d.what"]], primary: true },
         "d.what": { beat: "Name it", say: ["What feels hardest today?"],
-          choices: [["Getting started: bed, messages, anything", "d.starting"], ["Keeping up with classes", "d.classes"], ["Feeling alone", "d.alone"], ["I just feel low and don't know why", "d.unknown"]] },
+          choices: [["Getting started: bed, messages, anything", "d.starting"], ["Keeping up with classes", "d.classes"], ["Feeling alone", "d.alone"], ["I just feel low and don't know why", "d.unknown"], ["Something else", "d.otherType"]] },
+        "d.otherType": { beat: "Name it", say: ["What feels hardest?", "Write it however it comes."], input: { placeholder: "In your own words…", to: "d.otherSaid", optional: true } },
+        "d.otherSaid": { beat: "Name it", echo: true, say: ["Thank you for telling me.", "Let's look after you a little first."], next: "d.body" },
         "d.starting": { beat: "Name it", say: ["When everything takes extra effort, small things count.", "Opening this counts too."], next: "d.body" },
         "d.classes": { beat: "Name it", say: ["When classes pile up, it's easy to feel behind on everything.", "We'll make it smaller in a minute."], next: "d.body" },
         "d.alone": { beat: "Name it", say: ["Feeling alone can make everything heavier.", "Before we finish, we'll think about one person you could reach."], next: "d.body" },
         "d.unknown": { beat: "Name it", say: ["You don't need a reason. Low days happen."], next: "d.body" },
         "d.body": { beat: "Body first", say: ["Let's start with your body. Could you do one of these now?"],
-          choices: [["Drink some water", "d.pause"], ["Step outside for a few minutes", "d.pause"], ["Stretch or open a window", "d.pause"], ["Not right now", "d.notnow"]] },
+          choices: [["Drink some water", "d.pause"], ["Step outside for a few minutes", "d.pause"], ["Stretch or open a window", "d.pause"], ["Something else", "d.bodyType"], ["Not right now", "d.notnow"]] },
+        "d.bodyType": { beat: "Body first", say: ["What could you do for your body right now?", "Something small is enough."], input: { placeholder: "For example: eat something small", to: "d.pause", optional: true } },
         "d.pause": { beat: "Body first", say: ["Go ahead. Take your time.", "This will be here when you're back."], pause: true, choices: [["I'm back", "d.task"], ["Skip", "d.task"]] },
         "d.notnow": { beat: "Body first", say: ["That's okay. Reading this far is a step too."], next: "d.task" },
         "d.task": { beat: "Make it smaller", say: ["Is there one task sitting on you today?"], choices: [["Yes", "d.smaller"], ["Not really", "d.howlong"]] },
@@ -76,7 +82,7 @@
         "d.howlong": { beat: "How long", say: ["How long has it felt like this?"],
           choices: [["A few days", "d.faith"], ["A couple of weeks or more", "d.longer"], ["It's getting heavier", "d.longer"]] },
         "d.longer": { beat: "How long", say: ["Thank you for telling me.", "When a low feeling lasts or keeps getting heavier, it's a good time to talk to a university counsellor or another qualified professional."],
-          choices: [["Open Reach Out", "@reach:d.faith"], ["Continue", "d.faith"]] },
+          choices: [["Talk to someone now", "@talk:d.faith"], ["Continue", "d.faith"]] },
         "d.faith": { beat: "Faith", say: ["If faith is part of your life, would a short reading help?"], choices: [["Yes", "d.verse"], ["Not now", "d.reach"]] },
         "d.verse": { beat: "Faith", verse: { ref: "Psalm 13" }, say: ["An honest prayer from someone in distress, asking God to hear them.", "You can come to God as you are. You don't have to force yourself to feel hopeful."], next: "d.reach" },
       }, shared("d.", "I've been feeling low lately. Could we talk?")),
@@ -90,15 +96,16 @@
         "f.start": { beat: "Arrive", say: ["Have you ever felt like the world is getting too loud, but God seems distant?"],
           choices: [["Yes, that's how it feels", "f.silent"], ["Sometimes", "f.silent"], ["I'm not sure", "f.silent"]] },
         "f.silent": { beat: "Name it", say: ["It’s like He sees everything you're going through but remains silent.", "You have so many questions, yet no answers, and all you want to do is sleep it away, drown it out with music, or bury yourself in work.", "Which sounds most like you?"],
-          choices: [["Sleep it away", "f.sleep"], ["Drown it out with music", "f.music"], ["Bury myself in work", "f.work"], ["Something else", "f.other"]] },
+          choices: [["Sleep it away", "f.sleep"], ["Drown it out with music", "f.music"], ["Bury myself in work", "f.work"], ["Something else", "f.otherType"]] },
+        "f.otherType": { beat: "Name it", added: true, say: ["What do you find yourself doing?", "Write it in your own words."], input: { placeholder: "In your own words…", to: "f.other", optional: true } },
         "f.sleep": { beat: "Name it", added: true, say: ["Sleep can feel like the only break from the questions."], next: "f.elijah" },
         "f.music": { beat: "Name it", added: true, say: ["Music can fill the quiet when the quiet feels too heavy."], next: "f.elijah" },
         "f.work": { beat: "Name it", added: true, say: ["Keeping busy can feel easier than sitting with the questions."], next: "f.elijah" },
-        "f.other": { beat: "Name it", added: true, say: ["Whatever you reach for, it makes sense that you want some relief."], next: "f.elijah" },
+        "f.other": { beat: "Name it", added: true, echo: true, say: ["Whatever you reach for, it makes sense that you want some relief."], next: "f.elijah" },
         "f.elijah": { beat: "Elijah", say: ["You're not alone in feeling this way.", "Even Elijah, a man of God, reached a point where he felt so overwhelmed that he wanted everything to end (1 Kings 19:1–18)."],
           choices: [["Continue", "f.elijah2"], ["I've felt like that too", "f.felt"]] },
         "f.felt": { beat: "Elijah", added: true, say: ["Thank you for telling me.", "If you are thinking about ending your life, or you can't keep yourself safe, please reach out to someone now."],
-          choices: [["I don't feel safe right now", "@help"], ["Talk to someone", "@reach:f.elijah2"], ["Keep reading", "f.elijah2"]] },
+          choices: [["I don't feel safe right now", "@help"], ["Talk to someone now", "@talk:f.elijah2"], ["Keep reading", "f.elijah2"]] },
         "f.elijah2": { beat: "Elijah", say: ["He withdrew from the chaos, exhausted and desperate for rest.", "But God didn't scold him or demand more from him."], next: "f.elijah3" },
         "f.elijah3": { beat: "Elijah", say: ["Instead, He sent an angel to provide food and strength.", "And when God finally spoke, He did so in a gentle whisper."], next: "f.quiet" },
         "f.quiet": { beat: "God's quiet voice", say: ["God's voice is quiet because He doesn't want to add to the world's noise and chaos.", "Sometimes we can miss it amidst the chaos."], next: "f.there" },
@@ -108,14 +115,15 @@
         "f.ask": { beat: "Your questions", added: true, say: ["Write it the way it sounds in your head.", "It doesn't have to be tidy."], input: { placeholder: "My question is…", to: "f.asked" } },
         "f.asked": { beat: "Your questions", added: true, echo: true, say: ["You can bring this question to God just as it is.", "A pastor you trust can sit with it with you too."], next: "f.break" },
         "f.break": { beat: "A little break", say: ["So give yourself a little break!", "Take a nap, grab a snack as a reward, or simply take five minutes to breathe and unwind before getting back to your day.", "Never underestimate the power of a snack and some good rest!"],
-          choices: [["Take a nap", "f.rest"], ["Grab a snack", "f.rest"], ["Take five minutes to breathe", "@breathe:f.remember"], ["Maybe later", "f.remember"]] },
+          choices: [["Take a nap", "f.rest"], ["Grab a snack", "f.rest"], ["Take five minutes to breathe", "@breathe:f.remember"], ["Something else", "f.restType"], ["Maybe later", "f.remember"]] },
+        "f.restType": { beat: "A little break", added: true, say: ["What would give you a little break?"], input: { placeholder: "In your own words…", to: "f.rest", optional: true } },
         "f.rest": { beat: "A little break", added: true, say: ["Go ahead. Take your time.", "This will be here when you're back."], pause: true, choices: [["I'm back", "f.remember"], ["Skip", "f.remember"]] },
         "f.remember": { beat: "Remember", say: ["Remember, you are never alone.", "God has not left you to carry your burdens by yourself (Matthew 11:28; Numbers 11:10-17)."], next: "f.reach" },
       }, shared("f.", "I've had a lot of questions about my faith lately. Could we talk?")),
     },
   };
   // The shared reach-out and check-out screens are not in the faith reading either.
-  Object.keys(STORIES.faith.nodes).filter(k => /^f\.(reach|msg|noone|check|better|heavy)$/.test(k)).forEach(k => STORIES.faith.nodes[k].added = true);
+  Object.keys(STORIES.faith.nodes).filter(k => /^f\.(reach|who|msg|noone|check|better|heavy)$/.test(k)).forEach(k => STORIES.faith.nodes[k].added = true);
 
   window.SteadyStories = { STORIES, isCrisis };
 })();

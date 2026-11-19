@@ -112,14 +112,33 @@
             <button class="choice" role="radio" aria-checked="false" data-need="${k}">
               <strong>${n.label}</strong><span>${n.sub}</span>
             </button>`).join("")}
+          <button class="choice" role="radio" aria-checked="false" id="other-need">
+            <strong>Something else</strong><span>Say it in your own words</span>
+          </button>
         </div>
+        <div id="other-box" hidden>
+          <label class="field" for="other-text">What would help? Write the message you'd like to send.</label>
+          <textarea id="other-text" placeholder="Hi, I wanted to reach out because…"></textarea>
+          <p class="small muted">Nothing you type is saved or sent anywhere.</p>
+          <div class="btn-row"><button class="btn" id="other-go">Use my words</button></div>
+        </div>
+        <div class="btn-row" style="margin-top:12px"><a class="btn btn-ghost" href="#/talk">I need to talk to someone now</a></div>
         <div class="btn-row"><button class="btn btn-link" id="back">← Back</button></div>
       </section>`;
-    root.querySelectorAll("[data-need]").forEach(b => b.onclick = () => { s.need = b.dataset.need; s.idx = 0; renderMessage(); });
+    root.querySelectorAll("[data-need]").forEach(b => b.onclick = () => { s.need = b.dataset.need; s.idx = 0; s.edited = null; renderMessage(); });
+    const box = root.querySelector("#other-box");
+    root.querySelector("#other-need").onclick = (e) => { e.currentTarget.setAttribute("aria-checked", "true"); box.hidden = false; root.querySelector("#other-text").focus(); };
+    root.querySelector("#other-go").onclick = () => {
+      const t = root.querySelector("#other-text").value.trim();
+      if (window.SteadyStories && window.SteadyStories.isCrisis(t)) { location.hash = "#/need-help"; return; }
+      s.need = "other"; s.edited = t; renderMessage();
+    };
     root.querySelector("#back").onclick = renderMoment;
     focusHeading();
   }
 
+  // "Something else" has no ready-made wordings: the person's own words are the message.
+  needs.other = { label: "In your own words", sub: "", msgs: { casual: [""], open: [""] } };
   function currentMsg() { return needs[s.need].msgs[s.tone][s.idx]; }
 
   function renderMessage() {
@@ -131,7 +150,7 @@
         <h2>Here's a message you could send</h2>
         <p class="muted">Edit it so it sounds like you. Small, honest messages are usually enough.</p>
 
-        <div class="settings-row" style="justify-content:space-between">
+        <div class="settings-row" style="justify-content:space-between" ${s.need === "other" ? "hidden" : ""}>
           <div class="toggle" role="group" aria-label="Tone">
             <button data-tone="casual" aria-pressed="${s.tone === "casual"}">Casual</button>
             <button data-tone="open" aria-pressed="${s.tone === "open"}">More open</button>
@@ -147,7 +166,7 @@
         <div class="btn-row">
           <button class="btn" id="copy">Copy message</button>
           ${navigator.share ? `<button class="btn btn-ghost" id="share">Share…</button>` : ""}
-          <button class="btn btn-link" id="other">Try another wording</button>
+          ${s.need === "other" ? "" : `<button class="btn btn-link" id="other">Try another wording</button>`}
         </div>
 
         <p class="hint" style="margin-top:22px">Not sure who to send it to? Think of one person who has been kind to you, even in a small way. It doesn't have to be your closest friend.</p>
@@ -165,7 +184,8 @@
       if (s.tone === b.dataset.tone) return;
       s.tone = b.dataset.tone; s.edited = null; renderMessage();
     });
-    root.querySelector("#other").onclick = () => { s.idx = (s.idx + 1) % list.length; s.edited = null; renderMessage(); };
+    const other = root.querySelector("#other");
+    if (other) other.onclick = () => { s.idx = (s.idx + 1) % list.length; s.edited = null; renderMessage(); };
     root.querySelector("#copy").onclick = async () => { if (await copy(msg.value)) s.sent = true; };
     const share = root.querySelector("#share");
     if (share) share.onclick = async () => {

@@ -3,7 +3,8 @@ const { STORIES, isCrisis } = window.SteadyStories;
 
 const TOOLS = {
   untangle: { name: "Untangle", cls: "untangle", line: "In the app this opens the existing six-step Untangle, then comes back here." },
-  reach: { name: "Reach Out", cls: "reach", line: "In the app this opens Talk to someone, with the trusted pastors and counsellors." },
+  reach: { name: "Reach Out", cls: "reach", line: "In the app this opens Reach Out, for help with the words to message someone." },
+  talk: { name: "Talk to someone", cls: "reach", line: "Opens the trusted pastors and counsellors straight away, with Call and Message. No Reach Out steps first." },
   breathe: { name: "Breathe", cls: "breathe", line: "In the app this opens the one-minute Calm moment." },
 };
 
@@ -136,7 +137,7 @@ function render() {
 
   const list = n.choices || n.end || (n.next ? [["Continue", n.next]] : []);
   list.forEach(([label, to], i) => {
-    const toolMatch = to.match(/^@(untangle|reach|breathe):/);
+    const toolMatch = to.match(/^@(untangle|reach|breathe|talk):/);
     const single = n.primary || (!n.choices && !n.end);
     const b = el("button", "btn" + (single && i === 0 ? " primary" : "") + (n.end && !toolMatch ? " pill" : "") + (toolMatch ? " tool " + TOOLS[toolMatch[1]].cls : ""));
     if (toolMatch) { b.append(el("span", null, label), el("span", "tag", "Start")); }

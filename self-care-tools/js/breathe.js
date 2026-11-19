@@ -274,6 +274,7 @@
           <button class="choice feel" role="radio" aria-checked="false" data-feel="worse"><span class="emo" aria-hidden="true">−</span>Not better</button>
         </div>
         <p class="hint" id="ending" hidden></p>
+        <div class="btn-row" id="talk-now" hidden style="margin-top:0"><a class="btn" href="#/talk">Talk to someone now</a></div>
         <label class="field" for="focus">What's one thing you can focus on next? <span class="muted small">(optional)</span></label>
         <input type="text" id="focus" placeholder="e.g. Read the first question of my revision sheet" autocomplete="off">
         <div class="btn-row">
@@ -286,6 +287,7 @@
       root.querySelectorAll("[data-feel]").forEach(x => x.setAttribute("aria-checked", x === b));
       const e = root.querySelector("#ending");
       e.textContent = endings[b.dataset.feel]; e.hidden = false;
+      root.querySelector("#talk-now").hidden = b.dataset.feel !== "worse"; // straight to the people, not through Reach Out
     });
     root.querySelector("#again").onclick = renderSetup;
   }

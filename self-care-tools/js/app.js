@@ -1,71 +1,29 @@
-/* Steady — shell: router, menu, shared helpers. No data leaves the page. */
+/* Steady — shell: router, home, Need help now, Talk to someone, shared helpers. No data leaves the page.
+   The look follows the Expo app's v3 screens: a round back button top left, "Need help now" top right. */
 (function () {
   "use strict";
 
   const tools = {};
   let current = null;
 
-  // Hand-drawn line doodles (stroke = currentColor, ".fill" = tool accent).
-  const S = 'fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"';
-  const doodles = {
-    breathe: `<svg viewBox="0 0 160 200" ${S}>
-      <circle class="fill" cx="80" cy="62" r="17" stroke="none"/>
-      <path d="M80 45c-10-22 6-34 13-24 6 9-4 20-13 24z"/>
-      <path d="M95 55c18-14 34-2 27 9-6 9-19 4-27-9z"/>
-      <path d="M94 74c22 3 24 22 12 25-10 2-15-11-12-25z"/>
-      <path d="M76 79c-6 21-25 23-26 11-1-10 13-14 26-11z"/>
-      <path d="M64 61c-21-6-22-25-10-26 10-1 15 13 10 26z"/>
-      <circle cx="80" cy="62" r="7"/>
-      <path d="M81 80c-3 30 4 62-2 110"/>
-      <path d="M80 128c-16-14-34-10-38-2 12 6 26 8 38 2z"/>
-      <path d="M81 150c14-14 32-12 36-4-12 6-25 8-36 4z"/>
-      <path d="M30 30l-8-8M136 24l9-9M142 92l12 2M18 92l-10 3"/>
-    </svg>`,
-    untangle: `<svg viewBox="0 0 160 200" ${S}>
-      <path class="fill" stroke="none" d="M30 40c30-18 70-10 82 10s-8 44-38 46-58-22-44-56z"/>
-      <path d="M24 70c6-34 50-44 70-26 18 16-4 40-24 34-22-6-6-40 22-38 30 2 40 30 22 44-20 15-48-2-36-20 10-14 34-6 30 10"/>
-      <path d="M88 82c6 18 4 34-6 52"/>
-      <path d="M82 134c-4 12-2 26 4 40"/>
-      <path d="M72 162l14 14 14-16"/>
-      <path d="M128 112l10-4M128 126h12M30 120l-10-2"/>
-    </svg>`,
-    reach: `<svg viewBox="0 0 160 200" ${S}>
-      <path class="fill" stroke="none" d="M20 34h74c6 0 10 4 10 10v38c0 6-4 10-10 10H50l-18 16 2-16H20c-6 0-10-4-10-10V44c0-6 4-10 10-10z"/>
-      <path d="M18 32c22-2 52 0 76 1 8 0 12 5 12 12l-1 36c0 7-5 11-12 11H52l-20 17 3-17H19c-7 0-11-5-11-12l1-36c0-7 3-11 9-12z"/>
-      <path d="M34 56c10-2 30-2 48-1M34 70c10 0 22 0 32-1"/>
-      <path d="M96 118c16-2 36-1 50 1 6 1 8 5 8 10l-1 26c0 5-4 8-9 8h-6l2 14-16-14h-28c-6 0-9-4-9-9l1-27c0-5 3-8 8-9z"/>
-      <path d="M116 138c3-5 10-4 10 2 0-6 8-7 10-2 2 7-10 13-10 16 0-3-12-9-10-16z"/>
-      <path d="M58 132l-10 8M50 120l-14-2M64 150l-6 12"/>
-    </svg>`,
-    stories: `<svg viewBox="0 0 160 200" ${S}>
-      <circle class="fill" cx="104" cy="58" r="26" stroke="none"/>
-      <path d="M40 186c6-28 34-30 40-54s-22-30-16-54c5-20 30-24 40-24"/>
-      <path d="M80 132c18-6 40 0 50-14"/>
-      <circle cx="104" cy="54" r="6"/>
-      <circle cx="130" cy="118" r="5"/>
-      <path d="M52 160l-10-4M70 108l-12-6M26 120l-8 2M138 160l10 6"/>
-    </svg>`,
-    hero: `<svg viewBox="0 0 220 240" ${S}>
-      <circle class="fill" cx="150" cy="70" r="40" stroke="none"/>
-      <circle cx="150" cy="70" r="22"/>
-      <path d="M150 34v-14M150 120v-14M114 70h-14M200 70h-14M124 44l-10-10M176 96l10 10M124 96l-10 10M176 44l10-10"/>
-      <path d="M60 120c-12-24 6-38 16-28 8 8-2 22-16 28z"/>
-      <path d="M62 122c18-12 34 2 26 12-7 8-20 2-26-12z"/>
-      <path d="M58 124c-6 18-24 20-26 8-1-9 12-14 26-8z"/>
-      <path d="M60 128c4 34-2 60 6 100"/>
-      <path d="M64 180c14-12 30-8 32 0-10 6-22 6-32 0z"/>
-      <path d="M20 60l14 6M30 34l10 12M150 160c10 2 20 10 22 22M176 150c10 6 16 16 16 28"/>
-    </svg>`
+  // The app's line icons (src/components/Icon.tsx).
+  const P = 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+  const icons = {
+    drop: `<svg viewBox="0 0 24 24" aria-hidden="true"><path ${P} d="M12 3 C12 3 5.5 10.5 5.5 14.5 a6.5 6.5 0 0 0 13 0 C18.5 10.5 12 3 12 3 Z"/></svg>`,
+    wave: `<svg viewBox="0 0 24 24" aria-hidden="true"><path ${P} d="M3 14 C5.5 9 7.5 9 9.5 13 S13.5 17 15.5 12 S19.5 8 21 11"/></svg>`,
+    heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path ${P} d="M12 20 C12 20 4 15 4 9.5 A4 4 0 0 1 12 7.5 A4 4 0 0 1 20 9.5 C20 15 12 20 12 20 Z"/></svg>`,
+    read: `<svg viewBox="0 0 24 24" aria-hidden="true"><path ${P} d="M4 6 C7 5 10 5.5 12 7 C14 5.5 17 5 20 6 V18 C17 17 14 17.5 12 19 C10 17.5 7 17 4 18 Z M12 7 V19"/></svg>`,
+    back: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14.5 5 L8 12 L14.5 19"/></svg>`
   };
 
   const cards = [
-    { id: "breathe", route: "breathe", num: "01", title: "Breathe", for: "Stress & anxiety", time: "1–3 min",
-      desc: "Follow a calm, guided breathing rhythm." },
-    { id: "untangle", route: "untangle", num: "02", title: "Untangle", for: "Overthinking", time: "2–3 min",
+    { id: "breathe", route: "breathe", icon: "drop", title: "Breathe", for: "Stress & anxiety · 1–3 min",
+      desc: "Slow your breath with a gentle, guided rhythm." },
+    { id: "untangle", route: "untangle", icon: "wave", title: "Untangle", for: "Overthinking · 2–3 min",
       desc: "Step back from a heavy thought and find one next step." },
-    { id: "reach", route: "reach-out", num: "03", title: "Reach Out", for: "Loneliness", time: "1–2 min",
-      desc: "A moment of kindness, then a message you can send." },
-    { id: "stories", route: "stories", num: "04", title: "Walk through it", for: "Worry, low days, doubt", time: "3–5 min",
+    { id: "reach", route: "reach-out", icon: "heart", title: "Reach Out", for: "Loneliness · 1–2 min",
+      desc: "A moment of kindness, then help with the words to message someone." },
+    { id: "stories", route: "stories", icon: "read", title: "Walk through it", for: "Worry, low days, doubt · 3–5 min",
       desc: "Short steps through a reading, shaped by what you choose." }
   ];
 
@@ -105,69 +63,133 @@
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
+  // Top bar: the wordmark on Home; elsewhere a round back button and the screen's name. Need help now on every screen but its own.
+  function topbar({ back, title, help = true }) {
+    document.getElementById("brand").hidden = !!back;
+    document.getElementById("back-btn").hidden = !back;
+    const t = document.getElementById("top-title");
+    t.textContent = title || "";
+    t.hidden = !back;
+    document.getElementById("help-link").hidden = !help;
+  }
+
+  let sessionHasHistory = false; // true once the person has moved inside the demo, so Back can step back
+
   function renderMenu(root) {
     document.body.dataset.tool = "menu";
+    topbar({});
     root.innerHTML = `
       <div class="wrap view">
         <section class="hero">
-          <span class="label">Steady — Self-care tools</span>
+          <span class="label">Self-care tools · Demo</span>
           <h1>A little space to breathe.</h1>
-          <p class="muted">Four short tools for different moments. Pick the one that fits right now.</p>
-          <div class="doodle" aria-hidden="true">${doodles.hero}</div>
+          <p>Four short tools for different moments. Pick the one that fits right now.</p>
         </section>
-        <div class="index-head label" aria-hidden="true">
-          <span>No.</span><span>Tool</span><span class="h-for">For</span><span style="text-align:right">Time</span>
-        </div>
         <nav class="tool-list" aria-label="Tools">
           ${cards.map(c => `
             <a class="tool-row row-${c.id}" href="#/${c.route}">
-              <span class="num">${c.num}</span>
+              <span class="icon">${icons[c.icon]}</span>
               <h2>${c.title}</h2>
               <span class="meta">
-                <span class="for">${c.for}</span>
                 <p>${c.desc}</p>
-              </span>
-              <span class="end">
-                <span class="time label">${c.time}</span>
-                <span class="go" aria-hidden="true">→</span>
+                <span class="for">${c.for}</span>
               </span>
             </a>`).join("")}
         </nav>
+        <div class="btn-row"><a class="btn btn-ghost" href="#/need-help">I don't feel safe right now</a></div>
         <section class="colophon">
-          <div><p class="small muted" style="margin:0">Each tool takes a few minutes. You can stop at any point, and nothing you type is stored.</p></div>
-          <div class="swatches" aria-hidden="true"><i style="background:var(--breathe)"></i><i style="background:var(--untangle)"></i><i style="background:var(--reach)"></i><i style="background:var(--walk)"></i></div>
+          <p class="small muted" style="margin:0">Each tool takes a few minutes. You can stop at any point, and nothing you type is stored.</p>
         </section>
       </div>`;
   }
 
   function renderToolFrame(root, card) {
+    topbar({ back: true, title: card.title });
     root.innerHTML = `
       <div class="wrap">
-        <div class="tool">
-          <aside class="tool-side">
-            <span class="num">${card.num}</span>
-            <span class="t-name">${card.title}</span>
-            <span class="t-for label">${card.for} · ${card.time}</span>
-            <div class="doodle" aria-hidden="true">${doodles[card.id]}</div>
-          </aside>
-          <div class="tool-main" id="tool-main"></div>
-        </div>
+        <div class="tool"><div class="tool-main" id="tool-main"></div></div>
       </div>`;
     return root.querySelector("#tool-main");
   }
 
+  // Need help now (the app's S9). Only verified numbers are shown. In this demo a call button never dials.
+  function renderHelp(root) {
+    const h = window.SteadyHelp.needHelp;
+    document.body.dataset.tool = "menu";
+    topbar({ back: true, title: "", help: false });
+    root.innerHTML = `
+      <div class="wrap view"><section class="panel tool">
+        <h1>${esc(h.title)}</h1>
+        <p>${esc(h.message)}</p>
+        ${h.emergency.length ? `<p class="group-head">${esc(h.emergencyHeading)}</p>
+        <div class="cards">${h.emergency.map(e => `
+          <button class="help-card" data-number="${esc(e.number)}" aria-label="Call ${esc(e.label)}, ${esc(e.number.split("").join(" "))}">
+            <span class="txt"><strong>${esc(e.label)}</strong>${e.when ? `<span class="when">${esc(e.when.charAt(0).toUpperCase() + e.when.slice(1))}</span>` : ""}</span>
+            <span class="call-pill">${esc(e.number)}</span>
+          </button>`).join("")}</div>` : `<p class="note-box">${esc(h.pending)}</p>`}
+        <p class="note-box" id="call-note" role="status" hidden></p>
+        <div class="btn-row">
+          <a class="btn btn-ghost" href="#/talk">Talk to someone</a>
+          <a class="btn btn-ghost" href="#/">Home</a>
+        </div>
+      </section></div>`;
+    root.querySelectorAll("[data-number]").forEach(b => b.onclick = () => demoCall(root, b.dataset.number));
+  }
+
+  function demoCall(root, number) {
+    const n = root.querySelector("#call-note");
+    n.textContent = `${window.SteadyHelp.callNote} The number is ${number}.`;
+    n.hidden = false;
+  }
+
+  // Talk to someone: the trusted people straight away, with Call and Message. Unverified numbers are never tappable.
+  function renderTalk(root) {
+    const t = window.SteadyHelp.talk;
+    document.body.dataset.tool = "reach";
+    topbar({ back: true, title: "" });
+    root.innerHTML = `
+      <div class="wrap view"><section class="panel tool">
+        <span class="tag">Talk to someone</span>
+        <h1>Someone can listen.</h1>
+        <p class="muted">${esc(t.note)}</p>
+        <div class="cards">${t.contacts.map(p => {
+          const ok = p.phone && p.tappable;
+          return `
+          <div class="person">
+            <h3>${esc(p.name)}</h3>
+            <span class="role">${esc(t.roles[p.role] || p.role)} · ${esc(p.church)}</span>
+            <span class="small"><strong>${esc(t.canHelpWith)}:</strong> ${esc(p.canHelpWith)}</span>
+            <span class="small muted"><strong>${esc(t.cannotHelpWith)}:</strong> ${esc(p.cannotHelpWith)}</span>
+            ${ok ? `<span class="small muted">${esc(p.phone)}</span>` : `<span class="small muted">${esc(t.pending)}</span>`}
+            <div class="row2">
+              <button class="btn" data-call="${ok ? esc(p.phone) : ""}" ${ok ? "" : "disabled"}>${esc(t.call)}</button>
+              <button class="btn btn-ghost" data-call="${ok ? esc(p.phone) : ""}" ${ok ? "" : "disabled"}>${esc(t.message)}</button>
+            </div>
+          </div>`; }).join("")}</div>
+        <p class="note-box" id="call-note" role="status" hidden></p>
+        <div class="btn-row">
+          <a class="btn btn-ghost" href="#/reach-out">Help me find the words</a>
+          <a class="btn btn-ghost" href="#/need-help">I need help now</a>
+        </div>
+      </section></div>`;
+    root.querySelectorAll("[data-call]").forEach(b => b.onclick = () => { if (b.dataset.call) demoCall(root, b.dataset.call); });
+  }
+
+  const pages = { "need-help": renderHelp, "talk": renderTalk };
+
   function route() {
     const root = document.getElementById("app");
     const path = (location.hash.replace(/^#\/?/, "") || "").split("?")[0];
-    if (current && current.unmount) current.unmount();
+    if (current && current.unmount) current.unmount(path);
     current = null;
 
     const tool = tools[path];
-    document.getElementById("exit-link").hidden = !tool;
     if (tool) {
       document.body.dataset.tool = tool.theme;
       current = tool;
       tool.mount(renderToolFrame(root, cards.find(c => c.route === path)));
+    } else if (pages[path]) {
+      pages[path](root);
     } else {
       renderMenu(root);
     }
@@ -178,9 +200,11 @@
   window.Steady = {
     register(route, tool) { tools[route] = tool; },
     start() {
-      window.addEventListener("hashchange", route);
+      document.getElementById("back-btn").innerHTML = icons.back;
+      document.getElementById("back-btn").onclick = () => (sessionHasHistory ? history.back() : (location.hash = "#/"));
+      window.addEventListener("hashchange", () => { sessionHasHistory = true; route(); });
       route();
     },
-    esc, toast, copy, prefersReducedMotion
+    esc, toast, copy, prefersReducedMotion, icons
   };
 })();

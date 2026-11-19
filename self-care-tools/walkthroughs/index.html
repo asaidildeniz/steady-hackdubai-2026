@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Steady Walk-throughs</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap">
 <style>
+/* DM Sans is bundled with the site (../fonts), so nothing is fetched from another site. */
+@font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
 body { margin: 0; }
 /* Layout: the story runs inside a phone on the left; the path map on the right shows where you are in the branches. Palette and type come from the app's v3 theme (src/theme.ts). */
 :root {
@@ -30,7 +31,7 @@ body { margin: 0; }
   --warn-bg: #F3E6DA;
   --warn-ink: #7A4A22;
   --font: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -179,7 +180,8 @@ details ul { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction
           <li>A path is a spine of 8 or 9 beats. Choices change the next screen or two, then rejoin the spine. That keeps the number of screens the counsellor has to review small.</li>
           <li>Typed text is for the student, not for the app. It is shown back once (“You wrote…”) and checked against the crisis phrase list in content.json. It is never interpreted, stored or sent.</li>
           <li>The Bible step is a question, not a given. “Not now” skips it.</li>
-          <li>Breathe, Untangle and Reach Out are handed off to the screens that already exist, not rebuilt. In this prototype they are placeholders.</li>
+          <li>Breathe, Untangle and Reach Out are handed off to the screens that already exist, not rebuilt. When someone needs to talk to a person, “Talk to someone now” opens the trusted people straight away, with no Reach Out steps first. In this review page they are placeholders; in the demo they are the real screens.</li>
+          <li>Every list of choices that has a “Something else” lets the person type it in their own words. It is shown back once, checked for crisis phrases and never stored.</li>
           <li>“Need help now” is top right on every screen, as in the app. Typing a crisis phrase also goes there. The numbers stay pending until the reviewer verifies them.</li>
           <li>The ending never promises a reminder. Steady has no notifications and remembers nothing, so it can only invite the student to come back.</li>
         </ul>

@@ -15,12 +15,14 @@
   const TOOLS = {
     breathe: { name: "Breathe", route: "breathe" },
     untangle: { name: "Untangle", route: "untangle" },
-    reach: { name: "Reach Out", route: "reach-out" }
+    reach: { name: "Reach Out", route: "reach-out" },
+    talk: { name: "Talk to someone", route: "talk" } // the trusted people straight away, not through Reach Out
   };
+  const HANDOFF = /^@(untangle|reach|breathe|talk):(.+)$/;
 
   let root, timers = [];
   // Kept across a hand-off to another tool so the person can pick up where they were. Memory only.
-  let s = null, resume = null;
+  let s = null, resume = null; // resume: { state, auto } — auto when they left for another tool or for help
 
   const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
   const story = () => STORIES[s.story];
@@ -49,17 +51,19 @@
   }
 
   function follow(to) {
-    if (to === "@home") { s = null; resume = null; location.hash = "#/"; return; }
-    if (isHelp(to)) return go("@help");
-    const m = to.match(/^@(untangle|reach|breathe):(.+)$/);
+    if (to === "@home") return leave();
+    if (isHelp(to)) { location.hash = "#/need-help"; return; } // the shared Need help now screen
+    const m = to.match(HANDOFF);
     if (m) {
       clearTimers();
-      resume = m[2] === "@home" ? null : { ...s, history: [...s.history, s.cur], cur: m[2] };
+      if (m[2] === "@home") s = null; else { s.history.push(s.cur); s.cur = m[2]; } // come back to the next step
       location.hash = "#/" + TOOLS[m[1]].route;
       return;
     }
     go(to);
   }
+
+  function leave() { s = null; resume = null; location.hash = "#/"; }
 
   function renderChooser() {
     clearTimers();
@@ -83,7 +87,7 @@
   function renderResume() {
     root.innerHTML = `
       <section class="view panel">
-        <span class="tag">${esc(STORIES[resume.story].title)}</span>
+        <span class="tag">${esc(STORIES[resume.state.story].title)}</span>
         <h2>Welcome back.</h2>
         <p class="muted">Would you like to carry on where you left off?</p>
         <div class="btn-row">
@@ -91,7 +95,7 @@
           <button class="btn btn-link" id="fresh">Choose again</button>
         </div>
       </section>`;
-    root.querySelector("#carry").onclick = () => { s = resume; resume = null; render(); };
+    root.querySelector("#carry").onclick = () => { s = resume.state; resume = null; render(); };
     root.querySelector("#fresh").onclick = () => { resume = null; renderChooser(); };
     focusHeading();
   }
@@ -101,10 +105,7 @@
     const step = i >= 0 ? `<span class="step-count">Step ${i + 1} of ${st.beats.length}</span>` : "";
     const dots = i >= 0 ? `<div class="dots" aria-hidden="true">${st.beats.map((_, j) => `<i class="${j <= i ? "on" : ""}"></i>`).join("")}</div>` : "";
     return `
-      <div class="tool-head">
-        <span class="tag">${esc(st.title)}${i >= 0 ? " · " + esc(beat) : ""}</span>
-        ${beat === "Need help now" ? "" : `<button class="btn btn-link" id="help">Need help now</button>`}
-      </div>
+      <span class="tag">${esc(st.title)}</span>
       <div class="story-progress">${dots}${step}</div>`;
   }
 
@@ -118,33 +119,19 @@
   function footer() {
     return `
       <div class="btn-row spread">
-        <button class="btn btn-link" id="back">← Back</button>
-        <a class="btn btn-link" href="#/">All tools</a>
+        <button class="btn btn-link" id="back">← Back a step</button>
+        <button class="btn btn-link" id="leave">All tools</button>
       </div>`;
   }
 
   function wire() {
-    const h = root.querySelector("#help"); if (h) h.onclick = () => go("@help");
     root.querySelector("#back").onclick = back;
+    root.querySelector("#leave").onclick = leave;
     focusHeading();
-  }
-
-  function renderHelp() {
-    root.innerHTML = `
-      <section class="view panel">
-        ${head("Need help now")}
-        <h2>You are not alone.</h2>
-        <p class="story-text">If you are in danger or cannot keep yourself safe, contact emergency services now.</p>
-        <p class="hint">Verified numbers will appear here once our reviewer has checked them.</p>
-        <div class="btn-row"><a class="btn" href="#/reach-out">Talk to someone</a></div>
-        ${footer()}
-      </section>`;
-    wire();
   }
 
   function render() {
     clearTimers();
-    if (s.cur === "@help") return renderHelp();
     const n = story().nodes[s.cur];
     let body = "";
     if (n.verse) body += `<p class="hint"><strong>${esc(n.verse.ref)}</strong>${n.verse.quote ? `<br>“${esc(n.verse.quote)}”` : ""}</p>`;
@@ -158,7 +145,10 @@
           <label class="visually-hidden" for="story-msg">Message you could send</label>
           <textarea id="story-msg">${esc(n.copy)}</textarea>
         </div>
-        <div class="btn-row" style="margin-top:12px"><button class="btn btn-ghost" id="copy">Copy message</button></div>`;
+        <div class="btn-row" style="margin-top:12px">
+          <a class="btn" href="sms:?&body=${encodeURIComponent(n.copy)}" id="sms">Open Messages</a>
+          <button class="btn btn-ghost" id="copy">Copy message</button>
+        </div>`;
     }
     if (n.breathe) {
       body += `<div class="story-breath" aria-live="polite"><div class="story-orb" id="orb"></div><p class="story-phase" id="phase">Get ready</p></div>`;
@@ -177,9 +167,11 @@
       actions = single
         ? `<div class="btn-row"><button class="btn" data-to="${esc(list[0][1])}">${esc(list[0][0])}</button></div>`
         : `<div class="choice-group">${list.map(([label, to]) => {
-            const t = to.match(/^@(untangle|reach|breathe):/);
+            const t = to.match(HANDOFF);
             const text = to === "@home" ? "All tools" : label;
-            return `<button class="choice" data-to="${esc(to)}"><strong>${esc(text)}</strong>${t ? `<span>Opens ${TOOLS[t[1]].name}</span>` : ""}</button>`;
+            return t
+              ? `<button class="choice tool-choice tc-${t[1]}" data-to="${esc(to)}"><strong>${esc(text)}</strong><span class="start">${t[1] === "talk" ? "Call or message" : "Start"}</span></button>`
+              : `<button class="choice" data-to="${esc(to)}"><strong>${esc(text)}</strong></button>`;
           }).join("")}</div>`;
     }
 
@@ -188,6 +180,8 @@
 
     const c = root.querySelector("#copy");
     if (c) c.onclick = () => copy(root.querySelector("#story-msg").value);
+    const sms = root.querySelector("#sms"), msgBox = root.querySelector("#story-msg");
+    if (sms) msgBox.oninput = () => { sms.href = "sms:?&body=" + encodeURIComponent(msgBox.value); };
 
     if (n.breathe) {
       const orb = root.querySelector("#orb"), phase = root.querySelector("#phase");
@@ -208,7 +202,7 @@
       root.querySelector("#next").onclick = () => {
         const v = ta.value.trim();
         s.draft = "";
-        if (v && isCrisis(v)) return go("@help");
+        if (v && isCrisis(v)) { location.hash = "#/need-help"; return; }
         if (v) s.typed = v;
         go(n.input.to);
       };
@@ -220,7 +214,13 @@
 
   Steady.register("stories", {
     theme: "stories",
-    mount(el) { root = el; if (resume) renderResume(); else renderChooser(); },
-    unmount() { clearTimers(); }
+    mount(el) {
+      root = el;
+      if (resume && resume.auto) { s = resume.state; resume = null; render(); }
+      else if (resume) renderResume();
+      else renderChooser();
+    },
+    // Leaving mid-way keeps the place in memory: straight back after another tool or help, a "Carry on?" after Home.
+    unmount(next) { clearTimers(); resume = s ? { state: s, auto: next !== "" } : null; }
   });
 })();

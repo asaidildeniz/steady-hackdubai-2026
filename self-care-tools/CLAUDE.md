@@ -5,7 +5,8 @@
 - Scope: four tools. Breathe, Untangle and Reach Out (Abel cut everything else on 2026-10-27, see PRD non-goals), plus Walk through it, added at the developer's request on 2026-11-19. It walks through three team readings (worry, feeling down, faith or doubt) and its faith steps are optional questions.
 - Never add storage, analytics, or network calls without a privacy review (PRD R1).
 - Live at https://steady-self-care.netlify.app (Netlify, manual CLI deploy). Deploy with `sh build.sh` and then `netlify deploy --prod --dir dist --no-build`. See DEPLOYMENT.md. Committing does not deploy.
-- `_headers` sets a strict CSP (no inline scripts, `connect-src 'none'`). New external resources must be added to it.
+- `_headers` sets a strict CSP (no inline scripts, `connect-src 'none'`, fonts and styles from this site only). New external resources must be added to it.
+- Need help now and Talk to someone never dial: this is a demo, as in the app's demo mode. Urgent choices open Talk to someone directly, not Reach Out.
 
 | File | What |
 |---|---|
@@ -13,4 +14,5 @@
 | `js/breathe.js`, `js/untangle.js`, `js/reachout.js` | The first three tools; their content is in arrays at the top of each file |
 | `js/stories.js`, `js/stories-content.js` | Walk through it; all its wording and paths are in `stories-content.js` (keep the crisis list in step with `src/content/content.json`) |
 | `walkthroughs/` | Team review page for the same paths, with a live path map (`/walkthroughs/`) |
-| `css/styles.css` | All styles and tokens (see DESIGN.md) |
+| `js/help-content.js` | Need help now and Talk to someone: wording, verified numbers and example contacts copied from `src/content/content.json` |
+| `css/styles.css` | All styles and tokens, in the Expo app's v3 style (palette from `src/theme.ts`); DM Sans is bundled in `fonts/` |
