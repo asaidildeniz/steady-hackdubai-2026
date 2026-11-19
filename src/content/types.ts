@@ -41,6 +41,10 @@ export type LibraryItem = {
 
 export type ToolId = 'breathe' | 'untangle' | 'reachOut';
 
+// A category the feeling classifier can choose (besides 'suicidal' and 'none', which are never shown).
+// feelings: taxonomy feeling ids, which pick the feeling page and readings. content: STEADY-Content #1 titles.
+export type ClassifierCategory = { id: string; label: string; soundsLike: string; feelings: string[]; content: string[] };
+
 export type FeelingGroup = {
   id: string;
   tag: string;
@@ -195,6 +199,15 @@ export type Content = {
     browse: string;
     types: Record<LibraryItem['type'], string>;
     minutes: string;
+  };
+  classifier: {
+    confidence: number; // 0..1, below this the student is asked which feeling is closest
+    suicideNet: number; // 0..1, a 'suicidal' score at or above this opens Need help now
+    soundsLike: string; // "{label}" is a category's soundsLike
+    notQuite: string;
+    notQuiteHint: string;
+    closest: string;
+    categories: ClassifierCategory[];
   };
   breathing: {
     title: string;

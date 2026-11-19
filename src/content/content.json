@@ -1387,5 +1387,141 @@
       "back": "Choose something else",
       "note": "Nothing you write here is saved. Steady never sends it for you."
     }
+  },
+  "classifier": {
+    "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier.",
+    "confidence": 0.25,
+    "suicideNet": 0.2,
+    "soundsLike": "Draft: it sounds like {label}.",
+    "notQuite": "Not quite? Choose another",
+    "notQuiteHint": "Shows a list of feelings to choose from",
+    "closest": "Draft: we didn’t quite catch that. Which of these is closest?",
+    "categories": [
+      {
+        "id": "anxious",
+        "label": "Anxious",
+        "soundsLike": "you’re feeling anxious",
+        "feelings": [
+          "anxious"
+        ],
+        "content": [
+          "When Worries Keep Returning",
+          "When You’re Anxious About the Future"
+        ]
+      },
+      {
+        "id": "stressed",
+        "label": "Under pressure",
+        "soundsLike": "you’re under pressure with studies",
+        "feelings": [
+          "anxious",
+          "stressed"
+        ],
+        "content": [
+          "When an Exam Feels Close",
+          "When Your Grades Are Not Going Well"
+        ]
+      },
+      {
+        "id": "overwhelmed",
+        "label": "Overwhelmed",
+        "soundsLike": "everything feels like too much",
+        "feelings": [
+          "stressed"
+        ],
+        "content": [
+          "When “Adulting” Feels Like a Lot",
+          "When You’re Used to Achieving, but You’re Tired"
+        ]
+      },
+      {
+        "id": "down",
+        "label": "Down",
+        "soundsLike": "you’re feeling down",
+        "feelings": [
+          "sad"
+        ],
+        "content": [
+          "When You’re Feeling Down",
+          "When You Wonder Whether Your Life Matters"
+        ]
+      },
+      {
+        "id": "lonely",
+        "label": "Lonely",
+        "soundsLike": "you’re feeling lonely",
+        "feelings": [
+          "lonely"
+        ],
+        "content": [
+          "When You Feel Isolated"
+        ]
+      },
+      {
+        "id": "rejected",
+        "label": "Rejected or heartbroken",
+        "soundsLike": "you’re hurting after a rejection or a breakup",
+        "feelings": [
+          "sad"
+        ],
+        "content": [
+          "When a Relationship Ends",
+          "When Someone You Like Doesn’t Feel the Same"
+        ]
+      },
+      {
+        "id": "insecure",
+        "label": "Insecure",
+        "soundsLike": "you’re feeling unsure of yourself",
+        "feelings": [
+          "not-good-enough"
+        ],
+        "content": [
+          "When You Feel Insecure at University"
+        ]
+      },
+      {
+        "id": "bullied",
+        "label": "Bullied",
+        "soundsLike": "someone is treating you badly",
+        "feelings": [
+          "afraid"
+        ],
+        "content": [
+          "When You’re Experiencing Bullying"
+        ]
+      },
+      {
+        "id": "unsure",
+        "label": "Unsure what’s next",
+        "soundsLike": "you’re unsure what comes next",
+        "feelings": [
+          "anxious"
+        ],
+        "content": [
+          "When You’re Unsure What Comes Next"
+        ]
+      },
+      {
+        "id": "faith",
+        "label": "Questioning faith",
+        "soundsLike": "you have questions about faith",
+        "feelings": [
+          "distant-from-god"
+        ],
+        "content": [
+          "When You Have Questions About Faith"
+        ]
+      },
+      {
+        "id": "okay",
+        "label": "Okay",
+        "soundsLike": "you’re doing okay",
+        "feelings": [
+          "grateful"
+        ],
+        "content": []
+      }
+    ]
   }
 }

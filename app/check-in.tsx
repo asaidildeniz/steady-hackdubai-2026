@@ -1,35 +1,51 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
 import { Chip, LogoRow } from '@/components/Bits';
 import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
-import { content } from '@/content/types';
+import { type ClassifierCategory, content } from '@/content/types';
+import { understand } from '@/lib/classifier';
 import { meaningTags } from '@/lib/embedder';
-import { groupFor, isCrisis, type Tags, tagsFromText } from '@/lib/matching';
+import { groupFor, type Tags, tagsFromText } from '@/lib/matching';
 import { mergeTags } from '@/lib/meaning';
 import { colors, fonts, radius, space, text, type } from '@/theme';
 
-// Only tag ids travel to the results screen; what someone typed never leaves this screen.
-const resultsHref = ({ feelings, themes, needs }: Tags) =>
-  ({ pathname: '/results', params: { f: feelings.join(','), t: themes.join(','), n: needs.join(',') } }) as const;
+// Only ids travel to the results screen; what someone typed never leaves this screen.
+const resultsHref = ({ feelings, themes, needs }: Tags, category?: string) =>
+  ({
+    pathname: '/results',
+    params: { f: feelings.join(','), t: themes.join(','), n: needs.join(','), ...(category ? { c: category } : {}) },
+  }) as const;
+
+// A category's page: its own feelings first (they pick the page), then any the keywords found (for readings).
+const categoryHref = (category: ClassifierCategory, words: Tags = { feelings: [], themes: [], needs: [] }) =>
+  resultsHref(mergeTags({ ...words, feelings: category.feelings }, words), category.id);
 
 // Home (v3): say it in your own words, or tap a chip. Nothing is saved or sent.
 export default function CheckIn() {
   const c = content.checkIn;
+  const cl = content.classifier;
+  const params = useLocalSearchParams<{ choose?: string }>();
   const [typed, setTyped] = useState('');
+  const [asking, setAsking] = useState(false); // nothing was clear enough: ask which category is closest
+  const choosing = asking || params?.choose === '1';
 
   const find = async () => {
     const said = typed;
     setTyped(''); // forget it straight away
-    if (isCrisis(said)) return router.push('/need-help'); // safety first, before any model
+    setAsking(false);
+    // The crisis phrases, then the classifier's safety net, then its answer (src/lib/classifier.ts).
+    const understood = understand(said);
+    if (understood.kind === 'crisis') return router.push('/need-help');
     const words = tagsFromText(said);
-    // The on-phone model adds tags by meaning; without it (Expo Go, loading, failure) keywords alone are used.
+    if (understood.kind === 'category') return router.push(categoryHref(understood.category, words));
+    // The classifier wasn't sure: keywords, plus the on-phone model where it runs.
     const meaning = await meaningTags(said).catch(() => null);
     const tags = meaning ? mergeTags(words, meaning) : words;
-    // No feeling in what they wrote: Breathe, a calm place to start (the v3 response table).
-    router.push(groupFor(tags) ? resultsHref(tags) : '/breathing');
+    if (groupFor(tags)) return router.push(resultsHref(tags));
+    setAsking(true); // still nothing: ask, never guess
   };
 
   return (
@@ -52,15 +68,30 @@ export default function CheckIn() {
         maxLength={300}
         style={styles.input}
       />
-      <View style={styles.chips}>
-        {c.chips.map((chip) => (
-          <Chip
-            key={chip.feeling}
-            label={chip.label}
-            onPress={() => router.push(resultsHref({ feelings: [chip.feeling], themes: [], needs: [] }))}
-          />
-        ))}
-      </View>
+      {/* While asking, the full list below replaces the quick chips. */}
+      {!choosing && (
+        <View style={styles.chips}>
+          {c.chips.map((chip) => (
+            <Chip
+              key={chip.feeling}
+              label={chip.label}
+              onPress={() => router.push(resultsHref({ feelings: [chip.feeling], themes: [], needs: [] }))}
+            />
+          ))}
+        </View>
+      )}
+      {choosing && (
+        <View style={styles.closest}>
+          <Text style={text.body} accessibilityLiveRegion="polite">
+            {cl.closest}
+          </Text>
+          <View style={styles.chips}>
+            {cl.categories.map((cat) => (
+              <Chip key={cat.id} label={cat.label} onPress={() => router.push(categoryHref(cat))} />
+            ))}
+          </View>
+        </View>
+      )}
       <BigButton label={c.find} disabled={!typed.trim()} onPress={find} />
       <Text style={text.note}>{c.typeNote}</Text>
       {/* Quiet, but always here: the direct way to emergency help. */}
@@ -91,6 +122,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.gap / 2 + 2 },
+  closest: { gap: space.gap / 2 + 2 },
   unsafe: { minHeight: 44, justifyContent: 'center', alignSelf: 'center' },
   unsafeText: { fontSize: type.small, fontFamily: fonts.medium, color: colors.muted, textDecorationLine: 'underline' },
 });

@@ -29,6 +29,14 @@ jest.mock('@/lib/embedder', () => ({
   goldenReport: jest.fn(async () => null),
 }));
 const { meaningTags } = jest.requireMock('@/lib/embedder') as { meaningTags: jest.Mock };
+// The real classifier runs by default; a test can make it unsure to reach the keyword and model fallback.
+jest.mock('@/lib/classifier', () => {
+  const actual = jest.requireActual('@/lib/classifier');
+  return { ...actual, understand: jest.fn(actual.understand) };
+});
+const { understand } = jest.requireMock('@/lib/classifier') as { understand: jest.Mock };
+const unsure = () => understand.mockReturnValueOnce({ kind: 'unsure' });
+const category = (id: string) => content.classifier.categories.find((x) => x.id === id)!;
 
 const c = content.checkIn;
 const m = content.matching;
@@ -58,12 +66,32 @@ describe("Abel's check-in", () => {
 
   test('typed words become tags; the text itself never leaves the screen and nothing is saved', async () => {
     const typed = 'I keep panicking about my exams';
+    unsure();
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), typed);
     await fireEvent.press(button(c.find));
     await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('anxious', 'study')));
     expect(JSON.stringify(jest.mocked(router.push).mock.calls)).not.toContain('panicking');
     expect(await AsyncStorage.getAllKeys()).toEqual([]);
+  });
+
+  test('the classifier picks the page: its feelings first, keyword themes kept, the typed text never sent', async () => {
+    const typed = "I have no friends here and I'm alone every weekend";
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), typed);
+    await fireEvent.press(button(c.find));
+    const [href] = jest.mocked(router.push).mock.calls[0] as unknown as [{ params: Record<string, string> }];
+    expect(href.params.c).toBe('lonely');
+    expect(href.params.f.split(',')[0]).toBe(category('lonely').feelings[0]);
+    expect(JSON.stringify(href)).not.toContain('weekend');
+    expect(meaningTags).not.toHaveBeenCalled();
+  });
+
+  test("the classifier's safety net opens Need help now even without an exact crisis phrase", async () => {
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), "I don't want to exist anymore");
+    await fireEvent.press(button(c.find));
+    expect(router.push).toHaveBeenCalledWith('/need-help');
   });
 
   test('a crisis phrase skips the search and opens Need help now', async () => {
@@ -75,6 +103,7 @@ describe("Abel's check-in", () => {
   });
 
   test('with the model ready, meaning tags are added to the keyword tags', async () => {
+    unsure();
     meaningTags.mockResolvedValueOnce({ feelings: ['lonely'], themes: ['comparison'], needs: [] });
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), "everyone's moving on without me and I'm stressed");
@@ -92,6 +121,7 @@ describe("Abel's check-in", () => {
   });
 
   test('if the model fails, the keyword tags are still used', async () => {
+    unsure();
     meaningTags.mockRejectedValueOnce(new Error('native crash'));
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'so stressed');
@@ -99,11 +129,23 @@ describe("Abel's check-in", () => {
     await waitFor(() => expect(router.push).toHaveBeenCalledWith(results('stressed')));
   });
 
-  test('typed words with no feeling in them open Breathe', async () => {
+  test('typed words with no feeling in them ask which is closest, and a choice opens that page', async () => {
     await render(<CheckIn />);
     await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'qwerty asdf');
     await fireEvent.press(button(c.find));
-    await waitFor(() => expect(router.push).toHaveBeenCalledWith('/breathing'));
+    await waitFor(() => expect(screen.getByText(content.classifier.closest)).toBeOnTheScreen());
+    expect(router.push).not.toHaveBeenCalled();
+    await fireEvent.press(button(category('faith').label));
+    const [href] = jest.mocked(router.push).mock.calls[0] as unknown as [{ params: Record<string, string> }];
+    expect(href.params).toMatchObject({ c: 'faith', f: category('faith').feelings.join(',') });
+  });
+
+  test('"Not quite?" from a page brings Home back with every category to choose from', async () => {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ choose: '1' });
+    await render(<CheckIn />);
+    expect(screen.getByText(content.classifier.closest)).toBeOnTheScreen();
+    for (const cat of content.classifier.categories) expect(button(cat.label)).toBeOnTheScreen();
+    jest.mocked(useLocalSearchParams).mockReset();
   });
 
   test('the box is cleared after searching', async () => {
@@ -181,6 +223,15 @@ describe('feeling pages', () => {
       .find((b) => (b.props.accessibilityLabel as string)?.startsWith('Anxiety or constant worry'))!;
     await fireEvent.press(reading);
     expect(router.push).toHaveBeenCalledWith({ pathname: '/topic', params: { id: 'anxiety' } });
+  });
+
+  test('a page the classifier chose says what it heard, and "Not quite?" goes back to choose', async () => {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ f: 'lonely', t: '', n: '', c: 'lonely' });
+    await render(<Results />);
+    const cl = content.classifier;
+    expect(screen.getByText(cl.soundsLike.replace('{label}', category('lonely').soundsLike))).toBeOnTheScreen();
+    await fireEvent.press(button(cl.notQuite));
+    expect(router.dismissTo).toHaveBeenCalledWith({ pathname: '/home', params: { choose: '1' } });
   });
 
   test('always says it is not a replacement for professional help', async () => {

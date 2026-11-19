@@ -45,7 +45,8 @@
     "test": "jest",
     "demo": "EXPO_PUBLIC_DEMO=1 expo start --go --clear",
     "fetch-model": "sh scripts/fetch-model.sh",
-    "demo:dev": "EXPO_PUBLIC_DEMO=1 expo start --dev-client --clear"
+    "demo:dev": "EXPO_PUBLIC_DEMO=1 expo start --dev-client --clear",
+    "train-classifier": "node scripts/train-classifier.js"
   },
   "private": true,
   "jest": {
