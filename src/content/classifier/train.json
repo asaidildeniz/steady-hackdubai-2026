@@ -116,7 +116,11 @@
       "my exam results were terrible",
       "I can't get my revision done",
       "I'm stressed about passing this year",
-      "stressed"
+      "stressed",
+      "I'm unprepared and the pressure to pass this test is huge",
+      "the test is tomorrow and there's so much pressure on me",
+      "I'm not prepared and my parents expect a top mark",
+      "I'm behind on revision and the exam counts for half my grade"
     ],
     "overwhelmed": [
       "there's just too much going on",
@@ -168,7 +172,11 @@
       "I'm swamped with work and chores",
       "I can't handle bills, groceries and assignments on top of everything",
       "I'm completely worn out",
-      "I've got nothing left to give"
+      "I've got nothing left to give",
+      "I have so many tests and I'm not prepared for any of them",
+      "too much to study and I'm unprepared for every exam",
+      "I'm unprepared because I've had too much going on",
+      "between work and uni I couldn't prepare for my test"
     ],
     "down": [
       "I feel down",
@@ -826,7 +834,9 @@
       "everything's fine",
       "I'm feeling alright",
       "it was a lovely day",
-      "I had a nice time today"
+      "I had a nice time today",
+      "I feel prepared for my exam",
+      "I'm ready for my test and feeling good"
     ],
     "suicidal": [
       "I want to die",
