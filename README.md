@@ -58,7 +58,7 @@ On the check-in, a student can type (or speak with the keyboard microphone) how 
 
 **Need help now** is one tap away on every screen: a quiet link at the top right. It lists 999 (Police) and 998 (Ambulance). In demo mode no number ever dials, and the demo contact shows the obviously fake test number +971 00 000 0000.
 
-**The feeling classifier** (draft, `docs/CLASSIFIER.md`) runs before the keywords, everywhere, including Expo Go and the web. It is a small trained model, about 290 KB of weights in `src/content/classifier/model.json`. It picks one of 11 categories from STEADY-Content #1, or opens Need help now when a sentence sounds suicidal. When it isn't sure, Home asks "Which of these is closest?" instead of guessing.
+**The feeling classifier** (draft, `docs/CLASSIFIER.md`) runs before the keywords, everywhere, including Expo Go and the web. It is a small trained model, about 400 KB of weights in `src/content/classifier/model.json`. It picks one of 14 categories (STEADY-Content #1, plus grief, guilt and anger), or opens Need help now when a sentence sounds suicidal. When it isn't sure, Home asks "Which of these is closest?" instead of guessing.
 
 To change what it learns, edit the made-up sentences in `src/content/classifier/train.json`, then run `npm run train-classifier`.
 

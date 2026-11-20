@@ -1390,7 +1390,7 @@
   },
   "classifier": {
     "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier.",
-    "confidence": 0.25,
+    "confidence": 0.2,
     "suicideNet": 0.2,
     "soundsLike": "Draft: it sounds like {label}.",
     "notQuite": "Not quite? Choose another",
@@ -1445,6 +1445,33 @@
           "When You’re Feeling Down",
           "When You Wonder Whether Your Life Matters"
         ]
+      },
+      {
+        "id": "grief",
+        "label": "Grieving",
+        "soundsLike": "you’re grieving someone you’ve lost",
+        "feelings": [
+          "grieving"
+        ],
+        "content": []
+      },
+      {
+        "id": "guilty",
+        "label": "Guilty or ashamed",
+        "soundsLike": "you’re carrying guilt about something",
+        "feelings": [
+          "guilty"
+        ],
+        "content": []
+      },
+      {
+        "id": "angry",
+        "label": "Angry or resentful",
+        "soundsLike": "you’re feeling angry or resentful",
+        "feelings": [
+          "angry"
+        ],
+        "content": []
       },
       {
         "id": "lonely",
