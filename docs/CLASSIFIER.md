@@ -105,3 +105,41 @@ REPORT=1 npx jest classifier
 - When no feeling is recognised, Steady now asks which category is closest. Before this change it opened Breathe, as in the v3 response table, so that table needs updating.
 - Write real-sounding, made-up phrasings from student feedback into `train.json`. Keep about 1 in 5 new sentences aside for `holdout.json`.
 - The category pages still use the 4 existing feeling pages. The next step is showing each category's own *STEADY-Content #1* piece, and writing pieces for grief, guilt and anger.
+
+## Ranked results, sub-topics and writings (2026-11-20)
+
+**Ranked, like search results.** Every answer carries all 14 feelings, the most likely first (`understand().ranked`).
+- If a match is below `sureEnough` (80%), the results page shows **"It could also be"** with the next few close feelings (`alsoClose`). One tap switches to that feeling.
+- **Okay is never offered under a hard feeling,** and a hard feeling is never offered under Okay ("Nobody likes me" never suggests Okay).
+- **"Which of these is closest?"** and "Not quite?" list the feelings closest first.
+
+**Sub-topics pick the writing.** Some feelings have more than one writing, so a second small model (`subtopics.json` → `submodel.json`, trained by the same command) picks the closest sub-topic within the matched feeling. `writingFor()` returns that sub-topic's writing. Sub-topics are listed in `content.json` under `classifier.categories[].subtopics`.
+- **Sub-topics without a writing yet** (`writing: null`) show the feeling's first writing instead.
+- **The writings for faith's sub-topics** (God feels far away; Feeling unloved or unforgiven by God; Why God allows suffering) are still to be written.
+- **The "God loves you" slot:** `faithWriting` on Lonely, Rejected or left out, and Insecure holds a "God loves you" piece to show alongside. It's `null` until the piece is written.
+
+| Feeling | Sub-topics → writing |
+|---|---|
+| Anxious | Worries that keep coming back → When Worries Keep Returning · Worry about the future → When You're Anxious About the Future · Nerves before an exam → When an Exam Feels Close |
+| Under pressure | Exam pressure → When an Exam Feels Close · Grades not going well → When Your Grades Are Not Going Well |
+| Overwhelmed | Adulting → When "Adulting" Feels Like a Lot · Used to achieving, but tired → When You're Used to Achieving, but You're Tired |
+| Down | Feeling low → When You're Feeling Down · Wondering whether your life matters → When You Wonder Whether Your Life Matters |
+| Rejected or left out | After a breakup → When a Relationship Ends · Someone doesn't feel the same → When Someone You Like Doesn't Feel the Same · Left out or not fitting in → When You Feel Isolated |
+| Questioning faith | Doubting what you believe → When You Have Questions About Faith · God feels far away → *to write* · Unloved or unforgiven by God → *to write* · Why God allows suffering → *to write* |
+
+**Abel's examples are permanent tests** (`classifier.test.ts`):
+- "I don't know if I could do this anymore" → Need help now.
+- "I am unprepared for my test" → Anxious, with Under pressure close behind, and the exam writing.
+- "I don't think God loves me" → Questioning faith.
+- "Nobody likes me", "nobody understands me" → Lonely, never Okay.
+- "I can't fit in" → Rejected, then Lonely.
+- "Is everyone mad at me?" → Insecure, not Angry.
+
+**Results (2026-11-20):**
+
+| Check | Result |
+|---|---|
+| Held-out feelings | 154 / 177 right (87%), 2 wrong |
+| Held-out suicidal sentences | 14 / 14 reach Need help now |
+| Other sentences wrongly sent to Need help now | 1 / 219 ("I'm completely drained and can't keep going like this", the cost of catching "I can't keep going") |
+| Sub-topics | the right one at least 80% of the time on held-out sentences |

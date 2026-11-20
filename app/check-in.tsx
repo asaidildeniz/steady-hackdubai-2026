@@ -6,31 +6,47 @@ import { Chip, LogoRow } from '@/components/Bits';
 import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { type ClassifierCategory, content } from '@/content/types';
-import { understand } from '@/lib/classifier';
+import { alsoClose, subtopicsFor, understand } from '@/lib/classifier';
 import { meaningTags } from '@/lib/embedder';
 import { groupFor, type Tags, tagsFromText } from '@/lib/matching';
 import { mergeTags } from '@/lib/meaning';
 import { colors, fonts, radius, space, text, type } from '@/theme';
 
 // Only ids travel to the results screen; what someone typed never leaves this screen.
-const resultsHref = ({ feelings, themes, needs }: Tags, category?: string) =>
+const resultsHref = ({ feelings, themes, needs }: Tags, extra: Record<string, string> = {}) =>
   ({
     pathname: '/results',
-    params: { f: feelings.join(','), t: themes.join(','), n: needs.join(','), ...(category ? { c: category } : {}) },
+    params: { f: feelings.join(','), t: themes.join(','), n: needs.join(','), ...extra },
   }) as const;
 
 // A category's page: its own feelings first (they pick the page), then any the keywords found (for readings).
-const categoryHref = (category: ClassifierCategory, words: Tags = { feelings: [], themes: [], needs: [] }) =>
-  resultsHref(mergeTags({ ...words, feelings: category.feelings }, words), category.id);
+// r: the other close categories, closest first, shown under a match that isn't sure. s: the closest sub-topic.
+const categoryHref = (
+  category: ClassifierCategory,
+  words: Tags = { feelings: [], themes: [], needs: [] },
+  extra: { r?: string; s?: string } = {},
+) =>
+  resultsHref(mergeTags({ ...words, feelings: category.feelings }, words), {
+    c: category.id,
+    ...(extra.r ? { r: extra.r } : {}),
+    ...(extra.s ? { s: extra.s } : {}),
+  });
 
 // Home (v3): say it in your own words, or tap a chip. Nothing is saved or sent.
 export default function CheckIn() {
   const c = content.checkIn;
   const cl = content.classifier;
-  const params = useLocalSearchParams<{ choose?: string }>();
+  const params = useLocalSearchParams<{ choose?: string; r?: string }>();
   const [typed, setTyped] = useState('');
   const [asking, setAsking] = useState(false); // nothing was clear enough: ask which category is closest
+  const [closestFirst, setClosestFirst] = useState<string[]>([]); // category ids, closest first
   const choosing = asking || params?.choose === '1';
+  // "Which is closest?" lists the categories the way a search lists results: the closest first, then the rest.
+  const order = asking ? closestFirst : (params?.r ?? '').split(',').filter(Boolean);
+  const choices = [...cl.categories].sort((a, b) => {
+    const i = (id: string) => (order.includes(id) ? order.indexOf(id) : order.length + cl.categories.findIndex((x) => x.id === id));
+    return i(a.id) - i(b.id);
+  });
 
   const find = async () => {
     const said = typed;
@@ -40,12 +56,17 @@ export default function CheckIn() {
     const understood = understand(said);
     if (understood.kind === 'crisis') return router.push('/need-help');
     const words = tagsFromText(said);
-    if (understood.kind === 'category') return router.push(categoryHref(understood.category, words));
+    if (understood.kind === 'category') {
+      const close = alsoClose(understood).map((x) => x.category.id).join(',');
+      const s = subtopicsFor(said, understood.category)[0]?.subtopic.id;
+      return router.push(categoryHref(understood.category, words, { r: close, s }));
+    }
     // The classifier wasn't sure: keywords, plus the on-phone model where it runs.
     const meaning = await meaningTags(said).catch(() => null);
     const tags = meaning ? mergeTags(words, meaning) : words;
     if (groupFor(tags)) return router.push(resultsHref(tags));
-    setAsking(true); // still nothing: ask, never guess
+    setClosestFirst(understood.ranked.map((x) => x.category.id));
+    setAsking(true); // still nothing: ask, never guess, closest first
   };
 
   return (
@@ -86,7 +107,7 @@ export default function CheckIn() {
             {cl.closest}
           </Text>
           <View style={styles.chips}>
-            {cl.categories.map((cat) => (
+            {choices.map((cat) => (
               <Chip key={cat.id} label={cat.label} onPress={() => router.push(categoryHref(cat))} />
             ))}
           </View>

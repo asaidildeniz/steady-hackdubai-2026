@@ -13,15 +13,15 @@
       "I'm scared I won't be able to support myself after uni",
       "I keep overthinking every little thing",
       "can't stop panicking",
-      "I'm worried sick"
+      "I'm worried sick",
+      "I have a test tomorrow and I'm not prepared",
+      "my exams start Monday and I'm freaking out about them"
     ],
     "stressed": [
-      "my exams start Monday and I'm freaking out about them",
       "I got a D on my assignment",
       "I'm really stressed about my finals",
       "I'm going to fail calculus",
       "my marks are so low my parents will be furious",
-      "I have a test tomorrow and I'm not prepared",
       "uni workload is crushing me before exams",
       "I keep getting bad grades no matter how hard I study",
       "I'm stressed about my thesis deadline",
@@ -110,7 +110,9 @@
       "I feel like nobody cares about me",
       "I'm so homesick it hurts",
       "I feel lonely even with people around",
-      "I wish I had a friend here"
+      "I wish I had a friend here",
+      "nobody understands me",
+      "no one really gets me"
     ],
     "rejected": [
       "my boyfriend left me",
@@ -124,7 +126,9 @@
       "I just got rejected by my crush",
       "my heart is shattered",
       "we ended things and I miss her",
-      "I was ghosted by someone I really liked"
+      "I was ghosted by someone I really liked",
+      "I can't fit in",
+      "my friends left me out again"
     ],
     "insecure": [
       "I feel like everyone is better than me",
@@ -138,7 +142,9 @@
       "I feel inadequate",
       "I'm scared people will find out I'm not clever",
       "I feel so insecure about myself",
-      "I don't like who I am"
+      "I don't like who I am",
+      "Is everyone mad at me?",
+      "I feel like everyone is annoyed by me"
     ],
     "bullied": [
       "some guys in my class keep making fun of me",
@@ -180,7 +186,11 @@
       "church doesn't mean anything to me anymore",
       "I'm not sure Christianity is true",
       "I feel guilty that I'm doubting God",
-      "I have so many questions about faith"
+      "I have so many questions about faith",
+      "I don't think God loves me",
+      "God feels like he's abandoned me",
+      "I'm afraid God won't forgive me",
+      "God doesn't seem to care about me anymore"
     ],
     "okay": [
       "I'm doing pretty well today",
@@ -208,7 +218,9 @@
       "I keep thinking about hurting myself",
       "I want to disappear for good",
       "I don't see any point in staying alive",
-      "I'm thinking about suicide"
+      "I'm thinking about suicide",
+      "I don't know if I could do this anymore",
+      "I don't think I can do this much longer"
     ],
     "none": [
       "I'm going shopping later",

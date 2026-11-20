@@ -43,7 +43,17 @@ export type ToolId = 'breathe' | 'untangle' | 'reachOut';
 
 // A category the feeling classifier can choose (besides 'suicidal' and 'none', which are never shown).
 // feelings: taxonomy feeling ids, which pick the feeling page and readings. content: STEADY-Content #1 titles.
-export type ClassifierCategory = { id: string; label: string; soundsLike: string; feelings: string[]; content: string[] };
+// subtopics: the kinds of writing inside a feeling; writing is a STEADY-Content title, or null when not written yet.
+export type Subtopic = { id: string; label: string; writing: string | null };
+export type ClassifierCategory = {
+  id: string;
+  label: string;
+  soundsLike: string;
+  feelings: string[];
+  content: string[];
+  subtopics: Subtopic[];
+  faithWriting?: string | null; // a "God loves you" piece shown alongside (Abel, 2026-11-20); null until written
+};
 
 export type FeelingGroup = {
   id: string;
@@ -203,6 +213,9 @@ export type Content = {
   classifier: {
     confidence: number; // 0..1, below this the student is asked which feeling is closest
     suicideNet: number; // 0..1, a 'suicidal' score at or above this opens Need help now
+    sureEnough: number; // 0..1, below this a match also shows the other close feelings, closest first
+    alsoClose: string;
+    faithWritingPlaceholder: string;
     soundsLike: string; // "{label}" is a category's soundsLike
     notQuite: string;
     notQuiteHint: string;

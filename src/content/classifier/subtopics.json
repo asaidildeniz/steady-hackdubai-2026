@@ -1,0 +1,330 @@
+{
+  "note": "Made-up sentences that tell apart the sub-topics inside one feeling, so Steady can pick the closest writing (Abel, 2026-11-20). Never real ones. 'train' teaches the sub-topic model; 'holdout' only tests it and must never be copied into 'train'. A sub-topic and its writing are listed in content.json under classifier.categories[].subtopics.",
+  "train": {
+    "anxious.worries": [
+      "I worry about everything all the time",
+      "the same worries keep coming back",
+      "I can't stop overthinking little things",
+      "I'm worried about money and my family and everything",
+      "my mind keeps racing with worries",
+      "I keep thinking about what could go wrong today",
+      "I feel anxious about uni life in general",
+      "I worry about what people think of me",
+      "worries keep popping into my head",
+      "I'm anxious all day for no reason",
+      "I overthink every conversation",
+      "I can't switch off my worrying"
+    ],
+    "anxious.future": [
+      "I'm scared about my future",
+      "what will I do after graduation",
+      "I worry I won't find a job",
+      "the future feels so uncertain",
+      "I'm anxious about life after uni",
+      "I keep worrying about whether things will turn out okay",
+      "I'm scared I'll never be successful",
+      "I'm worried about supporting myself one day",
+      "I don't know what's going to happen to me in a few years",
+      "thinking about the future makes me panic",
+      "I'm anxious about my visa after I graduate",
+      "I worry I'll disappoint my family in the future"
+    ],
+    "anxious.exam": [
+      "I'm not ready for my exam",
+      "I feel unprepared for my test",
+      "my exam is tomorrow and I'm panicking",
+      "I haven't studied and the test is soon",
+      "I'm nervous about my presentation",
+      "I'm dreading tomorrow's exam",
+      "I don't know enough for the test",
+      "my finals are coming and I'm scared",
+      "I can't focus on revision because I'm so nervous",
+      "I'm anxious about my interview tomorrow",
+      "I keep panicking about the exam",
+      "I feel sick before my test"
+    ],
+    "stressed.exam": [
+      "there's so much pressure before exams",
+      "exam season is crushing me",
+      "I have three exams this week",
+      "I need to pass this exam no matter what",
+      "everyone expects me to ace the exam",
+      "the exam pressure is unbearable",
+      "I have so many tests coming up",
+      "I'm stressed about exams",
+      "I can't keep up with revision for all my exams",
+      "the pressure to do well in finals is too much",
+      "I'm stressed with my deadlines and exams",
+      "I have a big exam and so much riding on it"
+    ],
+    "stressed.grades": [
+      "I failed my midterm",
+      "my grades are really bad",
+      "I got a terrible mark",
+      "my GPA is dropping",
+      "I might fail this module",
+      "I'm scared to tell my parents my grades",
+      "I keep getting low marks",
+      "I'm on academic probation",
+      "I bombed the test and got my result back",
+      "my scholarship depends on my grades and they're bad",
+      "I failed again even though I studied",
+      "my results came back and they're awful"
+    ],
+    "overwhelmed.adulting": [
+      "adulting is too hard",
+      "I can't manage rent and bills and uni",
+      "cooking, cleaning and studying is too much",
+      "I don't know how to handle money",
+      "living on my own is overwhelming",
+      "everyone else knows how to be an adult except me",
+      "I have too many responsibilities",
+      "I'm juggling a job and uni and chores",
+      "paperwork and bills are stressing me out",
+      "I don't know how to do taxes or forms",
+      "I have to sort out my visa, rent and classes at once",
+      "taking care of myself is a lot"
+    ],
+    "overwhelmed.tired": [
+      "I'm exhausted all the time",
+      "I'm burnt out",
+      "I used to manage everything but now I can't",
+      "I'm always the reliable one and I'm tired",
+      "I feel guilty for slowing down",
+      "I've been pushing myself for months",
+      "I'm running on empty",
+      "I can't keep achieving like I used to",
+      "I'm worn out from trying so hard",
+      "I have no energy left",
+      "I'm tired of being the high achiever",
+      "I need rest but I keep going"
+    ],
+    "down.low": [
+      "I feel down",
+      "I've been feeling low",
+      "I'm sad and I don't know why",
+      "I feel empty",
+      "nothing makes me happy anymore",
+      "I don't feel like myself",
+      "everything feels heavy",
+      "I keep crying",
+      "I can't get out of bed",
+      "I feel numb",
+      "I'm going to class but I feel nothing inside",
+      "it's been a really bad week"
+    ],
+    "down.meaning": [
+      "I wonder whether my life matters",
+      "why am I even here",
+      "I don't see the point of anything",
+      "does my life make a difference",
+      "I feel like I don't matter",
+      "what's the point of me",
+      "I question whether my life has any purpose",
+      "I feel like my existence is pointless",
+      "I wonder why I exist",
+      "nothing I do seems to matter",
+      "I don't know what my life is for",
+      "I feel like I'm just existing"
+    ],
+    "rejected.breakup": [
+      "my girlfriend broke up with me",
+      "we broke up",
+      "my relationship ended",
+      "I miss my ex",
+      "my boyfriend left me",
+      "I can't stop thinking about my ex",
+      "we were together for years and now it's over",
+      "my partner ended things",
+      "since the breakup I can't focus",
+      "he cheated and we split up",
+      "my engagement was called off",
+      "my heart hurts after we split"
+    ],
+    "rejected.crush": [
+      "the person I like doesn't like me back",
+      "I asked her out and she said no",
+      "I got rejected by my crush",
+      "he only sees me as a friend",
+      "I confessed my feelings and they don't feel the same",
+      "my crush is dating someone else",
+      "I got ghosted by someone I liked",
+      "I was turned down",
+      "I feel embarrassed that they rejected me",
+      "she doesn't have feelings for me",
+      "I liked him for months and he said no",
+      "they left me on read after I told them how I feel"
+    ],
+    "faith.doubt": [
+      "I'm not sure I believe anymore",
+      "I have questions about my faith",
+      "I don't know if God is real",
+      "I'm doubting what I believe",
+      "my beliefs are changing",
+      "I'm questioning everything about religion",
+      "I'm not sure Christianity is true",
+      "I don't know what I believe",
+      "I want to believe but it's hard",
+      "is it okay to question God",
+      "I'm scared to tell my family I have doubts",
+      "I don't know if Jesus is real"
+    ],
+    "faith.distant": [
+      "God feels far away",
+      "I don't feel God when I pray",
+      "my prayers feel empty",
+      "God feels silent",
+      "I stopped praying",
+      "church feels empty now",
+      "I used to feel God's presence but not anymore",
+      "I feel spiritually dry",
+      "worship feels fake to me",
+      "I can't read the Bible anymore",
+      "I feel disconnected from God",
+      "God doesn't seem to hear me"
+    ],
+    "faith.unloved": [
+      "God doesn't love me",
+      "I feel like God hates me",
+      "God could never forgive me",
+      "I'm not good enough for God",
+      "I feel unworthy of God's love",
+      "I think God is punishing me",
+      "God has given up on me",
+      "I feel rejected by God",
+      "how can God love me after what I did",
+      "I'm afraid I've lost my salvation",
+      "God is angry with me",
+      "I've let God down too much"
+    ],
+    "faith.suffering": [
+      "why does God allow bad things to happen",
+      "why did God let this happen to me",
+      "how can God be good when this happened",
+      "I'm angry at God",
+      "why did God let my dad die",
+      "why doesn't God stop the suffering",
+      "I keep asking God for help and nothing changes",
+      "God seems to bless everyone but me",
+      "why would a loving God let people suffer",
+      "I'm angry that God didn't answer my prayers",
+      "why did God take my grandma",
+      "I don't understand why God lets this happen"
+    ],
+    "rejected.social": [
+      "I don't fit in",
+      "my friends left me out",
+      "people exclude me",
+      "my friend group dropped me",
+      "nobody wants me around",
+      "I wasn't invited",
+      "they stopped talking to me",
+      "I feel rejected by my classmates",
+      "I'm always left out",
+      "my friends ditched me",
+      "people push me away",
+      "I got kicked out of the group",
+      "I can't fit in anywhere",
+      "I just don't fit in",
+      "I can't fit in with my classmates"
+    ]
+  },
+  "holdout": {
+    "anxious.worries": [
+      "I'm constantly worrying about small things",
+      "my worries never stop",
+      "I overthink everything I say",
+      "I'm anxious every day"
+    ],
+    "anxious.future": [
+      "I'm terrified about life after graduation",
+      "I worry about where I'll be in five years",
+      "I'm anxious about finding work",
+      "the future scares me"
+    ],
+    "anxious.exam": [
+      "I am unprepared for my test",
+      "I'm so nervous for my exam tomorrow",
+      "I haven't revised for my test",
+      "I'm panicking about my presentation tomorrow"
+    ],
+    "stressed.exam": [
+      "exam week is so much pressure",
+      "I have four exams in three days",
+      "the pressure of finals is too much",
+      "so much is riding on this exam"
+    ],
+    "stressed.grades": [
+      "I got a really bad grade",
+      "I failed my assignment",
+      "my marks keep dropping",
+      "I'm going to fail this semester"
+    ],
+    "overwhelmed.adulting": [
+      "managing rent and bills is too much",
+      "I don't know how to be an adult",
+      "chores, work and studying is overwhelming",
+      "I can't handle all my responsibilities"
+    ],
+    "overwhelmed.tired": [
+      "I'm completely burned out",
+      "I've been pushing so hard and I'm exhausted",
+      "I used to be on top of everything, now I'm drained",
+      "I have nothing left in me"
+    ],
+    "down.low": [
+      "I feel so sad lately",
+      "I just feel empty",
+      "I've been crying a lot",
+      "I feel low all the time"
+    ],
+    "down.meaning": [
+      "I don't know if my life matters",
+      "why am I here",
+      "my life feels pointless",
+      "I feel like I don't make a difference"
+    ],
+    "rejected.breakup": [
+      "my boyfriend dumped me",
+      "we split up last week",
+      "my relationship is over",
+      "I can't get over my ex"
+    ],
+    "rejected.crush": [
+      "my crush doesn't like me",
+      "I asked him out and he said no",
+      "she turned me down",
+      "the person I like rejected me"
+    ],
+    "faith.doubt": [
+      "I'm having doubts about God",
+      "I don't know if I still believe",
+      "I question my faith",
+      "I'm not sure God exists"
+    ],
+    "faith.distant": [
+      "God feels so distant",
+      "praying feels pointless",
+      "I can't feel God anymore",
+      "God feels quiet"
+    ],
+    "faith.unloved": [
+      "I don't think God loves me",
+      "God won't forgive me",
+      "I feel like God has abandoned me",
+      "I'm not worthy of God"
+    ],
+    "faith.suffering": [
+      "why would God let this happen",
+      "I'm so angry at God",
+      "why didn't God help me",
+      "how could God allow this"
+    ],
+    "rejected.social": [
+      "I can't fit in",
+      "my friends don't invite me anymore",
+      "everyone left me out",
+      "the group doesn't want me"
+    ]
+  }
+}

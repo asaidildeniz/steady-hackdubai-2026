@@ -1,88 +1,101 @@
-// Trains Steady's feeling classifier from the made-up sentences in src/content/classifier/train.json
-// and writes src/content/classifier/model.json. Run: npm run train-classifier
+// Trains Steady's two feeling models from made-up sentences. Run: npm run train-classifier
+//   src/content/classifier/train.json      -> model.json     (which feeling: 16 categories)
+//   src/content/classifier/subtopics.json  -> submodel.json  (which sub-topic, and so which writing, within a feeling)
 //
-// The model is multinomial logistic regression over words and word pairs (see src/lib/textFeatures.js).
+// Both are multinomial logistic regression over words and word pairs (see src/lib/textFeatures.js).
 // Training is deterministic: weights start at zero, every pass uses every sentence in the same order,
-// so the same train.json always gives the same model.json. No dependencies, nothing downloaded.
+// so the same sentences always give the same model. No dependencies, nothing downloaded.
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { features, normalise } = require('../src/lib/textFeatures');
 
 const dir = path.join(__dirname, '..', 'src', 'content', 'classifier');
-const raw = fs.readFileSync(path.join(dir, 'train.json'), 'utf8');
-const { sentences } = JSON.parse(raw);
 
 const EPOCHS = 600;
 const RATE = 1.0;
 const L2 = 0.0005;
 const MIN_WEIGHT = 0.01; // smaller weights are dropped from the file; they never change an answer
 
-const classes = Object.keys(sentences);
-const examples = classes.flatMap((c, y) => sentences[c].map((text) => ({ y, f: features(text) })));
+// A fingerprint of the training sentences (line endings ignored, so Windows and Mac checkouts agree); the tests compare it.
+const fingerprint = (text) => crypto.createHash('sha256').update(text.replace(/\r\n/g, '\n')).digest('hex').slice(0, 16);
 
-const vocab = [...new Set(examples.flatMap((e) => e.f))].sort();
-const index = new Map(vocab.map((f, i) => [f, i]));
-const rows = examples.map((e) => ({ y: e.y, x: e.f.map((f) => index.get(f)) }));
+function train(sentences) {
+  const classes = Object.keys(sentences);
+  const examples = classes.flatMap((c, y) => sentences[c].map((text) => ({ y, f: features(text) })));
+  const vocab = [...new Set(examples.flatMap((e) => e.f))].sort();
+  const index = new Map(vocab.map((f, i) => [f, i]));
+  const rows = examples.map((e) => ({ y: e.y, x: e.f.map((f) => index.get(f)) }));
 
-// Each class counts the same in total, however many sentences it has.
-const perClass = classes.map((_, y) => rows.filter((r) => r.y === y).length);
-const classWeight = perClass.map((n) => rows.length / (classes.length * n));
+  // Each class counts the same in total, however many sentences it has.
+  const perClass = classes.map((_, y) => rows.filter((r) => r.y === y).length);
+  const classWeight = perClass.map((n) => rows.length / (classes.length * n));
 
-const K = classes.length;
-const W = Array.from({ length: K }, () => new Float64Array(vocab.length));
-const b = new Float64Array(K);
+  const K = classes.length;
+  const W = Array.from({ length: K }, () => new Float64Array(vocab.length));
+  const b = new Float64Array(K);
 
-function probabilities(x) {
-  const z = b.map((bias, k) => x.reduce((s, i) => s + W[k][i], bias));
-  const max = Math.max(...z);
-  const e = z.map((v) => Math.exp(v - max));
-  const sum = e.reduce((s, v) => s + v, 0);
-  return e.map((v) => v / sum);
-}
+  const probabilities = (x) => {
+    const z = b.map((bias, k) => x.reduce((s, i) => s + W[k][i], bias));
+    const max = Math.max(...z);
+    const e = z.map((v) => Math.exp(v - max));
+    const sum = e.reduce((s, v) => s + v, 0);
+    return e.map((v) => v / sum);
+  };
 
-for (let epoch = 0; epoch < EPOCHS; epoch++) {
-  const gW = Array.from({ length: K }, () => new Float64Array(vocab.length));
-  const gb = new Float64Array(K);
-  for (const r of rows) {
-    const p = probabilities(r.x);
-    const cw = classWeight[r.y];
+  for (let epoch = 0; epoch < EPOCHS; epoch++) {
+    const gW = Array.from({ length: K }, () => new Float64Array(vocab.length));
+    const gb = new Float64Array(K);
+    for (const r of rows) {
+      const p = probabilities(r.x);
+      const cw = classWeight[r.y];
+      for (let k = 0; k < K; k++) {
+        const err = (p[k] - (k === r.y ? 1 : 0)) * cw;
+        gb[k] += err;
+        for (const i of r.x) gW[k][i] += err;
+      }
+    }
     for (let k = 0; k < K; k++) {
-      const err = (p[k] - (k === r.y ? 1 : 0)) * cw;
-      gb[k] += err;
-      for (const i of r.x) gW[k][i] += err;
+      b[k] -= (RATE * gb[k]) / rows.length;
+      for (let i = 0; i < vocab.length; i++) W[k][i] -= RATE * (gW[k][i] / rows.length + L2 * W[k][i]);
     }
   }
-  for (let k = 0; k < K; k++) {
-    b[k] -= (RATE * gb[k]) / rows.length;
-    for (let i = 0; i < vocab.length; i++) W[k][i] -= RATE * (gW[k][i] / rows.length + L2 * W[k][i]);
-  }
+
+  const round = (v) => Math.round(v * 1000) / 1000;
+  const weights = {};
+  vocab.forEach((f, i) => {
+    const w = classes.map((_, k) => round(W[k][i]));
+    if (w.some((v) => Math.abs(v) >= MIN_WEIGHT)) weights[f] = w;
+  });
+  const correct = rows.filter((r) => {
+    const p = probabilities(r.x);
+    return p.indexOf(Math.max(...p)) === r.y;
+  }).length;
+  return {
+    model: {
+      classes,
+      // Every word the training sentences use, so the app can fix small typos before scoring ("anxiuos" -> "anxious").
+      words: [...new Set(classes.flatMap((c) => sentences[c]).flatMap((s) => normalise(s).split(' ')))].filter((w) => w.length >= 5).sort(),
+      bias: [...b].map(round),
+      weights,
+    },
+    report: `${rows.length} sentences, ${K} classes, ${Object.keys(weights).length} features, training accuracy ${correct}/${rows.length}`,
+  };
 }
 
-const round = (v) => Math.round(v * 1000) / 1000;
-const weights = {};
-vocab.forEach((f, i) => {
-  const w = classes.map((_, k) => round(W[k][i]));
-  if (w.some((v) => Math.abs(v) >= MIN_WEIGHT)) weights[f] = w;
-});
+function write(file, note, trainedOn, model) {
+  fs.writeFileSync(path.join(dir, file), JSON.stringify({ note, trainedOn, ...model }) + '\n');
+  return Math.round(fs.statSync(path.join(dir, file)).size / 1024);
+}
 
-const correct = rows.filter((r) => {
-  const p = probabilities(r.x);
-  return p.indexOf(Math.max(...p)) === r.y;
-}).length;
+const raw = fs.readFileSync(path.join(dir, 'train.json'), 'utf8');
+const main = train(JSON.parse(raw).sentences);
+const kb = write('model.json', 'Generated by scripts/train-classifier.js from train.json. Do not edit by hand: change train.json and retrain.', fingerprint(raw), main.model);
+console.log(`model.json: ${main.report} (${kb} KB)`);
 
-const model = {
-  note: 'Generated by scripts/train-classifier.js from train.json. Do not edit by hand: change train.json and retrain.',
-  // A fingerprint of train.json (line endings ignored, so Windows and Mac checkouts agree); the tests compare it.
-  trainedOn: crypto.createHash('sha256').update(raw.replace(/\r\n/g, '\n')).digest('hex').slice(0, 16),
-  classes,
-  // Every word the training sentences use, so the app can fix small typos before scoring ("anxiuos" -> "anxious").
-  words: [...new Set(classes.flatMap((c) => sentences[c]).flatMap((s) => normalise(s).split(' ')))].filter((w) => w.length >= 5).sort(),
-  bias: [...b].map(round),
-  weights,
-};
-fs.writeFileSync(path.join(dir, 'model.json'), JSON.stringify(model) + '\n');
-
-const kb = Math.round(fs.statSync(path.join(dir, 'model.json')).size / 1024);
-console.log(`Trained on ${rows.length} sentences, ${K} categories, ${Object.keys(weights).length} features kept (${kb} KB).`);
-console.log(`Training accuracy ${correct}/${rows.length}. Held-out results: npm test -- classifier`);
+const subRaw = fs.readFileSync(path.join(dir, 'subtopics.json'), 'utf8');
+const subTrain = JSON.parse(subRaw).train;
+const sub = train(subTrain);
+const subKb = write('submodel.json', 'Generated by scripts/train-classifier.js from subtopics.json (train). Do not edit by hand.', fingerprint(JSON.stringify(subTrain)), sub.model);
+console.log(`submodel.json: ${sub.report} (${subKb} KB)`);
+console.log('Held-out results: npm test -- classifier');

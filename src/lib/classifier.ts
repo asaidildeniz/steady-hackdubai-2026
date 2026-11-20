@@ -1,5 +1,6 @@
 import model from '@/content/classifier/model.json';
-import { type ClassifierCategory, content } from '@/content/types';
+import submodel from '@/content/classifier/submodel.json';
+import { type ClassifierCategory, content, type Subtopic } from '@/content/types';
 import { isCrisis } from './matching';
 import { features, normalise } from './textFeatures';
 
@@ -10,7 +11,8 @@ import { features, normalise } from './textFeatures';
 
 type Model = { classes: string[]; words: string[]; bias: number[]; weights: Record<string, number[]> };
 const m = model as Model;
-const known = new Set(m.words);
+const sm = submodel as Model;
+const known = new Set([...m.words, ...sm.words]);
 
 export type Classification = {
   category: string; // the most likely category, including 'suicidal' and 'none'
@@ -41,7 +43,7 @@ function spellCheck(w: string): string {
   const allowed = w.length >= 8 ? 2 : 1;
   let best = w;
   let bestD = allowed + 1;
-  for (const k of m.words) {
+  for (const k of known) {
     if (Math.abs(k.length - w.length) > allowed) continue;
     const d = distance(w, k);
     if (d < bestD) {
@@ -52,38 +54,86 @@ function spellCheck(w: string): string {
   return best;
 }
 
-export function classify(text: string): Classification {
+// Softmax scores of a model's classes for a sentence; `only` limits it to some classes (they then share 100%).
+function score(mod: Model, text: string, only?: string[]) {
   const corrected = normalise(text).split(' ').map(spellCheck).join(' ');
-  const fs = features(corrected).filter((f) => m.weights[f]);
-  const z = m.classes.map((_, k) => fs.reduce((s, f) => s + m.weights[f][k], m.bias[k]));
+  const fs = features(corrected).filter((f) => mod.weights[f]);
+  const ks = mod.classes.map((_, k) => k).filter((k) => !only || only.includes(mod.classes[k]));
+  const z = ks.map((k) => fs.reduce((s, f) => s + mod.weights[f][k], mod.bias[k]));
   const max = Math.max(...z);
   const e = z.map((v) => Math.exp(v - max));
   const sum = e.reduce((s, v) => s + v, 0);
-  const p = e.map((v) => v / sum);
-  const scores = m.classes.map((category, k) => ({ category, p: p[k] })).sort((a, b) => b.p - a.p);
-  const top = m.classes.indexOf(scores[0].category);
+  const scores = ks.map((k, i) => ({ category: mod.classes[k], p: e[i] / sum })).sort((a, b) => b.p - a.p);
+  const top = mod.classes.indexOf(scores[0].category);
   const because = fs
-    .filter((f) => m.weights[f][top] > 0)
-    .sort((a, b) => m.weights[b][top] - m.weights[a][top] || (a < b ? -1 : 1))
+    .filter((f) => mod.weights[f][top] > 0)
+    .sort((a, b) => mod.weights[b][top] - mod.weights[a][top] || (a < b ? -1 : 1))
     .slice(0, 3);
+  return { scores, because };
+}
+
+export function classify(text: string): Classification {
+  const { scores, because } = score(m, text);
   return { category: scores[0].category, confidence: scores[0].p, scores, because };
 }
 
+// Within a feeling, the sub-topics (and so the writings) closest first (Abel, 2026-11-20). Empty for a feeling
+// with only one kind of writing. The sub-topic model is trained on subtopics.json.
+export function subtopicsFor(text: string, category: ClassifierCategory): { subtopic: Subtopic; p: number }[] {
+  if (category.subtopics.length < 2) return category.subtopics.map((subtopic) => ({ subtopic, p: 1 }));
+  return score(sm, text, category.subtopics.map((s) => s.id)).scores.map(({ category: id, p }) => ({
+    subtopic: category.subtopics.find((s) => s.id === id)!,
+    p,
+  }));
+}
+
+// The writing to show for a sentence in this feeling: its closest sub-topic's writing, or the feeling's first
+// writing while that sub-topic's own is not written yet. Null when the feeling has no writing at all.
+export function writingFor(text: string, category: ClassifierCategory): string | null {
+  const best = subtopicsFor(text, category)[0]?.subtopic;
+  return best?.writing ?? category.content[0] ?? null;
+}
+
+export type Ranked = { category: ClassifierCategory; p: number }[];
+
 export type Understood =
-  | { kind: 'crisis' } // open Need help now
-  | { kind: 'category'; category: ClassifierCategory; confidence: number; because: string[] }
-  | { kind: 'unsure' }; // ask which feeling is closest
+  | { kind: 'crisis'; ranked: Ranked } // open Need help now
+  | { kind: 'category'; category: ClassifierCategory; confidence: number; because: string[]; sure: boolean; ranked: Ranked }
+  | { kind: 'unsure'; ranked: Ranked }; // ask which feeling is closest, closest first
+
+// Every category a student can see, most likely first (Abel, 2026-11-20: like search results, the closest first).
+// 'suicidal' and 'none' are never in it.
+function rank(r: Classification): Ranked {
+  const cats = content.classifier.categories;
+  return r.scores.flatMap((s) => {
+    const category = cats.find((c) => c.id === s.category);
+    return category ? [{ category, p: s.p }] : [];
+  });
+}
 
 // What a typed sentence means for where Steady goes next, in this order:
 // 1. the exact crisis phrases (reviewable, never depends on the model);
 // 2. the model's 'suicidal' score at or above the safety net: when in doubt, offer help;
 // 3. a category the model is confident about; otherwise ask, never guess.
+// Below `sureEnough` (80%) a match is not sure: the other close feelings are shown under it, closest first.
 export function understand(text: string): Understood {
-  if (isCrisis(text)) return { kind: 'crisis' };
   const r = classify(text);
+  const ranked = rank(r);
+  if (isCrisis(text)) return { kind: 'crisis', ranked };
   const cfg = content.classifier;
-  if ((r.scores.find((s) => s.category === 'suicidal')?.p ?? 0) >= cfg.suicideNet) return { kind: 'crisis' };
+  if ((r.scores.find((s) => s.category === 'suicidal')?.p ?? 0) >= cfg.suicideNet) return { kind: 'crisis', ranked };
   const category = cfg.categories.find((c) => c.id === r.category);
-  if (!category || r.confidence < cfg.confidence) return { kind: 'unsure' };
-  return { kind: 'category', category, confidence: r.confidence, because: r.because };
+  if (!category || r.confidence < cfg.confidence) return { kind: 'unsure', ranked };
+  const sure = r.confidence >= cfg.sureEnough;
+  return { kind: 'category', category, confidence: r.confidence, because: r.because, sure, ranked };
 }
+
+// The close alternatives to show under a match that isn't sure: the next few by likelihood, each at least `floor`.
+// Okay is never offered under a hard feeling, nor a hard feeling under Okay ("nobody likes me" is never Okay).
+export const alsoClose = (u: Extract<Understood, { kind: 'category' }>, max = 3, floor = 0.05) =>
+  u.sure
+    ? []
+    : u.ranked
+        .filter((x) => x.category.id !== u.category.id && x.p >= floor)
+        .filter((x) => (x.category.id === 'okay') === (u.category.id === 'okay'))
+        .slice(0, max);

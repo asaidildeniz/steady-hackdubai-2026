@@ -140,6 +140,22 @@ describe("Abel's check-in", () => {
     expect(href.params).toMatchObject({ c: 'faith', f: category('faith').feelings.join(',') });
   });
 
+  test('"Which is closest?" lists the feelings closest first', async () => {
+    understand.mockReturnValueOnce({
+      kind: 'unsure',
+      ranked: ['faith', 'down', 'lonely'].map((id) => ({ category: category(id), p: 0.1 })),
+    });
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), 'something vague');
+    await fireEvent.press(button(c.find));
+    await waitFor(() => expect(screen.getByText(content.classifier.closest)).toBeOnTheScreen());
+    const labels = screen.getAllByRole('button').map((b) => b.props.accessibilityLabel as string);
+    const at = (id: string) => labels.indexOf(category(id).label);
+    expect(at('faith')).toBeLessThan(at('down'));
+    expect(at('down')).toBeLessThan(at('lonely'));
+    expect(at('lonely')).toBeLessThan(at('okay'));
+  });
+
   test('"Not quite?" from a page brings Home back with every category to choose from', async () => {
     jest.mocked(useLocalSearchParams).mockReturnValue({ choose: '1' });
     await render(<CheckIn />);
@@ -232,6 +248,26 @@ describe('feeling pages', () => {
     expect(screen.getByText(cl.soundsLike.replace('{label}', category('lonely').soundsLike))).toBeOnTheScreen();
     await fireEvent.press(button(cl.notQuite));
     expect(router.dismissTo).toHaveBeenCalledWith({ pathname: '/home', params: { choose: '1' } });
+  });
+
+  test('a match that is not sure shows the other close feelings, closest first, and one tap switches', async () => {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ f: 'anxious', t: '', n: '', c: 'anxious', r: 'stressed,overwhelmed' });
+    await render(<Results />);
+    const cl = content.classifier;
+    expect(screen.getByText(cl.alsoClose)).toBeOnTheScreen();
+    const labels = screen.getAllByRole('button').map((b) => b.props.accessibilityLabel);
+    expect(labels.indexOf(category('stressed').label)).toBeLessThan(labels.indexOf(category('overwhelmed').label));
+    await fireEvent.press(button(category('stressed').label));
+    expect(router.replace).toHaveBeenCalledWith({
+      pathname: '/results',
+      params: { f: category('stressed').feelings.join(','), t: '', n: '', c: 'stressed' },
+    });
+  });
+
+  test('a sure match shows no other feelings', async () => {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ f: 'lonely', t: '', n: '', c: 'lonely' });
+    await render(<Results />);
+    expect(screen.queryByText(content.classifier.alsoClose)).toBeNull();
   });
 
   test('always says it is not a replacement for professional help', async () => {

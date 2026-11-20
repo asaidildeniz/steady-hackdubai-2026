@@ -1389,7 +1389,7 @@
     }
   },
   "classifier": {
-    "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier.",
+    "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier. Sub-topics pick the closest writing within a feeling (subtopics.json -> submodel.json); writing null means not written yet, and the feeling's first writing is shown instead.",
     "confidence": 0.2,
     "suicideNet": 0.2,
     "soundsLike": "Draft: it sounds like {label}.",
@@ -1406,7 +1406,25 @@
         ],
         "content": [
           "When Worries Keep Returning",
-          "When You’re Anxious About the Future"
+          "When You’re Anxious About the Future",
+          "When an Exam Feels Close"
+        ],
+        "subtopics": [
+          {
+            "id": "anxious.worries",
+            "label": "Worries that keep coming back",
+            "writing": "When Worries Keep Returning"
+          },
+          {
+            "id": "anxious.future",
+            "label": "Worry about the future",
+            "writing": "When You’re Anxious About the Future"
+          },
+          {
+            "id": "anxious.exam",
+            "label": "Nerves before an exam",
+            "writing": "When an Exam Feels Close"
+          }
         ]
       },
       {
@@ -1420,6 +1438,18 @@
         "content": [
           "When an Exam Feels Close",
           "When Your Grades Are Not Going Well"
+        ],
+        "subtopics": [
+          {
+            "id": "stressed.exam",
+            "label": "Exam pressure",
+            "writing": "When an Exam Feels Close"
+          },
+          {
+            "id": "stressed.grades",
+            "label": "Grades not going well",
+            "writing": "When Your Grades Are Not Going Well"
+          }
         ]
       },
       {
@@ -1432,6 +1462,18 @@
         "content": [
           "When “Adulting” Feels Like a Lot",
           "When You’re Used to Achieving, but You’re Tired"
+        ],
+        "subtopics": [
+          {
+            "id": "overwhelmed.adulting",
+            "label": "Adulting feels like a lot",
+            "writing": "When “Adulting” Feels Like a Lot"
+          },
+          {
+            "id": "overwhelmed.tired",
+            "label": "Used to achieving, but tired",
+            "writing": "When You’re Used to Achieving, but You’re Tired"
+          }
         ]
       },
       {
@@ -1444,6 +1486,18 @@
         "content": [
           "When You’re Feeling Down",
           "When You Wonder Whether Your Life Matters"
+        ],
+        "subtopics": [
+          {
+            "id": "down.low",
+            "label": "Feeling low",
+            "writing": "When You’re Feeling Down"
+          },
+          {
+            "id": "down.meaning",
+            "label": "Wondering whether your life matters",
+            "writing": "When You Wonder Whether Your Life Matters"
+          }
         ]
       },
       {
@@ -1453,7 +1507,8 @@
         "feelings": [
           "grieving"
         ],
-        "content": []
+        "content": [],
+        "subtopics": []
       },
       {
         "id": "guilty",
@@ -1462,7 +1517,8 @@
         "feelings": [
           "guilty"
         ],
-        "content": []
+        "content": [],
+        "subtopics": []
       },
       {
         "id": "angry",
@@ -1471,7 +1527,8 @@
         "feelings": [
           "angry"
         ],
-        "content": []
+        "content": [],
+        "subtopics": []
       },
       {
         "id": "lonely",
@@ -1482,19 +1539,39 @@
         ],
         "content": [
           "When You Feel Isolated"
-        ]
+        ],
+        "subtopics": [],
+        "faithWriting": null
       },
       {
         "id": "rejected",
-        "label": "Rejected or heartbroken",
-        "soundsLike": "you’re hurting after a rejection or a breakup",
+        "label": "Rejected or left out",
+        "soundsLike": "you’re hurting from being rejected or left out",
         "feelings": [
           "sad"
         ],
         "content": [
           "When a Relationship Ends",
           "When Someone You Like Doesn’t Feel the Same"
-        ]
+        ],
+        "subtopics": [
+          {
+            "id": "rejected.breakup",
+            "label": "After a breakup",
+            "writing": "When a Relationship Ends"
+          },
+          {
+            "id": "rejected.crush",
+            "label": "When someone doesn’t feel the same",
+            "writing": "When Someone You Like Doesn’t Feel the Same"
+          },
+          {
+            "id": "rejected.social",
+            "label": "Left out or not fitting in",
+            "writing": "When You Feel Isolated"
+          }
+        ],
+        "faithWriting": null
       },
       {
         "id": "insecure",
@@ -1505,7 +1582,9 @@
         ],
         "content": [
           "When You Feel Insecure at University"
-        ]
+        ],
+        "subtopics": [],
+        "faithWriting": null
       },
       {
         "id": "bullied",
@@ -1516,7 +1595,8 @@
         ],
         "content": [
           "When You’re Experiencing Bullying"
-        ]
+        ],
+        "subtopics": []
       },
       {
         "id": "unsure",
@@ -1527,7 +1607,8 @@
         ],
         "content": [
           "When You’re Unsure What Comes Next"
-        ]
+        ],
+        "subtopics": []
       },
       {
         "id": "faith",
@@ -1538,6 +1619,28 @@
         ],
         "content": [
           "When You Have Questions About Faith"
+        ],
+        "subtopics": [
+          {
+            "id": "faith.doubt",
+            "label": "Doubting what you believe",
+            "writing": "When You Have Questions About Faith"
+          },
+          {
+            "id": "faith.distant",
+            "label": "God feels far away",
+            "writing": null
+          },
+          {
+            "id": "faith.unloved",
+            "label": "Feeling unloved or unforgiven by God",
+            "writing": null
+          },
+          {
+            "id": "faith.suffering",
+            "label": "Why God allows suffering",
+            "writing": null
+          }
         ]
       },
       {
@@ -1547,8 +1650,12 @@
         "feelings": [
           "grateful"
         ],
-        "content": []
+        "content": [],
+        "subtopics": []
       }
-    ]
+    ],
+    "sureEnough": 0.8,
+    "alsoClose": "Draft: it could also be",
+    "faithWritingPlaceholder": "A “God loves you” piece (to be written)"
   }
 }
