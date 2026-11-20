@@ -23,7 +23,7 @@ const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // A phrase matches from the start of a word. A single word of 4+ letters may carry an ending
 // ("panic" matches "panicking"); anything shorter or longer must match whole words ("low" never matches "following").
-function contains(text: string, phrase: string): boolean {
+export function contains(text: string, phrase: string): boolean {
   const p = normalise(phrase);
   if (!p) return false;
   const loose = !p.includes(' ') && p.length >= 4;

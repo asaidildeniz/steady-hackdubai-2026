@@ -264,6 +264,23 @@ describe('feeling pages', () => {
     });
   });
 
+  test('a heavy match keeps its feeling and adds the quiet line to Need help now', async () => {
+    jest.mocked(useLocalSearchParams).mockReturnValue({ f: 'guilty', t: '', n: '', c: 'guilty', h: '1' });
+    await render(<Results />);
+    const cl = content.classifier;
+    await fireEvent.press(button(`${cl.heavyLine} ${cl.heavyLink}`));
+    expect(router.push).toHaveBeenCalledWith('/need-help');
+  });
+
+  test('typing "I can\'t live with the guilt" opens Guilty with the quiet line, not Need help now', async () => {
+    jest.mocked(useLocalSearchParams).mockReset();
+    await render(<CheckIn />);
+    await fireEvent.changeText(screen.getByLabelText(c.typeLabel), "I can't live with the guilt");
+    await fireEvent.press(button(c.find));
+    const [href] = jest.mocked(router.push).mock.calls[0] as unknown as [{ params: Record<string, string> }];
+    expect(href.params).toMatchObject({ c: 'guilty', h: '1' });
+  });
+
   test('a sure match shows no other feelings', async () => {
     jest.mocked(useLocalSearchParams).mockReturnValue({ f: 'lonely', t: '', n: '', c: 'lonely' });
     await render(<Results />);

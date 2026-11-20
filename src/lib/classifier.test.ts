@@ -121,6 +121,33 @@ describe('feeling classifier', () => {
     for (const id of ['lonely', 'rejected', 'insecure']) expect(cfg.categories.find((c) => c.id === id)).toHaveProperty('faithWriting');
   });
 
+  // Abel 2026-11-20: "I can't [take / live with] <something>" is about that something, with a gentle safety line.
+  // The bare limit ("I can't take it anymore", "I can't live with myself") stays a crisis.
+  test.each([
+    ["I can't live with the guilt", 'guilty'],
+    ["I can't live with what I did to him", 'guilty'],
+    ['I can\'t take all this hate from the people around me', 'bullied'],
+    ["I can't live without my dad", 'grief'],
+    ["I can't handle this workload", 'overwhelmed'],
+  ])('"%s" is %s with the gentle safety line, not the crisis card', (s, id) => {
+    const u = understand(s);
+    if (u.kind !== 'category') throw new Error(`expected a category, got ${u.kind}`);
+    expect(u.category.id).toBe(id);
+    expect(u.heavy).toBe(true);
+  });
+
+  test.each(["I can't take it anymore", "I can't live with myself", "I can't live like this anymore", "I can't go on like this"])(
+    '"%s" still opens Need help now',
+    (s) => expect(understand(s).kind).toBe('crisis'),
+  );
+
+  test('an everyday hard sentence gets no safety line', () => {
+    for (const s of ['I feel so lonely', 'I failed my exam', 'my girlfriend broke up with me']) {
+      const u = understand(s);
+      expect(u.kind === 'category' && u.heavy).toBe(false);
+    }
+  });
+
   test('a happy sentence that mentions God stays Okay', () => {
     const u = understand('thank God I passed my exam, I feel so relieved');
     expect(u.kind === 'category' && u.category.id).toBe('okay');

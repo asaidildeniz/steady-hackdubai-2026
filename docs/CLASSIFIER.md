@@ -143,3 +143,28 @@ REPORT=1 npx jest classifier
 | Held-out suicidal sentences | 14 / 14 reach Need help now |
 | Other sentences wrongly sent to Need help now | 1 / 219 ("I'm completely drained and can't keep going like this", the cost of catching "I can't keep going") |
 | Sub-topics | the right one at least 80% of the time on held-out sentences |
+
+## "I can't…" sentences and the gentle safety line (2026-11-20)
+
+"I can't take…" and "I can't live with…" can be a crisis, or simply a limit with one thing. Steady now tells the two apart and adds a middle step.
+
+| Tier | When | What Steady does |
+|---|---|---|
+| **Crisis** | An exact crisis phrase, or the model's suicidal score ≥ `suicideNet` (0.2). Bare limits: "I can't take it anymore", "I can't live with myself", "I can't live like this", "I can't go on like this" | Need help now straight away |
+| **Heavy** | A phrase in `heavyPhrases` ("cant take", "cant live with", "cant cope", "breaking point"…), or a suicidal score from `heavyNet` (0.08) up to the safety net | The feeling as normal, plus one quiet line: *"If this feels like more than you can carry right now, Need help now is here."* |
+| **Normal** | Everything else | The feeling |
+
+The model was taught that "I can't [take / live with / handle] *something*" is about that something:
+
+| Sentence | Feeling |
+|---|---|
+| "I can't live with the guilt" | Guilty, with the line |
+| "I can't take all this hate from the people around me" | Bullied, with the line |
+| "I can't live without my mum" | Grieving, with the line |
+| "I can't handle this workload" | Overwhelmed, with the line |
+
+All of these are permanent tests, and an everyday hard sentence ("I feel so lonely", "I failed my exam") never gets the line.
+
+`heavyPhrases` sits next to the crisis phrases in `content.json`, so the counsellor reviews both together.
+
+Results: held-out 164 / 183 right, 3 wrong; suicidal 16 / 16; 1 / 225 wrongly sent to Need help now.

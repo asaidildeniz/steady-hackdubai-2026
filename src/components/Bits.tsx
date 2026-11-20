@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Icon } from '@/components/Icon';
 import { content } from '@/content/types';
-import { colors, fonts, radius, space, type } from '@/theme';
+import { colors, fonts, radius, space, text, type } from '@/theme';
 
 // Small shared pieces from the v3 screens.
 
@@ -51,7 +51,24 @@ export function LogoRow() {
   );
 }
 
+// At the limit but not a crisis (Abel, 2026-11-20): one quiet line, and one tap to Need help now.
+export function HeavyLine() {
+  const cl = content.classifier;
+  return (
+    <Pressable
+      onPress={() => router.push('/need-help')}
+      accessibilityRole="button"
+      accessibilityLabel={`${cl.heavyLine} ${cl.heavyLink}`}
+    >
+      <Text style={text.note}>
+        {cl.heavyLine} <Text style={styles.heavyLink}>{cl.heavyLink}</Text>
+      </Text>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
+  heavyLink: { fontFamily: fonts.medium, color: colors.primary, textDecorationLine: 'underline' },
   chip: {
     minHeight: 44,
     justifyContent: 'center',

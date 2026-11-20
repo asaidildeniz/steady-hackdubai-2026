@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BigButton } from '@/components/BigButton';
-import { Chip, LogoRow } from '@/components/Bits';
+import { Chip, HeavyLine, LogoRow } from '@/components/Bits';
 import { LivingDroplet } from '@/components/BreathOrb';
 import { Screen } from '@/components/Screen';
 import { type ClassifierCategory, content } from '@/content/types';
@@ -24,12 +24,13 @@ const resultsHref = ({ feelings, themes, needs }: Tags, extra: Record<string, st
 const categoryHref = (
   category: ClassifierCategory,
   words: Tags = { feelings: [], themes: [], needs: [] },
-  extra: { r?: string; s?: string } = {},
+  extra: { r?: string; s?: string; h?: boolean } = {},
 ) =>
   resultsHref(mergeTags({ ...words, feelings: category.feelings }, words), {
     c: category.id,
     ...(extra.r ? { r: extra.r } : {}),
     ...(extra.s ? { s: extra.s } : {}),
+    ...(extra.h ? { h: '1' } : {}),
   });
 
 // Home (v3): say it in your own words, or tap a chip. Nothing is saved or sent.
@@ -40,6 +41,7 @@ export default function CheckIn() {
   const [typed, setTyped] = useState('');
   const [asking, setAsking] = useState(false); // nothing was clear enough: ask which category is closest
   const [closestFirst, setClosestFirst] = useState<string[]>([]); // category ids, closest first
+  const [heavy, setHeavy] = useState(false); // at the limit, not a crisis: a quiet line offers Need help now
   const choosing = asking || params?.choose === '1';
   // "Which is closest?" lists the categories the way a search lists results: the closest first, then the rest.
   const order = asking ? closestFirst : (params?.r ?? '').split(',').filter(Boolean);
@@ -52,6 +54,7 @@ export default function CheckIn() {
     const said = typed;
     setTyped(''); // forget it straight away
     setAsking(false);
+    setHeavy(false);
     // The crisis phrases, then the classifier's safety net, then its answer (src/lib/classifier.ts).
     const understood = understand(said);
     if (understood.kind === 'crisis') return router.push('/need-help');
@@ -59,13 +62,14 @@ export default function CheckIn() {
     if (understood.kind === 'category') {
       const close = alsoClose(understood).map((x) => x.category.id).join(',');
       const s = subtopicsFor(said, understood.category)[0]?.subtopic.id;
-      return router.push(categoryHref(understood.category, words, { r: close, s }));
+      return router.push(categoryHref(understood.category, words, { r: close, s, h: understood.heavy }));
     }
     // The classifier wasn't sure: keywords, plus the on-phone model where it runs.
     const meaning = await meaningTags(said).catch(() => null);
     const tags = meaning ? mergeTags(words, meaning) : words;
     if (groupFor(tags)) return router.push(resultsHref(tags));
     setClosestFirst(understood.ranked.map((x) => x.category.id));
+    setHeavy(understood.heavy);
     setAsking(true); // still nothing: ask, never guess, closest first
   };
 
@@ -106,6 +110,7 @@ export default function CheckIn() {
           <Text style={text.body} accessibilityLiveRegion="polite">
             {cl.closest}
           </Text>
+          {heavy && <HeavyLine />}
           <View style={styles.chips}>
             {choices.map((cat) => (
               <Chip key={cat.id} label={cat.label} onPress={() => router.push(categoryHref(cat))} />

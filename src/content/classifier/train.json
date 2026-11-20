@@ -120,7 +120,10 @@
       "I'm unprepared and the pressure to pass this test is huge",
       "the test is tomorrow and there's so much pressure on me",
       "I'm not prepared and my parents expect a top mark",
-      "I'm behind on revision and the exam counts for half my grade"
+      "I'm behind on revision and the exam counts for half my grade",
+      "I can't take this exam pressure",
+      "I can't handle the pressure of my grades",
+      "I can't cope with exam stress"
     ],
     "overwhelmed": [
       "there's just too much going on",
@@ -176,7 +179,11 @@
       "I have so many tests and I'm not prepared for any of them",
       "too much to study and I'm unprepared for every exam",
       "I'm unprepared because I've had too much going on",
-      "between work and uni I couldn't prepare for my test"
+      "between work and uni I couldn't prepare for my test",
+      "I can't handle this workload",
+      "I can't take all this work",
+      "I can't handle all these responsibilities",
+      "I'm at my breaking point with all this work"
     ],
     "down": [
       "I feel down",
@@ -275,7 +282,12 @@
       "they're gone and I can't accept it",
       "my roommate's death has shaken me",
       "my family member is dying in hospital",
-      "I'm losing my grandmother to illness"
+      "I'm losing my grandmother to illness",
+      "I can't live without my mum",
+      "I don't know how to live without him",
+      "I can't cope since she died",
+      "I can't handle losing my grandad",
+      "I can't take how much I miss her since she passed"
     ],
     "guilty": [
       "I feel so guilty about what I did",
@@ -321,7 +333,13 @@
       "I made a huge mistake",
       "I hurt my parents by what I said",
       "I'm ashamed of how I acted",
-      "I feel bad about how I treated her"
+      "I feel bad about how I treated her",
+      "I can't live with the shame of what I did",
+      "the guilt is more than I can take",
+      "I can't handle how guilty I feel",
+      "I can't stand the guilt of lying to her",
+      "I can't cope with the shame",
+      "I can't live with all this guilt inside me"
     ],
     "angry": [
       "I'm so angry I could scream",
@@ -388,7 +406,10 @@
       "I'm so annoyed with my classmates",
       "everyone is annoying me today",
       "I'm irritated with all of them",
-      "I'm fed up with everyone around me"
+      "I'm fed up with everyone around me",
+      "I can't stand my roommate",
+      "I can't take his attitude anymore",
+      "I can't stand how unfair they are"
     ],
     "lonely": [
       "I feel so lonely",
@@ -459,7 +480,10 @@
       "I can't fit in at uni",
       "I can't find where I fit in",
       "I'm by myself most days",
-      "I'm on my own a lot"
+      "I'm on my own a lot",
+      "I can't take being alone all the time",
+      "I can't handle how lonely I am",
+      "I can't cope with being on my own"
     ],
     "rejected": [
       "my girlfriend broke up with me",
@@ -531,7 +555,9 @@
       "I can't fit in with anyone",
       "I can't seem to fit in",
       "I just can't fit in here",
-      "no matter what I do I don't fit in"
+      "no matter what I do I don't fit in",
+      "I can't take being left out again",
+      "I can't handle being rejected by my friends"
     ],
     "insecure": [
       "I feel insecure",
@@ -606,7 +632,10 @@
       "is she mad at me",
       "is he angry with me",
       "what if they're all mad at me",
-      "I keep asking if people are mad at me"
+      "I keep asking if people are mad at me",
+      "I hate who I am",
+      "I really don't like myself",
+      "I'm not happy with who I am"
     ],
     "bullied": [
       "I'm being bullied",
@@ -656,7 +685,21 @@
       "they make my life miserable at uni",
       "I'm the butt of the joke in my class group chat",
       "people keep making nasty jokes about me",
-      "they target me with jokes every day"
+      "they target me with jokes every day",
+      "I can't take all the hate from people at uni",
+      "I can't take how people treat me",
+      "I can't stand the way they talk to me",
+      "everyone around me is so hateful to me",
+      "I can't handle the hate I get every day",
+      "I'm sick of being treated like this by everyone",
+      "people around me keep being cruel and I can't take it",
+      "I can't cope with how my classmates treat me",
+      "the way people treat me is horrible",
+      "everyone treats me so badly",
+      "I hate how they treat me",
+      "people treat me like I'm nothing",
+      "I can't stand being treated like this",
+      "nobody treats me with respect"
     ],
     "unsure": [
       "I don't know what to do with my life",
@@ -902,7 +945,13 @@
       "I can't take it anymore",
       "I can't go on anymore",
       "I don't want to keep going",
-      "I give up on everything"
+      "I give up on everything",
+      "I can't live with myself",
+      "I can't take it any longer",
+      "I can't live like this",
+      "I can't take this life anymore",
+      "I can't bear to be alive",
+      "I can't cope with being alive"
     ],
     "none": [
       "I have a meeting with my tutor tomorrow",

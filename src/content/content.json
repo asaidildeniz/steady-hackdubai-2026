@@ -1389,7 +1389,7 @@
     }
   },
   "classifier": {
-    "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier. Sub-topics pick the closest writing within a feeling (subtopics.json -> submodel.json); writing null means not written yet, and the feeling's first writing is shown instead.",
+    "_note": "Abel's feeling classifier (2026-11). Categories come from STEADY-Content #1. 'feelings' links each category to the taxonomy, which picks the feeling page and readings. Thresholds are tuned with npm test -- classifier. Sub-topics pick the closest writing within a feeling (subtopics.json -> submodel.json); writing null means not written yet, and the feeling's first writing is shown instead. Heavy (2026-11-20): a match with a 'suicidal' score from heavyNet up to suicideNet, or with a heavyPhrases phrase, keeps its feeling and adds heavyLine with a link to Need help now.",
     "confidence": 0.2,
     "suicideNet": 0.2,
     "soundsLike": "Draft: it sounds like {label}.",
@@ -1656,6 +1656,23 @@
     ],
     "sureEnough": 0.8,
     "alsoClose": "Draft: it could also be",
-    "faithWritingPlaceholder": "A “God loves you” piece (to be written)"
+    "faithWritingPlaceholder": "A “God loves you” piece (to be written)",
+    "heavyNet": 0.08,
+    "heavyPhrases": [
+      "cant take",
+      "cant live with",
+      "cant live without",
+      "cant cope",
+      "cant handle",
+      "cant bear",
+      "too much to bear",
+      "more than i can take",
+      "more than i can carry",
+      "breaking point",
+      "falling apart",
+      "at my limit"
+    ],
+    "heavyLine": "Draft: if this feels like more than you can carry right now, Need help now is here.",
+    "heavyLink": "Need help now"
   }
 }

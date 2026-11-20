@@ -1,7 +1,7 @@
 import model from '@/content/classifier/model.json';
 import submodel from '@/content/classifier/submodel.json';
 import { type ClassifierCategory, content, type Subtopic } from '@/content/types';
-import { isCrisis } from './matching';
+import { contains, isCrisis } from './matching';
 import { features, normalise } from './textFeatures';
 
 // Steady's feeling classifier (Abel, 2026-11): a small trained model that runs entirely on the phone or in the
@@ -98,8 +98,9 @@ export type Ranked = { category: ClassifierCategory; p: number }[];
 
 export type Understood =
   | { kind: 'crisis'; ranked: Ranked } // open Need help now
-  | { kind: 'category'; category: ClassifierCategory; confidence: number; because: string[]; sure: boolean; ranked: Ranked }
-  | { kind: 'unsure'; ranked: Ranked }; // ask which feeling is closest, closest first
+  | { kind: 'category'; category: ClassifierCategory; confidence: number; because: string[]; sure: boolean; heavy: boolean; ranked: Ranked }
+  | { kind: 'unsure'; heavy: boolean; ranked: Ranked }; // ask which feeling is closest, closest first
+// heavy: at the limit but not a crisis ("I can't live with the guilt"). The feeling stays, and a quiet line offers Need help now.
 
 // Every category a student can see, most likely first (Abel, 2026-11-20: like search results, the closest first).
 // 'suicidal' and 'none' are never in it.
@@ -116,16 +117,20 @@ function rank(r: Classification): Ranked {
 // 2. the model's 'suicidal' score at or above the safety net: when in doubt, offer help;
 // 3. a category the model is confident about; otherwise ask, never guess.
 // Below `sureEnough` (80%) a match is not sure: the other close feelings are shown under it, closest first.
+// In between (Abel, 2026-11-20): a sentence at the limit, by a reviewable phrase ("I can't take", "I can't live with")
+// or a 'suicidal' score from `heavyNet` up to the safety net, keeps its feeling and is marked heavy.
 export function understand(text: string): Understood {
   const r = classify(text);
   const ranked = rank(r);
   if (isCrisis(text)) return { kind: 'crisis', ranked };
   const cfg = content.classifier;
-  if ((r.scores.find((s) => s.category === 'suicidal')?.p ?? 0) >= cfg.suicideNet) return { kind: 'crisis', ranked };
+  const risk = r.scores.find((s) => s.category === 'suicidal')?.p ?? 0;
+  if (risk >= cfg.suicideNet) return { kind: 'crisis', ranked };
+  const heavy = risk >= cfg.heavyNet || cfg.heavyPhrases.some((p) => contains(text, p));
   const category = cfg.categories.find((c) => c.id === r.category);
-  if (!category || r.confidence < cfg.confidence) return { kind: 'unsure', ranked };
+  if (!category || r.confidence < cfg.confidence) return { kind: 'unsure', heavy, ranked };
   const sure = r.confidence >= cfg.sureEnough;
-  return { kind: 'category', category, confidence: r.confidence, because: r.because, sure, ranked };
+  return { kind: 'category', category, confidence: r.confidence, because: r.because, sure, heavy, ranked };
 }
 
 // The close alternatives to show under a match that isn't sure: the next few by likelihood, each at least `floor`.

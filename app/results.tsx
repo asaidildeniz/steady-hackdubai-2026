@@ -1,6 +1,6 @@
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Chip } from '@/components/Bits';
+import { Chip, HeavyLine } from '@/components/Bits';
 import { Screen } from '@/components/Screen';
 import { FeaturedTool, OtherTool, ToolRow } from '@/components/ToolCard';
 import { type ClassifierCategory, content, type LibraryItem, type Tag, type ToolId } from '@/content/types';
@@ -24,7 +24,7 @@ const openReading = (item: LibraryItem) =>
 export default function Results() {
   const fp = content.feelingPages;
   const cl = content.classifier;
-  const { f, t, n, c, r } = useLocalSearchParams<{ f?: string; t?: string; n?: string; c?: string; r?: string }>();
+  const { f, t, n, c, r, h } = useLocalSearchParams<{ f?: string; t?: string; n?: string; c?: string; r?: string; h?: string }>();
   const { feelings, themes, needs } = content.taxonomy;
   const tags = { feelings: read(f, feelings), themes: read(t, themes), needs: read(n, needs) };
   const group = groupFor(tags);
@@ -48,6 +48,7 @@ export default function Results() {
       {category && (
         <View style={styles.heard}>
           <Text style={text.note}>{cl.soundsLike.replace('{label}', category.soundsLike)}</Text>
+          {h === '1' && <HeavyLine />}
           {close.length > 0 && (
             <View style={styles.close}>
               <Text style={text.note}>{cl.alsoClose}</Text>

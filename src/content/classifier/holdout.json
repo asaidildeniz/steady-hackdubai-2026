@@ -41,7 +41,8 @@
       "I'm worn down",
       "I've hit a wall, I'm exhausted",
       "I don't know how to handle rent and groceries and assignments",
-      "I've always been the high achiever but I'm running out of steam"
+      "I've always been the high achiever but I'm running out of steam",
+      "I can't handle everything I have to do"
     ],
     "down": [
       "I've been feeling really sad lately",
@@ -68,7 +69,8 @@
       "I didn't get to say goodbye before she died",
       "I miss my dad so much since he passed",
       "someone close to me died",
-      "losing my grandmother has been so hard"
+      "losing my grandmother has been so hard",
+      "I can't live without my dad"
     ],
     "guilty": [
       "I feel so guilty about what I said",
@@ -82,7 +84,9 @@
       "I let my parents down",
       "I feel like a terrible person for what I did",
       "I keep blaming myself",
-      "I broke my friend's trust"
+      "I broke my friend's trust",
+      "I can't live with the guilt",
+      "I can't live with what I did to him"
     ],
     "angry": [
       "I'm so mad at my roommate",
@@ -158,7 +162,9 @@
       "they spread lies about me around campus",
       "I'm scared of the people who keep harassing me",
       "people make fun of my weight",
-      "I'm being bullied at uni"
+      "I'm being bullied at uni",
+      "I can't take all this hate from the people around me",
+      "I can't stand how everyone treats me"
     ],
     "unsure": [
       "I don't know what I want to do after graduating",
@@ -220,7 +226,9 @@
       "I don't see any point in staying alive",
       "I'm thinking about suicide",
       "I don't know if I could do this anymore",
-      "I don't think I can do this much longer"
+      "I don't think I can do this much longer",
+      "I can't take it anymore, I want it to end",
+      "I can't live with myself anymore"
     ],
     "none": [
       "I'm going shopping later",

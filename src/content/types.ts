@@ -216,6 +216,10 @@ export type Content = {
     sureEnough: number; // 0..1, below this a match also shows the other close feelings, closest first
     alsoClose: string;
     faithWritingPlaceholder: string;
+    heavyNet: number; // 0..1, a 'suicidal' score from here up to suicideNet marks a match heavy
+    heavyPhrases: string[]; // phrases at the limit ("cant take", "cant live with"); reviewed like the crisis phrases
+    heavyLine: string;
+    heavyLink: string;
     soundsLike: string; // "{label}" is a category's soundsLike
     notQuite: string;
     notQuiteHint: string;
